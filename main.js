@@ -63,7 +63,7 @@ Background.prototype.update = function () {
 
 Background.prototype.draw = function (ctx) {
     ctx.fillStyle = "SaddleBrown";
-    ctx.fillRect(0,500,800,300);
+    ctx.fillRect(0,500,1600,300);
     Entity.prototype.draw.call(this);
 }
 
@@ -82,7 +82,7 @@ function Player(game)   {
     this.canJump = true;
     this.radius = 100;
     this.ground = 400;
-    Entity.call(this, game, 0, 400);
+    Entity.call(this, game, 0, 400, 0, 0);
 
 }
 Player.prototype = new Entity();
@@ -131,21 +131,19 @@ Player.prototype.update = function ()   {
         }
         console.log(this.xv);
     }
-
+    this.x += this.xv;
     Entity.prototype.update.call(this);
 }
 
 Player.prototype.draw = function(ctx)   {
     if (this.state === 1) {
-        this.jumpAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y - 34);
+        this.jumpAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
     }
     else if (this.x !== this.direction) {
         this.direction = this.x;
-        this.x += this.xv;
         this.runAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
     }
     else {
-        this.x += this.xv;
         this.idleAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
         console.log(this.x);
     }
