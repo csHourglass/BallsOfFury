@@ -63,7 +63,7 @@ Background.prototype.update = function () {
 
 Background.prototype.draw = function (ctx) {
     ctx.fillStyle = "SaddleBrown";
-    ctx.fillRect(0,500,800,300);
+    ctx.fillRect(0,500,1600,300);
     Entity.prototype.draw.call(this);
 }
 
@@ -72,7 +72,7 @@ function Player(game)   {
     this.idleAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 0, 128, 128, 0.2, 8, true, false);
     this.runAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 384, 128, 128, 128, 0.2, 8, true, false);
     this.runStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 128, 128, 128, 0.2, 3, false, false);
-    this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 640, 256, 128, 128, 1, 5, false, false);
+    this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 640, 256, 128, 128, 0.1, 5, false, false);
     this.jumpStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 384, 256, 128, 128, 0.2, 2, false, false);
     this.fallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 512, 384, 128, 128, 0.2, 4, true, false);
     this.fallStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 256, 384, 128, 128, 0.2, 2, false, false);
@@ -82,7 +82,7 @@ function Player(game)   {
     this.canJump = true;
     this.radius = 100;
     this.ground = 400;
-    Entity.call(this, game, 0, 400);
+    Entity.call(this, game, 0, 400, 0, 0);
 
 }
 Player.prototype = new Entity();
@@ -111,17 +111,33 @@ Player.prototype.update = function ()   {
         this.y = this.ground - height;
     }
     this.direction = this.x;
-    if (this.game.aKey) {
-        this.x -= 10;
-    }
-    if (this.game.dKey) this.x += 10;
 
+    if (this.game.aKey) {
+        this.xv = -10;
+        console.log(this.xv);
+    } else if (!this.game.aKey && !this.game.dKey) {
+        if (this.xv < 0) {
+            this.xv += 1;
+        }
+        console.log(this.xv);
+    }
+
+    if (this.game.dKey) {
+        this.xv = 10;
+        console.log(this.xv)
+    } else if (!this.game.dKey && !this.game.aKey) {
+        if (this.xv > 0) {
+            this.xv -= 1;
+        }
+        console.log(this.xv);
+    }
+    this.x += this.xv;
     Entity.prototype.update.call(this);
 }
 
 Player.prototype.draw = function(ctx)   {
     if (this.state === 1) {
-        this.jumpAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y - 34);
+        this.jumpAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
     }
     else if (this.x !== this.direction) {
         this.direction = this.x;
@@ -129,6 +145,7 @@ Player.prototype.draw = function(ctx)   {
     }
     else {
         this.idleAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+        console.log(this.x);
     }
     Entity.prototype.draw.call(this);
 }
@@ -151,7 +168,7 @@ ASSET_MANAGER.downloadAll(function () {
 
     gameEngine.addEntity(bg);
     gameEngine.addEntity(player);
- 
+
     gameEngine.init(ctx);
     gameEngine.start();
 });
