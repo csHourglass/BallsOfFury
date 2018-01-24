@@ -77,7 +77,8 @@ function Player(game)   {
     this.fallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 512, 384, 128, 128, 0.2, 4, true, false);
     this.fallStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 256, 384, 128, 128, 0.2, 2, false, false);
 
-    this.state = 0;
+    this.jumpingState = 0; // 0 is on the ground, 1 is starting to jump, 2 is rising, 3 is beginning to fall, 4 is falling.  Has priority over running.
+    this.runningState = 0; // 0 is idle, 1 is starting to run, 2 is running
     this.direction = 0;
     this.canJump = true;
     this.radius = 100;
@@ -90,15 +91,21 @@ Player.prototype.constructor = Player;
 
 Player.prototype.update = function ()   {
     if (this.game.space && this.canJump)    {
-        this.state = 1;
+        this.jumpingState = 1;
         this.canJump = false;
     }
-    if (this.state !== 1 && this.game.spaceReleased) this.canJump = true;
+    if (this.jumpingState === 0 && this.game.spaceReleased) this.canJump = true;
     this.direction = this.game.direction;
-    if (this.state === 1) {
+
+    if (this.jumpingState === 1) {
+        // jumpingState 1 is for the initial jumping wind up animation.  The character is about to kick off the ground.
+        this.jumpingState++;  //increment to next state for next update().
+
+    } else if (this.jumpingState === 2) {
+        // jumpingState 2 is when the player is rising.  
         if (this.y > 400) {
             this.jumpAnimation.elapsedTime = 0;
-            this.state = 0;
+            this.jumpingState = 0;  // Instead of making this 0, we should increment this by 1 so it progresses to the next jumpingState.
         }
         var jumpDistance = this.jumpAnimation.elapsedTime / this.jumpAnimation.totalTime;
         var totalHeight = 75;
@@ -109,43 +116,61 @@ Player.prototype.update = function ()   {
         //var height = jumpDistance * 2 * totalHeight;
         var height = totalHeight*(-4 * (jumpDistance * jumpDistance - jumpDistance));
         this.y = this.ground - height;
+
+    } else if (this.jumpingState === 3) {
+        // jumpingState 3 is the transition from rising to falling.
+
+    } else if (this.jumpingState === 4) {
+        // jumpingState 4 is when the player is falling.
+
     }
+
+
     this.direction = this.x;
 
     if (this.game.aKey) {
         this.xv = -10;
-        console.log(this.xv);
+        //console.log(this.xv);
     } else if (!this.game.aKey && !this.game.dKey) {
         if (this.xv < 0) {
             this.xv += 1;
         }
-        console.log(this.xv);
+        //console.log(this.xv);
     }
 
     if (this.game.dKey) {
         this.xv = 10;
-        console.log(this.xv)
+        //console.log(this.xv)
     } else if (!this.game.dKey && !this.game.aKey) {
         if (this.xv > 0) {
             this.xv -= 1;
         }
-        console.log(this.xv);
+        //console.log(this.xv);
     }
     this.x += this.xv;
     Entity.prototype.update.call(this);
 }
 
 Player.prototype.draw = function(ctx)   {
-    if (this.state === 1) {
+    if (this.jumpingState === 1) {  //Drawing initial jump wind up animation
+        this.jumpStartAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+    }
+    else if (this.jumpingState === 2)   { //Drawing rising animation
         this.jumpAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
     }
-    else if (this.x !== this.direction) {
+    else if (this.jumpingState === 3)   { //Drawing transition from rising to falling
+        this.fallStartAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+    } 
+    else if (this.jumpingState === 4)   { //Drawing falling animation
+        this.fallAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+    }
+    else if (this.x !== this.direction) { 
         this.direction = this.x;
         this.runAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
     }
     else {
         this.idleAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
-        console.log(this.x);
+        //console.log(this.x);
     }
     Entity.prototype.draw.call(this);
 }
@@ -155,7 +180,7 @@ Player.prototype.draw = function(ctx)   {
 var ASSET_MANAGER = new AssetManager();
 
 ASSET_MANAGER.queueDownload("./img/player.png");
-ASSET_MANAGER.queueDownload("./img/background.gif");
+//ASSET_MANAGER.queueDownload("./img/background.gif");
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("Powering up!");
