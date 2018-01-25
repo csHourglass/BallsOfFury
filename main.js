@@ -70,12 +70,12 @@ Background.prototype.draw = function (ctx) {
 function Player(game)   {
     //Loading Animations
     this.idleAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 0, 128, 128, 0.2, 8, true, false);
-    this.runAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 384, 128, 128, 128, 0.2, 8, true, false);
+    this.runAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 384, 128, 128, 128, 0.05, 8, true, false);
     this.runStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 128, 128, 128, 0.2, 3, false, false);
     this.jumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 640, 256, 128, 128, 0.1, 5, false, false);
-    this.jumpStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 384, 256, 128, 128, 0.2, 2, false, false);
+    this.jumpStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 384, 256, 128, 128, 0.05, 2, false, false);
     this.fallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 512, 384, 128, 128, 0.2, 4, true, false);
-    this.fallStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 256, 384, 128, 128, 0.2, 2, false, false);
+    this.fallStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 256, 384, 128, 128, 0.05, 2, false, false);
 
     this.jumpingState = 0; // 0 is on the ground, 1 is starting to jump, 2 is rising, 3 is beginning to fall, 4 is falling.  Has priority over running.
     this.runningState = 0; // 0 is idle, 1 is starting to run, 2 is running
@@ -93,44 +93,55 @@ Player.prototype.update = function ()   {
     if (this.game.space && this.canJump)    {
         this.jumpingState = 1;
         this.canJump = false;
-        this.yv = 10;
+        //this.yv = 10;
     }
-    if (this.yv > 0) {
-        this.yv -= .5;
-    }
+    // if (this.yv > 0) {
+    //     this.yv -= .5;
+    // }
     if (this.jumpingState === 0 && this.game.spaceReleased) this.canJump = true;
-    this.direction = this.game.direction;
+    //this.direction = this.game.direction;
 
     if (this.jumpingState === 1) {
         // jumpingState 1 is for the initial jumping wind up animation.  The character is about to kick off the ground.
-        if (this.jumpStartAnimation.elapsedTime >= 0.2) {   //hard coded value of 0.2 from jumpStartAnimation's animation time
+        if (this.jumpStartAnimation.isDone()) {   //hard coded value of 0.2 from jumpStartAnimation's animation time
             this.jumpStartAnimation.elapsedTime = 0;
             this.jumpingState++;  //increment to next state for next update().
+            this.yv = 1500;
         }
 
     } else if (this.jumpingState === 2) {
         // jumpingState 2 is when the player is rising.  
-        var jumpDistance = this.jumpAnimation.elapsedTime / this.jumpAnimation.totalTime;
-        var totalHeight = 75;
+        // var jumpDistance = this.jumpAnimation.elapsedTime / this.jumpAnimation.totalTime;
+        // var totalHeight = 75;
 
-        if (jumpDistance > 0.5)
-            this.jumpingState++;
+        // if (jumpDistance > 0.5)
+        //     this.jumpingState++;
 
         //var height = jumpDistance * 2 * totalHeight;
-        var height = totalHeight*(-4 * (jumpDistance * jumpDistance - jumpDistance));
-        this.y = this.ground - height;
+        // var height = totalHeight*(-4 * (jumpDistance * jumpDistance - jumpDistance));
+        // this.y = this.ground - height;
+        if (this.yv < 100)  {
+            this.jumpAnimation.elapsedTime = 0;
+            this.jumpingState++;
+        }
+        this.yv -= 100;
+
 
     } else if (this.jumpingState === 3) {
         // jumpingState 3 is the transition from rising to falling.
-        if (this.fallStartAnimation.elapsedTime >= 0.2) {   //hard coded value of 0.2 from jumpStartAnimation's animation time
+        if (this.fallStartAnimation.isDone()) {   //hard coded value of 0.2 from jumpStartAnimation's animation time
             this.fallStartAnimation.elapsedTime = 0;
             this.jumpingState++;  //increment to next state for next update().
         }
+        this.yv -= 100;
     } else if (this.jumpingState === 4) {
         // jumpingState 4 is when the player is falling.
+        this.yv -= 100;
         if (this.y > 400) {
+            this.y = 400;
             this.fallAnimation.elapsedTime = 0;
             this.jumpingState = 0;  // Instead of making this 0, we should increment this by 1 so it progresses to the next jumpingState.
+            this.yv = 0;
         }
     }
 
@@ -157,6 +168,7 @@ Player.prototype.update = function ()   {
         //console.log(this.xv);
     }
     this.x += this.xv;
+    this.y -= this.yv * this.game.clockTick;
     Entity.prototype.update.call(this);
 }
 
