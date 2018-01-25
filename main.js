@@ -90,10 +90,13 @@ Player.prototype = new Entity();
 Player.prototype.constructor = Player;
 
 Player.prototype.update = function ()   {
-    console.log(this.y);
     if (this.game.space && this.canJump)    {
         this.jumpingState = 1;
         this.canJump = false;
+        this.yv = 10;
+    }
+    if (this.yv > 0) {
+        this.yv -= .5;
     }
     if (this.jumpingState === 0 && this.game.spaceReleased) this.canJump = true;
     this.direction = this.game.direction;
@@ -107,10 +110,6 @@ Player.prototype.update = function ()   {
 
     } else if (this.jumpingState === 2) {
         // jumpingState 2 is when the player is rising.  
-        if (this.y > 400) {
-            this.jumpAnimation.elapsedTime = 0;
-            this.jumpingState = 0;  // Instead of making this 0, we should increment this by 1 so it progresses to the next jumpingState.
-        }
         var jumpDistance = this.jumpAnimation.elapsedTime / this.jumpAnimation.totalTime;
         var totalHeight = 75;
 
@@ -133,15 +132,6 @@ Player.prototype.update = function ()   {
             this.fallAnimation.elapsedTime = 0;
             this.jumpingState = 0;  // Instead of making this 0, we should increment this by 1 so it progresses to the next jumpingState.
         }
-        var jumpDistance = this.fallAnimation.elapsedTime / this.fallAnimation.totalTime;
-        var totalHeight = 75;
-
-        if (jumpDistance > 0.5)
-            this.jumpingState++;
-
-        //var height = jumpDistance * 2 * totalHeight;
-        var height = totalHeight*(-4 * (jumpDistance * jumpDistance - jumpDistance));
-        this.y = this.ground + height;
     }
 
 
