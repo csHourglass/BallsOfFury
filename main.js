@@ -67,6 +67,7 @@ Background.prototype.draw = function (ctx) {
     Entity.prototype.draw.call(this);
 }
 
+
 function Player(game)   {
     //Loading Animations
     this.idleAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 0, 128, 128, 0.2, 8, true, false);
@@ -90,8 +91,13 @@ Player.prototype = new Entity();
 Player.prototype.constructor = Player;
 
 Player.prototype.update = function ()   {
+<<<<<<< HEAD
     if (this.game.space && this.canJump)    {
         this.jumpingState = 1;
+=======
+	if (this.game.space && this.canJump)    {
+        this.state = 1;
+>>>>>>> master
         this.canJump = false;
         //this.yv = 10;
     }
@@ -167,8 +173,25 @@ Player.prototype.update = function ()   {
         }
         //console.log(this.xv);
     }
+	///////////////////////////// WALL COLLISION ////////////////////////////////
     this.x += this.xv;
+<<<<<<< HEAD
     this.y -= this.yv * this.game.clockTick;
+=======
+	if (this.x < 0) 
+		this.x = 0;
+	//Ceiling collision
+	if (this.y < 0)
+		this.y = 0;
+
+	if (this.x > 1472) //canvasWidth - playerWidth = 1600 - 128 = 1472
+		this.x = 1472;
+	
+	if (this.y > 672) //canvasHeight - playerHeight = 800 - 128 = 672
+		this.y = 672;
+	/////////////////////////// END WALL COLLISION //////////////////////////////
+	
+>>>>>>> master
     Entity.prototype.update.call(this);
 }
 
@@ -193,6 +216,7 @@ Player.prototype.draw = function(ctx)   {
         this.idleAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
         //console.log(this.x);
     }
+		
     Entity.prototype.draw.call(this);
 }
 
