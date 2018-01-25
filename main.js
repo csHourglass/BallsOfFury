@@ -97,10 +97,12 @@ function Player(game)   {
 Player.prototype = new Entity();
 Player.prototype.constructor = Player;
 
+
+
 Player.prototype.update = function ()   {
     playerX = this.x;
     playerY = this.y;
-    console.log("player x = " + this.x + "| player y = " + this.y);
+
     if (this.game.space && this.canJump)    {
         this.jumpingState = 1;
         this.canJump = false;
@@ -189,10 +191,12 @@ Player.prototype.update = function ()   {
     }
 
     if (this.ballState === 2) {
+        this.canJump = false; // player must wait untill throw is complete before jumping
         if (this.throwAnimation.isDone()) {
             this.game.addEntity(new Ball(this.game, ASSET_MANAGER.getAsset("./img/ball.png")));
             this.throwAnimation.elapsedTime = 0;
             this.ballState = 0;
+            this.canJump = true;
         }
     }
 ///////////////////////  End Throwing ///////////////////////////////////////////
@@ -252,7 +256,7 @@ Player.prototype.draw = function(ctx)   {
 
 //////////////// Ball Class  /////////////////////////////
 
-// var ballX = 0;
+
 function Ball(game) {
     this.idleAmination = new Animation(ASSET_MANAGER.getAsset("./img/ball.png"), 0, 0, 20, 20, .5, 1, true, false);  // this might be dumb cause it isnt moving
     this.flyingAnimation = new Animation(ASSET_MANAGER.getAsset("./img/ball.png"), 0, 0, 20, 20, .3, 4, true, false);
