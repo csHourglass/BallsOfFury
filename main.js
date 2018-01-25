@@ -68,6 +68,10 @@ Background.prototype.draw = function (ctx) {
 }
 
 
+
+var playerX = 0;
+var playerY = 0;
+
 function Player(game)   {
     //Loading Animations
     this.idleAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 0, 128, 128, 0.2, 8, true, false);
@@ -77,9 +81,12 @@ function Player(game)   {
     this.jumpStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 384, 256, 128, 128, 0.05, 2, false, false);
     this.fallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 512, 384, 128, 128, 0.2, 4, true, false);
     this.fallStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 256, 384, 128, 128, 0.05, 2, false, false);
+    this.ballAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"),0, 512, 128, 128, 0.2, 8, true, false);  // payer has ball
+    this.throwAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 640, 128, 128, 0.2, 6, false, false);
 
     this.jumpingState = 0; // 0 is on the ground, 1 is starting to jump, 2 is rising, 3 is beginning to fall, 4 is falling.  Has priority over running.
     this.runningState = 0; // 0 is idle, 1 is starting to run, 2 is running
+    this.ballState = 1; //0- no ball, 1- has ball, 2- throwing.
     this.direction = 0;
     this.canJump = true;
     this.radius = 100;
@@ -91,6 +98,9 @@ Player.prototype = new Entity();
 Player.prototype.constructor = Player;
 
 Player.prototype.update = function ()   {
+    playerX = this.x;
+    playerY = this.y;
+    console.log("player x = " + this.x + "| player y = " + this.y);
     if (this.game.space && this.canJump)    {
         this.jumpingState = 1;
         this.canJump = false;
@@ -111,7 +121,7 @@ Player.prototype.update = function ()   {
         }
 
     } else if (this.jumpingState === 2) {
-        // jumpingState 2 is when the player is rising.  
+        // jumpingState 2 is when the player is rising.
         // var jumpDistance = this.jumpAnimation.elapsedTime / this.jumpAnimation.totalTime;
         // var totalHeight = 75;
 
@@ -146,7 +156,6 @@ Player.prototype.update = function ()   {
         }
     }
 
-
     this.direction = this.x;
 
     if (this.game.aKey) {
@@ -168,10 +177,30 @@ Player.prototype.update = function ()   {
         }
         //console.log(this.xv);
     }
+
+    //////////////////////////// Throwing  (w key) //////////////////////////////////////
+    if (this.game.wKey && this.ballState === 1) {  //
+        this.ballState = 2;
+    }
+
+    // reload (for testing)
+    if (this.game.rKey) {
+        this.ballState = 1;
+    }
+
+    if (this.ballState === 2) {
+        if (this.throwAnimation.isDone()) {
+            this.game.addEntity(new Ball(this.game, ASSET_MANAGER.getAsset("./img/ball.png")));
+            this.throwAnimation.elapsedTime = 0;
+            this.ballState = 0;
+        }
+    }
+///////////////////////  End Throwing ///////////////////////////////////////////
+
 	///////////////////////////// WALL COLLISION ////////////////////////////////
     this.x += 100 * this.xv * this.game.clockTick;
     this.y -= this.yv * this.game.clockTick;
-	if (this.x < 0) 
+	if (this.x < 0)
 		this.x = 0;
 	//Ceiling collision
 	if (this.y < 0)
@@ -179,11 +208,11 @@ Player.prototype.update = function ()   {
 
 	if (this.x > 1472) //canvasWidth - playerWidth = 1600 - 128 = 1472
 		this.x = 1472;
-	
+
 	if (this.y > 672) //canvasHeight - playerHeight = 800 - 128 = 672
 		this.y = 672;
 	/////////////////////////// END WALL COLLISION //////////////////////////////
-	
+
     Entity.prototype.update.call(this);
 }
 
@@ -196,27 +225,71 @@ Player.prototype.draw = function(ctx)   {
     }
     else if (this.jumpingState === 3)   { //Drawing transition from rising to falling
         this.fallStartAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
-    } 
+    }
     else if (this.jumpingState === 4)   { //Drawing falling animation
         this.fallAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
     }
-    else if (this.x !== this.direction) { 
+    else if (this.x !== this.direction) {
         this.direction = this.x;
         this.runAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+    }
+    else if (this.ballState === 0) {
+        this.idleAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+    }
+    else if (this.ballState === 1) {
+        this.ballAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+    }
+    else if (this.ballState === 2) {
+        this.throwAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
     }
     else {
         this.idleAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
         //console.log(this.x);
     }
-		
+
     Entity.prototype.draw.call(this);
 }
 
-// the "main" code begins here
+//////////////// Ball Class  /////////////////////////////
+
+// var ballX = 0;
+function Ball(game) {
+    this.idleAmination = new Animation(ASSET_MANAGER.getAsset("./img/ball.png"), 0, 0, 20, 20, .5, 1, true, false);  // this might be dumb cause it isnt moving
+    this.flyingAnimation = new Animation(ASSET_MANAGER.getAsset("./img/ball.png"), 0, 0, 20, 20, .3, 4, true, false);
+    this.speed = 600;
+
+    this.ctx = game.ctx;
+    Entity.call(this, game, playerX + 50, playerY + 50);
+
+}
+
+Ball.prototype = new Entity();
+Ball.prototype.constructor = Ball;
+
+Ball.prototype.update = function() {
+    this.x += this.game.clockTick * this.speed;
+
+    // remove from world if it goes off the screen
+    if (this.x > 1650) {
+        this.removeFromWorld = true;
+    }
+    Entity.prototype.update.call(this);
+}
+
+Ball.prototype.draw = function() {
+    this.flyingAnimation.drawFrame(this.game.clockTick, this.ctx, this.x, this.y);
+    Entity.prototype.draw.call(this);
+}
+
+
+////////////// END Ball Class ///////////////////////////
+
+//////////////// the "main" code begins here  ////////////////////////
 
 var ASSET_MANAGER = new AssetManager();
 
 ASSET_MANAGER.queueDownload("./img/player.png");
+ASSET_MANAGER.queueDownload("./img/ball.png");
 //ASSET_MANAGER.queueDownload("./img/background.gif");
 
 ASSET_MANAGER.downloadAll(function () {
@@ -227,6 +300,7 @@ ASSET_MANAGER.downloadAll(function () {
     var gameEngine = new GameEngine();
     var bg = new Background(gameEngine);
     var player = new Player(gameEngine);
+
 
     gameEngine.addEntity(bg);
     gameEngine.addEntity(player);
