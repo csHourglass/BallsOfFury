@@ -190,7 +190,6 @@ Player.prototype.update = function ()   {
 
     if (this.ballState === 2) {
         if (this.throwAnimation.isDone()) {
-            console.log("ball thrown");
             this.game.addEntity(new Ball(this.game, ASSET_MANAGER.getAsset("./img/ball.png")));
             this.throwAnimation.elapsedTime = 0;
             this.ballState = 0;
@@ -269,7 +268,6 @@ Ball.prototype.constructor = Ball;
 
 Ball.prototype.update = function() {
     this.x += this.game.clockTick * this.speed;
-    console.log("ball x = " + this.x + " | ball y = " + this.y);
 
     // remove from world if it goes off the screen
     if (this.x > 1650) {
