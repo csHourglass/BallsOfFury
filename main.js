@@ -115,7 +115,7 @@ Player.prototype.update = function ()   {
         var totalHeight = 75;
 
         if (jumpDistance > 0.5)
-            jumpDistance = 1 - jumpDistance;
+            this.jumpingState++;
 
         //var height = jumpDistance * 2 * totalHeight;
         var height = totalHeight*(-4 * (jumpDistance * jumpDistance - jumpDistance));
@@ -123,10 +123,25 @@ Player.prototype.update = function ()   {
 
     } else if (this.jumpingState === 3) {
         // jumpingState 3 is the transition from rising to falling.
-
+        if (this.fallStartAnimation.elapsedTime >= 0.2) {   //hard coded value of 0.2 from jumpStartAnimation's animation time
+            this.fallStartAnimation.elapsedTime = 0;
+            this.jumpingState++;  //increment to next state for next update().
+        }
     } else if (this.jumpingState === 4) {
         // jumpingState 4 is when the player is falling.
+        if (this.y > 400) {
+            this.fallAnimation.elapsedTime = 0;
+            this.jumpingState = 0;  // Instead of making this 0, we should increment this by 1 so it progresses to the next jumpingState.
+        }
+        var jumpDistance = this.fallAnimation.elapsedTime / this.fallAnimation.totalTime;
+        var totalHeight = 75;
 
+        if (jumpDistance > 0.5)
+            this.jumpingState++;
+
+        //var height = jumpDistance * 2 * totalHeight;
+        var height = totalHeight*(-4 * (jumpDistance * jumpDistance - jumpDistance));
+        this.y = this.ground + height;
     }
 
 
