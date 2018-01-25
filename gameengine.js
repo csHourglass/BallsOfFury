@@ -70,6 +70,8 @@ GameEngine.prototype.startInput = function () {
         }
         if (String.fromCharCode(e.which) === 'A') that.aKey = true;
         if (String.fromCharCode(e.which) === 'D') that.dKey = true;
+        if (String.fromCharCode(e.which) === 'W') that.wKey = true;
+        if (String.fromCharCode(e.which) === 'R') that.rKey = true;
 //        console.log(e);
         e.preventDefault();
     }, false);
@@ -80,6 +82,8 @@ GameEngine.prototype.startInput = function () {
         }
         if (String.fromCharCode(e.which) === 'A') that.aKey = false;
         if (String.fromCharCode(e.which) === 'D') that.dKey = false;
+        if (String.fromCharCode(e.which) === 'W') that.wKey = false;
+        if (String.fromCharCode(e.which) === 'R') that.rKey = false;
 //        console.log(e);
         e.preventDefault();
     }, false);
