@@ -169,7 +169,7 @@ Player.prototype.update = function ()   {
         //console.log(this.xv);
     }
 	///////////////////////////// WALL COLLISION ////////////////////////////////
-    this.x += this.xv;
+    this.x += 100 * this.xv * this.game.clockTick;
     this.y -= this.yv * this.game.clockTick;
 	if (this.x < 0) 
 		this.x = 0;
