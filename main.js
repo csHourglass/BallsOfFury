@@ -91,13 +91,8 @@ Player.prototype = new Entity();
 Player.prototype.constructor = Player;
 
 Player.prototype.update = function ()   {
-<<<<<<< HEAD
     if (this.game.space && this.canJump)    {
         this.jumpingState = 1;
-=======
-	if (this.game.space && this.canJump)    {
-        this.state = 1;
->>>>>>> master
         this.canJump = false;
         //this.yv = 10;
     }
@@ -175,9 +170,7 @@ Player.prototype.update = function ()   {
     }
 	///////////////////////////// WALL COLLISION ////////////////////////////////
     this.x += this.xv;
-<<<<<<< HEAD
     this.y -= this.yv * this.game.clockTick;
-=======
 	if (this.x < 0) 
 		this.x = 0;
 	//Ceiling collision
@@ -191,7 +184,6 @@ Player.prototype.update = function ()   {
 		this.y = 672;
 	/////////////////////////// END WALL COLLISION //////////////////////////////
 	
->>>>>>> master
     Entity.prototype.update.call(this);
 }
 
