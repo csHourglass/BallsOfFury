@@ -104,7 +104,7 @@ Player.prototype.update = function ()   {
 
     if (this.jumpingState === 1) {
         // jumpingState 1 is for the initial jumping wind up animation.  The character is about to kick off the ground.
-        if (this.jumpStartAnimation.isDone()) {   //hard coded value of 0.2 from jumpStartAnimation's animation time
+        if (this.jumpStartAnimation.elapsedTime + this.game.clockTick >= this.jumpStartAnimation.totalTime) {   //hard coded value of 0.2 from jumpStartAnimation's animation time
             this.jumpStartAnimation.elapsedTime = 0;
             this.jumpingState++;  //increment to next state for next update().
             this.yv = 1500;
@@ -130,7 +130,7 @@ Player.prototype.update = function ()   {
 
     } else if (this.jumpingState === 3) {
         // jumpingState 3 is the transition from rising to falling.
-        if (this.fallStartAnimation.isDone()) {   //hard coded value of 0.2 from jumpStartAnimation's animation time
+        if (this.fallStartAnimation.elapsedTime + this.game.clockTick >= this.fallStartAnimation.totalTime) {   //hard coded value of 0.2 from jumpStartAnimation's animation time
             this.fallStartAnimation.elapsedTime = 0;
             this.jumpingState++;  //increment to next state for next update().
         }
