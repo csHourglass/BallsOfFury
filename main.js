@@ -90,6 +90,7 @@ Player.prototype = new Entity();
 Player.prototype.constructor = Player;
 
 Player.prototype.update = function ()   {
+    console.log(this.y);
     if (this.game.space && this.canJump)    {
         this.jumpingState = 1;
         this.canJump = false;
@@ -99,7 +100,10 @@ Player.prototype.update = function ()   {
 
     if (this.jumpingState === 1) {
         // jumpingState 1 is for the initial jumping wind up animation.  The character is about to kick off the ground.
-        this.jumpingState++;  //increment to next state for next update().
+        if (this.jumpStartAnimation.elapsedTime >= 0.2) {   //hard coded value of 0.2 from jumpStartAnimation's animation time
+            this.jumpStartAnimation.elapsedTime = 0;
+            this.jumpingState++;  //increment to next state for next update().
+        }
 
     } else if (this.jumpingState === 2) {
         // jumpingState 2 is when the player is rising.  
