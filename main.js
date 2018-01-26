@@ -219,7 +219,7 @@ Player.prototype.update = function ()   {
         if (this.LThrowAnimation.isDone()) {
             this.game.addEntity(new Ball(this.game, ASSET_MANAGER.getAsset("./img/ball.png")));
             this.LThrowAnimation.elapsedTime = 0;
-            this.ballState = 0;
+            this.ballState = 1;
         } else if (this.RThrowAnimation.isDone()) {
             this.game.addEntity(new Ball(this.game, ASSET_MANAGER.getAsset("./img/ball.png")));
             this.RThrowAnimation.elapsedTime = 0;
