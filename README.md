@@ -1,7 +1,7 @@
 
 BALLS OF FURY
 RED FOUR
-(David Glines)[https://www.google.com], Alvin Nguyen, Duc Nguyen, Alexander Reid
+[David Glines](https://www.google.com), Alvin Nguyen, Duc Nguyen, Alexander Reid
 
 
 
