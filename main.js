@@ -365,7 +365,7 @@ Ball.prototype.update = function() {
     this.x += this.game.clockTick * this.speed;
 
     // remove from world if it goes off the screen
-    if (this.x > 1650) {
+    if (this.x > 1650 || this.x < 0) {
         this.removeFromWorld = true;
     }
     Entity.prototype.update.call(this);
@@ -403,3 +403,8 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.init(ctx);
     gameEngine.start();
 });
+
+var audio = new Audio('bgmusic.mp3');
+audio.currentTime = "50";
+audio.play();
+audio.volume = 0.01;
