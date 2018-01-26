@@ -6,7 +6,7 @@
 
 
 
-### Introduction:
+## Introduction:
 For our project, we plan on creating a fighting game inspired by Lethal League, a game made by developer Team Reptile <Steam Link>.  The objective of our game will be the same: hit the opponent with a projectile to knock them out and the last person with remaining lives wins.  Instead of only hitting a ball, we wanted to make the experience more like dodgeball where the player needs to pick up balls to use as weapons.  However, we will simplify the gameplay by not enforcing traditional dodgeball rules, such as knocking an opponent out by catching the ball, and by having the game adopt a side view perspective, limiting the players’ options when dodging a ball.  Additionally, we will use the open court rule, meaning the players can move anywhere on the court to get a better shot.
 
 ## Animated Resources:
