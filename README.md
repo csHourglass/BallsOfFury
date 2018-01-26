@@ -1,7 +1,7 @@
 
 BALLS OF FURY
 RED FOUR
-[David Glines](https://github.com/dglines), [Alvin Nguyen](https://github.com/alveeno, Duc Nguyen, [Alexander Reid](https://github.com/cshourglass)
+[David Glines](https://github.com/dglines), [Alvin Nguyen](https://github.com/alveeno), Duc Nguyen, [Alexander Reid](https://github.com/cshourglass)
 
 
 
