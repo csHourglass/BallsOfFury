@@ -185,7 +185,7 @@ Player.prototype.update = function ()   {
 
     if (this.game.aKey) {
         this.facingLeft = true;
-        this.moving = true;  //All this does is help with the runningState logic.  
+        this.moving = true;  //All this does is help with the runningState logic.
         this.xv = -10;
         //console.log(this.xv);
     } else if (!this.game.aKey && !this.game.dKey) {
@@ -211,8 +211,8 @@ Player.prototype.update = function ()   {
     // This is for determining the running state.
     if (this.moving && this.runningState === 0) {
         this.runningState = 1;
-    } else if (this.moving && this.runningState === 1 && 
-        (this.LRunStartAnimation.elapsedTime + this.game.clockTick > this.LRunStartAnimation.totalTime || 
+    } else if (this.moving && this.runningState === 1 &&
+        (this.LRunStartAnimation.elapsedTime + this.game.clockTick > this.LRunStartAnimation.totalTime ||
             this.RRunStartAnimation.elapsedTime + this.game.clockTick > this.RRunStartAnimation.totalTime))    {
                 this.runningState = 2;
                 this.RRunStartAnimation.elapsedTime = 0;
@@ -236,11 +236,11 @@ Player.prototype.update = function ()   {
 
     if (this.ballState === 2) {
         if (this.LThrowAnimation.isDone()) {
-            this.game.addEntity(new Ball(this.game, ASSET_MANAGER.getAsset("./img/ball.png")));
+            this.game.addEntity(new Ball(this.game, this.facingLeft));
             this.LThrowAnimation.elapsedTime = 0;
             this.ballState = 1; //*********** change to 0 to remove ball from player ****************
         } else if (this.RThrowAnimation.isDone()) {
-            this.game.addEntity(new Ball(this.game, ASSET_MANAGER.getAsset("./img/ball.png")));
+            this.game.addEntity(new Ball(this.game, this.facingLeft));
             this.RThrowAnimation.elapsedTime = 0;
             this.ballState = 1;  //************change to 0 to remove ball from player ******************
         }
@@ -342,13 +342,18 @@ Player.prototype.draw = function(ctx)   {
 
 //////////////// Ball Class  /////////////////////////////
 
-// var ballX = 0;
-function Ball(game) {
+// left is true if player is facing left at time of throwing ball
+function Ball(game, left) {
     this.idleAmination = new Animation(ASSET_MANAGER.getAsset("./img/ball.png"), 0, 0, 20, 20, .5, 1, true, false);  // this might be dumb cause it isnt moving
     this.flyingAnimation = new Animation(ASSET_MANAGER.getAsset("./img/ball.png"), 0, 0, 20, 20, .3, 4, true, false);
-    this.speed = 1500;
 
     this.ctx = game.ctx;
+
+    if (left) { // ball will go left
+        this.speed = -1500;
+    } else {  // ball will go right
+        this.speed = 1500;
+    }
     Entity.call(this, game, playerX + 50, playerY + 50);
 
 }
