@@ -219,7 +219,7 @@ Player.prototype.update = function ()   {
         if (this.LThrowAnimation.isDone()) {
             this.game.addEntity(new Ball(this.game, ASSET_MANAGER.getAsset("./img/ball.png")));
             this.LThrowAnimation.elapsedTime = 0;
-            this.ballState = 1;
+            this.ballState = 1; //*********** change to 0 to remove ball from player ****************
         } else if (this.RThrowAnimation.isDone()) {
             this.game.addEntity(new Ball(this.game, ASSET_MANAGER.getAsset("./img/ball.png")));
             this.RThrowAnimation.elapsedTime = 0;
@@ -321,7 +321,7 @@ Player.prototype.draw = function(ctx)   {
 function Ball(game) {
     this.idleAmination = new Animation(ASSET_MANAGER.getAsset("./img/ball.png"), 0, 0, 20, 20, .5, 1, true, false);  // this might be dumb cause it isnt moving
     this.flyingAnimation = new Animation(ASSET_MANAGER.getAsset("./img/ball.png"), 0, 0, 20, 20, .3, 4, true, false);
-    this.speed = 1000;
+    this.speed = 1500;
 
     this.ctx = game.ctx;
     Entity.call(this, game, playerX + 50, playerY + 50);
