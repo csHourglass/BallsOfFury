@@ -79,7 +79,7 @@ function Player(game)   {
 //// Right Animations ////
     this.LIdleAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 0, 128, 128, 0.08, 8, true, false);
     this.LRunAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 384, 128, 128, 128, 0.05, 8, true, false);
-    this.LRunStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 128, 128, 128, 0.2, 3, false, false);
+    this.LRunStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 128, 128, 128, 0.05, 3, false, false);
     this.LJumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 640, 256, 128, 128, 0.1, 5, false, false);
     this.LJumpStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 384, 256, 128, 128, 0.05, 2, false, false);
     this.LFallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 512, 384, 128, 128, 0.2, 4, true, false);
@@ -90,7 +90,7 @@ function Player(game)   {
     //// Left Animations ////
     this.RIdleAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 768, 128, 128, 0.08, 8, true, false);
     this.RRunAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 384, 896, 128, 128, 0.05, 8, true, false);
-    this.RRunStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 896, 128, 128, 0.2, 3, false, false);
+    this.RRunStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 896, 128, 128, 0.05, 3, false, false);
     this.RJumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 640, 1024, 128, 128, 0.1, 5, false, false);
     this.RJumpStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 384, 1024, 128, 128, 0.05, 2, false, false);
     this.RFallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 512, 1152, 128, 128, 0.2, 4, true, false);
@@ -185,11 +185,13 @@ Player.prototype.update = function ()   {
 
     if (this.game.aKey) {
         this.facingLeft = true;
+        this.moving = true;  //All this does is help with the runningState logic.  
         this.xv = -10;
         //console.log(this.xv);
     } else if (!this.game.aKey && !this.game.dKey) {
         if (this.xv < 0) {
             this.xv += 1;
+            this.moving = false;
         }
         //console.log(this.xv);
     }
@@ -197,12 +199,29 @@ Player.prototype.update = function ()   {
     if (this.game.dKey) {
         this.facingLeft = false;
         this.xv = 10;
+        this.moving = true;
         //console.log(this.xv)
     } else if (!this.game.dKey && !this.game.aKey) {
         if (this.xv > 0) {
             this.xv -= 1;
+            this.moving = false;
         }
         //console.log(this.xv);
+    }
+    // This is for determining the running state.
+    if (this.moving && this.runningState === 0) {
+        this.runningState = 1;
+    } else if (this.moving && this.runningState === 1 && 
+        (this.LRunStartAnimation.elapsedTime + this.game.clockTick > this.LRunStartAnimation.totalTime || 
+            this.RRunStartAnimation.elapsedTime + this.game.clockTick > this.RRunStartAnimation.totalTime))    {
+                this.runningState = 2;
+                this.RRunStartAnimation.elapsedTime = 0;
+                this.LRunStartAnimation.elapsedTime = 0;
+    }
+    if (!this.moving)   {
+        this.RRunAnimation.elapsedTime = 0;
+        this.LRunAnimation.elapsedTime = 0;
+        this.runningState = 0;
     }
 
     //////////////////////////// Throwing  (w key) //////////////////////////////////////
@@ -265,9 +284,12 @@ Player.prototype.draw = function(ctx)   {
         else if (this.jumpingState === 4)   { //Drawing falling animation
             this.LFallAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
         }
-        else if (this.x !== this.direction) {
+        else if (this.runningState === 2) {
             this.direction = this.x;
             this.LRunAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+        }
+        else if (this.runningState === 1)   {
+            this.LRunStartAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
         }
         else if (this.ballState === 0) {
             this.LIdleAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
@@ -296,10 +318,13 @@ Player.prototype.draw = function(ctx)   {
         else if (this.jumpingState === 4)   { //Drawing falling animation
             this.RFallAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
         }
-        else if (this.x !== this.direction) {
+        else if (this.runningState === 2) {
+            this.direction = this.x;
             this.RRunAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
         }
-
+        else if (this.runningState === 1)   {
+            this.RRunStartAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+        }
         else if (this.ballState === 0) {  // no ball
             this.RIdleAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
         }
