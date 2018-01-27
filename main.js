@@ -1,3 +1,6 @@
+var width = 1136;
+var height = 544;
+
 function Animation(spriteSheet, startX, startY, frameWidth, frameHeight, frameDuration, frames, loop, reverse) {
     this.spriteSheet = spriteSheet;
     this.startX = startX;
@@ -54,8 +57,11 @@ Animation.prototype.isDone = function () {
     return (this.elapsedTime >= this.totalTime);
 }
 function Background(game) {
-    Entity.call(this, game, 0, 400);
-    this.radius = 200;
+//    this.bgAnimation = new Animation(ASSET_MANAGER.getAsset("./img/bg15.png"), 0, 0, width, height, 0.1, 8, true, false);
+    this.bgAnimation = new Animation(ASSET_MANAGER.getAsset("./img/bg20.png"), 0, 0, width, height, 0.1, 23, true, false);
+
+
+    Entity.call(this, game, 0, 0);
 }
 Background.prototype = new Entity();
 Background.prototype.constructor = Background;
@@ -64,9 +70,7 @@ Background.prototype.update = function () {
 }
 
 Background.prototype.draw = function (ctx) {
-    ctx.fillStyle = "SaddleBrown";
-    ctx.fillRect(0,500,1600,300);
-    Entity.prototype.draw.call(this);
+    this.bgAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
 }
 
 
@@ -256,11 +260,11 @@ Player.prototype.update = function ()   {
 	if (this.y < 0)
 		this.y = 0;
 
-	if (this.x > 1472) //canvasWidth - playerWidth = 1600 - 128 = 1472
-		this.x = 1472;
+	if (this.x > width - 128) //canvasWidth - playerWidth = 1600 - 128 = 1472
+		this.x = width - 128;
 
-	if (this.y > 672) //canvasHeight - playerHeight = 800 - 128 = 672
-		this.y = 672;
+	if (this.y > height - 128) //canvasHeight - playerHeight = 800 - 128 = 672
+		this.y = height - 128;
 	/////////////////////////// END WALL COLLISION //////////////////////////////
 
     Entity.prototype.update.call(this);
@@ -365,7 +369,7 @@ Ball.prototype.update = function() {
     this.x += this.game.clockTick * this.speed;
 
     // remove from world if it goes off the screen
-    if (this.x > 1650 || this.x < 0) {
+    if (this.x > width || this.x < 0) {
         this.removeFromWorld = true;
     }
     Entity.prototype.update.call(this);
@@ -383,11 +387,13 @@ Ball.prototype.draw = function() {
 
 var ASSET_MANAGER = new AssetManager();
 
+
+//ASSET_MANAGER.queueDownload("./img/bg15.png");
+ASSET_MANAGER.queueDownload("./img/bg20.png");
 ASSET_MANAGER.queueDownload("./img/player.png");
 ASSET_MANAGER.queueDownload("./img/ball.png");
 //ASSET_MANAGER.queueDownload("./bgmusic.mp3");
 //ASSET_MANAGER.queueDownload("./fight.mp3");
-//ASSET_MANAGER.queueDownload("./img/background.gif");
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("Powering up!");
