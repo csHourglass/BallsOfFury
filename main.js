@@ -409,6 +409,7 @@ ASSET_MANAGER.downloadAll(function () {
 var fight = new Audio("./fight.mp3");
 console.log(fight.duration);
 fight.play();
+fight.volume = .1;
 
 var bgmusic = new Audio("./bgmusic.mp3");
 
