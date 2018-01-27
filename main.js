@@ -238,11 +238,11 @@ Player.prototype.update = function ()   {
         if (this.LThrowAnimation.isDone()) {
             this.game.addEntity(new Ball(this.game, this.facingLeft));
             this.LThrowAnimation.elapsedTime = 0;
-            this.ballState = 1; //*********** change to 0 to remove ball from player ****************
+            this.ballState = 0; //*********** change to 0 to remove ball from player ****************
         } else if (this.RThrowAnimation.isDone()) {
             this.game.addEntity(new Ball(this.game, this.facingLeft));
             this.RThrowAnimation.elapsedTime = 0;
-            this.ballState = 1;  //************change to 0 to remove ball from player ******************
+            this.ballState = 0;  //************change to 0 to remove ball from player ******************
         }
     }
 ///////////////////////  End Throwing ///////////////////////////////////////////
