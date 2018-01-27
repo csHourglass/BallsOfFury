@@ -243,10 +243,12 @@ Player.prototype.update = function ()   {
             this.game.addEntity(new Ball(this.game, this.facingLeft));
             this.LThrowAnimation.elapsedTime = 0;
             this.ballState = 0; //*********** change to 0 to remove ball from player ****************
+            throwsound.play();
         } else if (this.RThrowAnimation.isDone()) {
             this.game.addEntity(new Ball(this.game, this.facingLeft));
             this.RThrowAnimation.elapsedTime = 0;
             this.ballState = 0;  //************change to 0 to remove ball from player ******************
+            throwsound.play();
         }
     }
 ///////////////////////  End Throwing ///////////////////////////////////////////
@@ -422,5 +424,7 @@ var bgmusic = new Audio("./bgmusic.mp3");
 bgmusic.play();
 bgmusic.volume = 0.05;
 
+var throwsound = new Audio("./throw.mp3");
+throwsound.volume = .25;
 //var bgmusic = new Audio('bgmusic.mp3');
 //audio.currentTime = "50";
