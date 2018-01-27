@@ -385,6 +385,8 @@ var ASSET_MANAGER = new AssetManager();
 
 ASSET_MANAGER.queueDownload("./img/player.png");
 ASSET_MANAGER.queueDownload("./img/ball.png");
+//ASSET_MANAGER.queueDownload("./bgmusic.mp3");
+//ASSET_MANAGER.queueDownload("./fight.mp3");
 //ASSET_MANAGER.queueDownload("./img/background.gif");
 
 ASSET_MANAGER.downloadAll(function () {
@@ -404,7 +406,14 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.start();
 });
 
-var audio = new Audio('bgmusic.mp3');
-audio.currentTime = "50";
-audio.play();
-audio.volume = 0.01;
+var fight = new Audio("./fight.mp3");
+console.log(fight.duration);
+fight.play();
+
+var bgmusic = new Audio("./bgmusic.mp3");
+
+bgmusic.play();
+bgmusic.volume = 0.05;
+
+//var bgmusic = new Audio('bgmusic.mp3');
+//audio.currentTime = "50";
