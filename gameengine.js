@@ -133,13 +133,12 @@ GameEngine.prototype.loop = function () {
     this.direction = 0;
 }
 
-function Entity(game, x, y, xv, yv, direction) {
+function Entity(game, x, y, xv, yv) {
     this.game = game;
     this.x = x;
     this.y = y;
     this.xv = xv;
     this.yv = yv;
-    this.direction = direction;
     this.removeFromWorld = false;
 }
 
