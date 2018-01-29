@@ -351,7 +351,7 @@ Player.prototype.draw = function(ctx)   {
 
 // left is true if player is facing left at time of throwing ball
 function Ball(game) {
-    this.idleAmination = new Animation(ASSET_MANAGER.getAsset("./img/ball.png"), 0, 0, 20, 20, .5, 1, true, false);  // this might be dumb cause it isnt moving
+    this.idleAnimation = new Animation(ASSET_MANAGER.getAsset("./img/ball.png"), 0, 0, 20, 20, .5, 1, true, false);  // this might be dumb cause it isnt moving
     this.flyingAnimation = new Animation(ASSET_MANAGER.getAsset("./img/ball.png"), 0, 0, 20, 20, .3, 4, true, false);
 
     this.ctx = game.ctx;
@@ -362,11 +362,12 @@ function Ball(game) {
     //     this.speed = 1500;
     // }
     this.speed = 1500;
+    this.state = 0;
     this.targetx = game.mousex - playerX - 50;
     this.targety = game.mousey - playerY - 50;
     console.log(this.targetx, this.targety);
-    this.ySpeed = 1500 * (this.targety / (Math.sqrt(Math.pow(this.targetx, 2) + Math.pow(this.targety, 2))));
-    this.xSpeed = 1500 * (this.targetx / (Math.sqrt(Math.pow(this.targetx, 2) + Math.pow(this.targety, 2))));
+    this.ySpeed = this.targety / (Math.sqrt(Math.pow(this.targetx, 2) + Math.pow(this.targety, 2)));
+    this.xSpeed = this.targetx / (Math.sqrt(Math.pow(this.targetx, 2) + Math.pow(this.targety, 2)));
 
     Entity.call(this, game, playerX + 50, playerY + 50);
 
@@ -376,21 +377,49 @@ Ball.prototype = new Entity();
 Ball.prototype.constructor = Ball;
 
 Ball.prototype.update = function() {
-    this.x += this.game.clockTick * this.xSpeed;
-    this.y += this.game.clockTick * this.ySpeed;
 
-    // remove from world if it goes off the screen
-    if (this.x > width || this.x < 0) {
-        this.xSpeed = -this.xSpeed;
+    if (this.state === 0)   {
+        this.x += this.game.clockTick * this.speed * this.xSpeed;
+        this.y += this.game.clockTick * this.speed * this.ySpeed;
+
+        if (this.x > width || this.x < 0) {
+            this.xSpeed = -this.xSpeed;
+            this.speed -= 100;
+        }
+        if (this.y > height - 64 || this.y < 0)  {
+            this.ySpeed = -this.ySpeed;
+            this.speed -= 100;
+        }
+        if (this.speed < 1500)   {
+            this.state++;
+        }
     }
-    if (this.y > height || this.y < 0)  {
-        this.ySpeed = -this.ySpeed;
+    else if (this.state === 1)   {  //If in falling state...
+        this.ySpeed += .05; //This adds pseudo-gravity to the ball, making it plummet to the ground.
+        this.x += this.game.clockTick * this.speed * this.xSpeed;
+        this.y += this.game.clockTick * this.speed * this.ySpeed;
+        if (this.x > width || this.x < 0)   {
+            this.xSpeed = -this.xSpeed; //xSpeed is retained even in falling
+        }
+        if (this.y > height - 32)   { //If the ball hits the ground...
+            this.y = height - 32;
+            this.speed -= 100; //Lower speed overall
+            this.ySpeed = -(this.ySpeed/1.5); //Reverse ySpeed on bounce and reduce magnitude.
+            if (this.speed <= 0)   { //Once speed is completely depleted, enter state 2
+                this.state = 2;
+            }
+        }
     }
     Entity.prototype.update.call(this);
 }
 
 Ball.prototype.draw = function() {
-    this.flyingAnimation.drawFrame(this.game.clockTick, this.ctx, this.x, this.y);
+    if (this.state === 2)   {
+        this.idleAnimation.drawFrame(this.game.clockTick, this.ctx, this.x, this.y);
+    }
+    else {
+        this.flyingAnimation.drawFrame(this.game.clockTick, this.ctx, this.x, this.y);
+    }
     Entity.prototype.draw.call(this);
 }
 
