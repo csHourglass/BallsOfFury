@@ -386,7 +386,7 @@ Ball.prototype.update = function() {
             this.xSpeed = -this.xSpeed;
             this.speed -= 100;
         }
-        if (this.y > height - 64 || this.y < 0)  {
+        if (this.y > height - 32 || this.y < 0)  {
             this.ySpeed = -this.ySpeed;
             this.speed -= 100;
         }
