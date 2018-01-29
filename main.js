@@ -229,8 +229,9 @@ Player.prototype.update = function ()   {
     }
 
     //////////////////////////// Throwing  (w key) //////////////////////////////////////
-    if (this.game.wKey && this.ballState === 1) {  //
+    if (this.game.mouseup && this.ballState === 1) {  //
         this.ballState = 2;
+        this.game.mouseup = false;
     }
 
     // reload (for testing)
@@ -240,12 +241,12 @@ Player.prototype.update = function ()   {
 
     if (this.ballState === 2) {
         if (this.LThrowAnimation.isDone()) {
-            this.game.addEntity(new Ball(this.game, this.facingLeft));
+            this.game.addEntity(new Ball(this.game));
             this.LThrowAnimation.elapsedTime = 0;
             this.ballState = 1; //*********** change to 0 to remove ball from player ****************
             throwsound.play();
         } else if (this.RThrowAnimation.isDone()) {
-            this.game.addEntity(new Ball(this.game, this.facingLeft));
+            this.game.addEntity(new Ball(this.game));
             this.RThrowAnimation.elapsedTime = 0;
             this.ballState = 1;  //************change to 0 to remove ball from player ******************
             throwsound.play();
@@ -349,17 +350,24 @@ Player.prototype.draw = function(ctx)   {
 //////////////// Ball Class  /////////////////////////////
 
 // left is true if player is facing left at time of throwing ball
-function Ball(game, left) {
+function Ball(game) {
     this.idleAmination = new Animation(ASSET_MANAGER.getAsset("./img/ball.png"), 0, 0, 20, 20, .5, 1, true, false);  // this might be dumb cause it isnt moving
     this.flyingAnimation = new Animation(ASSET_MANAGER.getAsset("./img/ball.png"), 0, 0, 20, 20, .3, 4, true, false);
 
     this.ctx = game.ctx;
 
-    if (left) { // ball will go left
-        this.speed = -1500;
-    } else {  // ball will go right
-        this.speed = 1500;
-    }
+    // if (left) { // ball will go left
+    //     this.speed = -1500;
+    // } else {  // ball will go right
+    //     this.speed = 1500;
+    // }
+    this.speed = 1500;
+    this.targetx = game.mousex - playerX - 50;
+    this.targety = game.mousey - playerY - 50;
+    console.log(this.targetx, this.targety);
+    this.ySpeed = 1500 * (this.targety / (Math.sqrt(Math.pow(this.targetx, 2) + Math.pow(this.targety, 2))));
+    this.xSpeed = 1500 * (this.targetx / (Math.sqrt(Math.pow(this.targetx, 2) + Math.pow(this.targety, 2))));
+
     Entity.call(this, game, playerX + 50, playerY + 50);
 
 }
@@ -368,11 +376,15 @@ Ball.prototype = new Entity();
 Ball.prototype.constructor = Ball;
 
 Ball.prototype.update = function() {
-    this.x += this.game.clockTick * this.speed;
+    this.x += this.game.clockTick * this.xSpeed;
+    this.y += this.game.clockTick * this.ySpeed;
 
     // remove from world if it goes off the screen
     if (this.x > width || this.x < 0) {
-        this.removeFromWorld = true;
+        this.xSpeed = -this.xSpeed;
+    }
+    if (this.y > height || this.y < 0)  {
+        this.ySpeed = -this.ySpeed;
     }
     Entity.prototype.update.call(this);
 }

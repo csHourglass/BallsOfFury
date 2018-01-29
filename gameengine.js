@@ -35,7 +35,9 @@ function GameEngine() {
     this.showOutlines = false;
     this.ctx = null;
     this.click = null;
-    this.mouse = null;
+    this.mouseup = null;
+    this.mousex = 0;
+    this.mousey = 0;
     this.wheel = null;
     this.surfaceWidth = null;
     this.surfaceHeight = null;
@@ -62,6 +64,13 @@ GameEngine.prototype.start = function () {
 GameEngine.prototype.startInput = function () {
     console.log('Starting input');
     var that = this;
+    this.ctx.canvas.addEventListener("mousemove", function (e)  {
+        that.mousex = e.clientX;
+        that.mousey = e.clientY;
+    })
+    this.ctx.canvas.addEventListener("mouseup", function (e)    {
+        that.mouseup = true;
+    }, false);
 
     this.ctx.canvas.addEventListener("keydown", function (e) {
         if (String.fromCharCode(e.which) === ' ')   {
