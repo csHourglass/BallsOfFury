@@ -19,8 +19,6 @@ Background.prototype.draw = function (ctx) {
     this.bgAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
 }
 
-<<<<<<< HEAD
-=======
 
 
 var playerX = 0;
@@ -373,8 +371,6 @@ Ball.prototype.draw = function() {
 
 
 ////////////// END Ball Class ///////////////////////////
-
->>>>>>> 3debda2617d2c715cf63f992564fe103042f9e8f
 //////////////// the "main" code begins here  ////////////////////////
 
 var ASSET_MANAGER = new AssetManager();
