@@ -8,8 +8,9 @@ function Player(game, x, y, team)   {
     this.LJumpStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 384, 256, 128, 128, 0.075, 1, false, false);
     this.LFallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 512, 384, 128, 128, 1, 1, true, false);
     this.LFallStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 256, 384, 128, 128, 0.05, 2, false, false);
-    this.LBallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"),0, 512, 128, 128, 0.08, 8, true, false);  // payer has ball
+    this.LBallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"),0, 512, 128, 128, 0.08, 8, true, false);  // player has ball
     this.LThrowAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 640, 128, 128, 0.04, 3, false, false);
+	this.LChargeThrowAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 256, 640, 128, 128, 0.001, 1, true, false);
 
     //// Left Animations ////
     this.RIdleAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 768, 128, 128, 0.08, 8, true, false);
@@ -19,8 +20,9 @@ function Player(game, x, y, team)   {
     this.RJumpStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 384, 1024, 128, 128, 0.075, 1, false, false);
     this.RFallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 512, 1152, 128, 128, 1, 1, true, false);
     this.RFallStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 256, 1152, 128, 128, 0.05, 2, false, false);
-    this.RBallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"),0, 1280, 128, 128, 0.08, 8, true, false);  // payer has ball
+    this.RBallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"),0, 1280, 128, 128, 0.08, 8, true, false);  // player has ball
     this.RThrowAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 1408, 128, 128, 0.04, 3, false, false);
+	this.RChargeThrowAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 256, 1408, 128, 128, 0.001, 1, true, false);
 
     this.jumpingState = 0; // 0 is on the ground, 1 is starting to jump, 2 is rising, 3 is beginning to fall, 4 is falling.  Has priority over running.
     this.runningState = 0; // 0 is idle, 1 is starting to run, 2 is running
@@ -164,49 +166,46 @@ Player.prototype.update = function ()   {
         this.runningState = 0;
     }
 
-    //////////////////////////// Throwing  (w key) //////////////////////////////////////
-    if (this.game.mouseup && this.ballState === 1) {  //
-        this.ballState = 2;
-        this.game.mouseup = false;
-		this.game.mousedown = false;
-    }
-
     // reload (for testing)
     if (this.game.rKey) {
         this.ballState = 1;
     }
 	//if we press mouse down, begin charging stopwatch.
 	if (this.game.mousedown) {
+		this.ballState = 2;
 		//increment the total charging time by the game's clock tick.
 		this.chargingTime += this.game.clockTick;
 		console.log(this.chargingTime);
 	}
-	//if ball state is 2, then we are throwing the ball.
+	//if ball state is 2, then winding up our arm
     if (this.ballState === 2) {
         if (this.LThrowAnimation.isDone()) {
+			this.ballState = 3;
+        } else if (this.RThrowAnimation.isDone()) {
+			this.ballState = 3;
+        }
+    } 
+	
+	if (this.ballState === 3) {
+		if (this.game.mouseup) {
 			//spawn a ball entity
             this.game.addEntity(new Ball(this.game, this.x, this.y, this.team, this.chargingTime));
-			//reset left throw animation's elapsed time because we've finished the throw animation.
+			//reset throw animation's elapsed time because we've finished the throw animation.
             this.LThrowAnimation.elapsedTime = 0;
+			this.RThrowAnimation.elapsedTime = 0;
 			//reset the ball's current state
             this.ballState = 1; // change to 0 to remove ball from player
 			//play the sound of the throw animation
             throwsound.play();
 			//reset the charging time to 0 since we've thrown the ball.
 			this.chargingTime = 0;
-        } else if (this.RThrowAnimation.isDone()) {
-			//spawn a ball entity
-            this.game.addEntity(new Ball(this.game, this.x, this.y, this.team, this.chargingTime));
-			//reset right throw animation's elapsed time because we've finished the throw animation.
-            this.RThrowAnimation.elapsedTime = 0;
-			//reset the ball's current state
-            this.ballState = 1;  //change to 0 to remove ball from player 
-			//play the sound of the throw animation
-            throwsound.play();
-			//reset the charging time to 0 since we've thrown the ball.
-			this.chargingTime = 0;
-        }
-    }
+			this.game.mouseup = false;
+			this.game.mousedown = false;
+		}
+	}
+	console.log("Ball state = " + this.ballState);
+	console.log("Mouse up = " + this.game.mouseup);
+	console.log("Mouse down = " + this.game.mousedown);
 ///////////////////////  End Throwing ///////////////////////////////////////////
 
 
@@ -232,8 +231,12 @@ Player.prototype.update = function ()   {
 Player.prototype.draw = function(ctx)   {
 /////////////////////// Right facing sprites ///////////////////////////
     if (this.facingLeft) {
+		//if we're ready to throw, play throwing animation
         if (this.ballState === 2) {
             this.LThrowAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+        }
+		else if (this.ballState === 3) {  // holding the ball
+            this.LChargeThrowAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
         }
         else if (this.jumpingState === 1) {  //Drawing initial jump wind up animation
             this.LJumpStartAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
@@ -265,8 +268,12 @@ Player.prototype.draw = function(ctx)   {
         }
 /////////////// Left facing sprites ///////////////////
     } else {  // left facing sprites
-        if (this.ballState === 2) {  // throwing ball
+		//else if we're ready to throw, play throwing animation
+        if (this.ballState === 2) {  // winding up
             this.RThrowAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+        }
+		else if (this.ballState === 3) {  // holding the ball
+            this.RChargeThrowAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
         }
         else if (this.jumpingState === 1) {  //Drawing initial jump wind up animation
             this.RJumpStartAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
