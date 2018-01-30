@@ -136,18 +136,17 @@ GameEngine.prototype.loop = function () {
     this.clockTick = this.timer.tick();
     this.update();
     this.draw();
-    //this.space = null;
-    // this.aKey = null;
-    // this.dKey = null;
+
     this.direction = 0;
 }
 
-function Entity(game, x, y, xv, yv) {
+function Entity(game, x, y, xv, yv, canCollide) {
     this.game = game;
     this.x = x;
     this.y = y;
     this.xv = xv;
     this.yv = yv;
+    this.canCollide = canCollide;
     this.removeFromWorld = false;
 }
 
