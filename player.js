@@ -70,16 +70,14 @@ Player.prototype.update = function ()   {
         }
     }
 
+
+/////***** Jumping *****/////
     if (this.game.space && this.canJump)    {
         this.jumpingState = 1;
         this.canJump = false;
-        //this.yv = 10;
     }
-    // if (this.yv > 0) {
-    //     this.yv -= .5;
-    // }
+
     if (this.jumpingState === 0 && this.game.spaceReleased) this.canJump = true;
-    //this.direction = this.game.direction;
 
     if (this.jumpingState === 1) {
         // jumpingState 1 is for the initial jumping wind up animation.  The character is about to kick off the ground.
@@ -96,23 +94,12 @@ Player.prototype.update = function ()   {
         }
 
     } else if (this.jumpingState === 2) {
-        // jumpingState 2 is when the player is rising.
-        // var jumpDistance = this.LJumpAnimation.elapsedTime / this.LJumpAnimation.totalTime;
-        // var totalHeight = 75;
-
-        // if (jumpDistance > 0.5)
-        //     this.jumpingState++;
-
-        //var height = jumpDistance * 2 * totalHeight;
-        // var height = totalHeight*(-4 * (jumpDistance * jumpDistance - jumpDistance));
-        // this.y = this.ground - height;
         if (this.yv < 100)  {
             this.LJumpAnimation.elapsedTime = 0;
             this.RJumpAnimation.elapsedTime = 0;
             this.jumpingState++;
         }
         this.yv -= 100;
-
 
     } else if (this.jumpingState === 3) {
         // jumpingState 3 is the transition from rising to falling.
@@ -124,6 +111,7 @@ Player.prototype.update = function ()   {
             this.jumpingState++;  //increment to next state for next update().)
             this.yv -= 100;
         }
+
     } else if (this.jumpingState === 4) {
         // jumpingState 4 is when the player is falling.
         this.yv -= 100;
@@ -135,34 +123,30 @@ Player.prototype.update = function ()   {
             this.yv = 0;
         }
     }
-    /// why is this here?
-    this.direction = this.x;
 
+/////***** Running *****/////
     if (this.game.aKey) {
         this.facingLeft = true;
         this.moving = true;  //All this does is help with the runningState logic.
         this.xv = -10;
-        //console.log(this.xv);
     } else if (!this.game.aKey && !this.game.dKey) {
         if (this.xv < 0) {
             this.xv += 1;
             this.moving = false;
         }
-        //console.log(this.xv);
     }
 
     if (this.game.dKey) {
         this.facingLeft = false;
         this.xv = 10;
         this.moving = true;
-        //console.log(this.xv)
     } else if (!this.game.dKey && !this.game.aKey) {
         if (this.xv > 0) {
             this.xv -= 1;
             this.moving = false;
         }
-        //console.log(this.xv);
     }
+
     // This is for determining the running state.
     if (this.moving && this.runningState === 0) {
         this.runningState = 1;
@@ -204,6 +188,7 @@ Player.prototype.update = function ()   {
         }
     }
 ///////////////////////  End Throwing ///////////////////////////////////////////
+
 
 	///////////////////////////// WALL COLLISION ////////////////////////////////
     this.x += 100 * this.xv * this.game.clockTick;
@@ -257,7 +242,6 @@ Player.prototype.draw = function(ctx)   {
         }
         else {
             this.LIdleAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
-            //console.log(this.x);
         }
 /////////////// Left facing sprites ///////////////////
     } else {  // left facing sprites
@@ -291,7 +275,6 @@ Player.prototype.draw = function(ctx)   {
         }
         else {
             this.RIdleAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
-            //console.log(this.x);
         }
     }
 
