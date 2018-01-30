@@ -30,6 +30,7 @@ function Player(game, x, y, team)   {
     this.canJump = true;
     this.radius = 100;
     this.ground = 400;
+	this.chargingTime = 0;
 
     this.x = x;
     this.y = y;
@@ -167,24 +168,43 @@ Player.prototype.update = function ()   {
     if (this.game.mouseup && this.ballState === 1) {  //
         this.ballState = 2;
         this.game.mouseup = false;
+		this.game.mousedown = false;
     }
 
     // reload (for testing)
     if (this.game.rKey) {
         this.ballState = 1;
     }
-
+	//if we press mouse down, begin charging stopwatch.
+	if (this.game.mousedown) {
+		//increment the total charging time by the game's clock tick.
+		this.chargingTime += this.game.clockTick;
+		console.log(this.chargingTime);
+	}
+	//if ball state is 2, then we are throwing the ball.
     if (this.ballState === 2) {
         if (this.LThrowAnimation.isDone()) {
-            this.game.addEntity(new Ball(this.game, this.x, this.y, this.team));
+			//spawn a ball entity
+            this.game.addEntity(new Ball(this.game, this.x, this.y, this.team, this.chargingTime));
+			//reset left throw animation's elapsed time because we've finished the throw animation.
             this.LThrowAnimation.elapsedTime = 0;
-            this.ballState = 1; //*********** change to 0 to remove ball from player ****************
+			//reset the ball's current state
+            this.ballState = 1; // change to 0 to remove ball from player
+			//play the sound of the throw animation
             throwsound.play();
+			//reset the charging time to 0 since we've thrown the ball.
+			this.chargingTime = 0;
         } else if (this.RThrowAnimation.isDone()) {
-            this.game.addEntity(new Ball(this.game, this.x, this.y, this.team));
+			//spawn a ball entity
+            this.game.addEntity(new Ball(this.game, this.x, this.y, this.team, this.chargingTime));
+			//reset right throw animation's elapsed time because we've finished the throw animation.
             this.RThrowAnimation.elapsedTime = 0;
-            this.ballState = 1;  //************change to 0 to remove ball from player ******************
+			//reset the ball's current state
+            this.ballState = 1;  //change to 0 to remove ball from player 
+			//play the sound of the throw animation
             throwsound.play();
+			//reset the charging time to 0 since we've thrown the ball.
+			this.chargingTime = 0;
         }
     }
 ///////////////////////  End Throwing ///////////////////////////////////////////

@@ -36,6 +36,7 @@ function GameEngine() {
     this.ctx = null;
     this.click = null;
     this.mouseup = null;
+	this.mousedown = null;
     this.mousex = 0;
     this.mousey = 0;
     this.wheel = null;
@@ -70,6 +71,9 @@ GameEngine.prototype.startInput = function () {
     })
     this.ctx.canvas.addEventListener("mouseup", function (e)    {
         that.mouseup = true;
+    }, false);
+	this.ctx.canvas.addEventListener("mousedown", function (e)    {
+        that.mousedown = true;
     }, false);
 
     this.ctx.canvas.addEventListener("keydown", function (e) {

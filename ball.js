@@ -1,4 +1,4 @@
-function Ball(game, x, y, team) {
+function Ball(game, x, y, team, chargingTime) {
     this.idleAnimation = new Animation(ASSET_MANAGER.getAsset("./img/ball.png"), 0, 0, 20, 20, .5, 1, true, false);  // this might be dumb cause it isnt moving
     this.flyingAnimation = new Animation(ASSET_MANAGER.getAsset("./img/ball.png"), 0, 0, 20, 20, .3, 4, true, false);
 
@@ -21,8 +21,22 @@ function Ball(game, x, y, team) {
     this.targetx = game.mousex - x - 50;
     this.targety = game.mousey - y - 50;
     //console.log(this.targetx, this.targety);
+	
+	//minimum charge time required for a boost to xspeed and yspeed is 1.
+	if (chargingTime < 1) {
+		chargingTime = 0;
+	}
+	//maximum charge time allowed is 3.
+	else if (chargingTime > 3) {
+		chargingTime = 3;
+	}
+	this.chargingTime = chargingTime;
     this.ySpeed = this.targety / (Math.sqrt(Math.pow(this.targetx, 2) + Math.pow(this.targety, 2)));
+	//arbitrary calculation for how much charging affects yspeed
+	this.ySpeed += (this.ySpeed * (chargingTime/2));
     this.xSpeed = this.targetx / (Math.sqrt(Math.pow(this.targetx, 2) + Math.pow(this.targety, 2)));
+	//arbitrary calculation for how much charging affects xspeed
+	this.xSpeed += (this.xSpeed * (chargingTime/2));
 
     Entity.call(this, game, this.x, this.y, 0, 0, true);
 
@@ -32,7 +46,7 @@ Ball.prototype = new Entity();
 Ball.prototype.constructor = Ball;
 
 Ball.prototype.update = function() {
-console.log(this.team);
+//console.log(this.team);
     if (this.state === 0)   {
         this.x += this.game.clockTick * this.speed * this.xSpeed;
         this.y += this.game.clockTick * this.speed * this.ySpeed;
