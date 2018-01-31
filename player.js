@@ -389,6 +389,20 @@ Player.prototype = new Entity();
 Player.prototype.constructor = Player;
 
 
+// throws ball based on the location of mouse click
+Player.prototype.throwBall = function(boundingBox) {
+    // throw left
+    if (this.game.mousex < this.x) {
+        this.game.addEntity(new Ball(this.game, this.boundingBox.x - 20,
+                            this.boundingBox.y, this.chargingTime));
+    // throw right
+    } else {
+            this.game.addEntity(new Ball(this.game, this.boundingBox.x + this.boundingBox.width + 1,
+                                this.boundingBox.y, this.chargingTime));
+        }
+}
+
+
 Player.prototype.update = function ()   {
 
 /////***** Collision *****/////
@@ -517,13 +531,8 @@ Player.prototype.update = function ()   {
 	if (this.ballState === 3) {
 		if (this.game.mouseup) {
 			//spawn a ball entity
-            if (!this.facingLeft) {
-                this.game.addEntity(new Ball(this.game, this.boundingBox.x + this.boundingBox.width + 1,
-                                            this.boundingBox.y, this.chargingTime));
-            } else {
-                this.game.addEntity(new Ball(this.game, this.boundingBox.x - 1,
-                                            this.boundingBox.y, this.chargingTime));
-            }
+            this.throwBall(this.boundingBox);
+
             //reset throw animation's elapsed time because we've finished the throw animation.
             this.LThrowAnimation.elapsedTime = 0;
 			this.RThrowAnimation.elapsedTime = 0;
