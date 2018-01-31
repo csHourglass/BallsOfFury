@@ -111,6 +111,7 @@ function Ball(game, x, y, chargingTime) {
     this.width = 20;
     this.boundingBox = new BoundingBox(this.x, this.y, this.width, this.height);
     this.box = true; // draw box for testing
+    this.team = 1;
     this.speed = 1500;
     this.state = 0;
     this.targetx = game.mousex - x - 50;
@@ -178,9 +179,7 @@ Ball.prototype.update = function() {
 
 Ball.prototype.draw = function(ctx) {
     if (this.box) {
-        ctx.strokeStyle = "green";
-        ctx.strokeRect(this.boundingBox.x, this.boundingBox.y,
-                        this.boundingBox.width, this.boundingBox.height);
+        this.boundingBox.draw(ctx);
     }
     if (this.state === 2)   {
         this.idleAnimation.drawFrame(this.game.clockTick, this.ctx, this.x, this.y);

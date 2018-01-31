@@ -324,11 +324,20 @@ function BoundingBox (x, y, width, height) {
 }
 
 BoundingBox.prototype.hasCollided = function (other) {
-    return (this.right < other.left && this.left < other.right &&
+    return (this.right > other.left && this.left < other.right &&
             this.top < other.bottom && this.bottom > other.top);
 }
 
+BoundingBox.prototype.draw = function(ctx) {
+    //log red box console.log(this.x, this.y, this.width, this.height);
+    //log green box console.log(this.boundingBox.x, this.boundingBox.y, this.boundingBox.width, this.boundingBox.height);
 
+    // ctx.strokeStyle = "red";    // frame
+    // ctx.strokeRect(this.x, this.y, this.width, this.height);
+
+    ctx.strokeStyle = "green";  // bounding box
+    ctx.strokeRect(this.x, this.y, this.width, this.height);
+}
 
 function Player(game, x, y)   {
     //Loading Animations
@@ -372,6 +381,7 @@ function Player(game, x, y)   {
     this.height = 128;
     this.boundingBox = new BoundingBox(this.x + 25, this.y + 25, this.width - 25, this.height - 25);
     this.showBoxes = true;  // show Bounding boxes for testing
+    this.team = 1;
     Entity.call(this, game, this.x, this.y, 0, 0, false);
 }
 Player.prototype = new Entity();
@@ -383,13 +393,14 @@ Player.prototype.update = function ()   {
 /////***** Collision *****/////
     for (var i = 0; i < this.game.entities.length; i++) {
         var ent = this.game.entities[i];
+
         if (ent !== this && ent.canCollide && this.boundingBox.hasCollided(ent.boundingBox)) {
-                    console.log("HIT");
-                    //ent.removeFromWorld = true;
-                    this.speed = 0;
+            console.log("hit");
+            if (ent.team != this.team) {
+                this.removeFromWorld = true;
+            }
         }
     }
-
 
 /////***** Jumping *****/////
     if (this.game.space && this.canJump)    {
@@ -555,14 +566,7 @@ Player.prototype.update = function ()   {
 Player.prototype.draw = function(ctx)   {
     ////////// bounding box ////////////
     if (this.showBoxes) {
-        //log red box console.log(this.x, this.y, this.width, this.height);
-        //log green box console.log(this.boundingBox.x, this.boundingBox.y, this.boundingBox.width, this.boundingBox.height);
-        ctx.strokeStyle = "red";    // frame
-        ctx.strokeRect(this.x, this.y, this.width, this.height);
-        ctx.strokeStyle = "green";  // bounding box
-        ctx.strokeRect(this.boundingBox.x, this.boundingBox.y, this.boundingBox.width, this.boundingBox.height);
-
-
+        this.boundingBox.draw(ctx);
     }
 /////////////////////// Right facing sprites ///////////////////////////
     if (this.facingLeft) {
