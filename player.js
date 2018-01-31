@@ -382,6 +382,7 @@ function Player(game, x, y)   {
     this.boundingBox = new BoundingBox(this.x + 25, this.y + 25, this.width - 25, this.height - 25);
     this.showBoxes = true;  // show Bounding boxes for testing
     this.team = 1;
+
     Entity.call(this, game, this.x, this.y, 0, 0, false);
 }
 Player.prototype = new Entity();
@@ -516,9 +517,14 @@ Player.prototype.update = function ()   {
 	if (this.ballState === 3) {
 		if (this.game.mouseup) {
 			//spawn a ball entity
-            this.game.addEntity(new Ball(this.game, this.boundingBox.x + this.boundingBox.width + 1,
-                                                    this.boundingBox.y, this.chargingTime));
-			//reset throw animation's elapsed time because we've finished the throw animation.
+            if (!this.facingLeft) {
+                this.game.addEntity(new Ball(this.game, this.boundingBox.x + this.boundingBox.width + 1,
+                                            this.boundingBox.y, this.chargingTime));
+            } else {
+                this.game.addEntity(new Ball(this.game, this.boundingBox.x - 1,
+                                            this.boundingBox.y, this.chargingTime));
+            }
+            //reset throw animation's elapsed time because we've finished the throw animation.
             this.LThrowAnimation.elapsedTime = 0;
 			this.RThrowAnimation.elapsedTime = 0;
 			//reset the ball's current state
@@ -553,12 +559,8 @@ Player.prototype.update = function ()   {
 		this.y = height - 128;
 	/////////////////////////// END WALL COLLISION //////////////////////////////
 
-    // this.boundingBox.x = this.x+25;
-    // this.boundingBox.y = this.y+25;
-    // this.boundingBox.height = this.height- 25;
-    // this.boundingBox.width =  this.width - 25;
-    //
-
+    // updates position of boundingBoxs.  should happen differently for
+    // every animation
     this.boundingBox = new BoundingBox(this.x + 40, this.y + 30, this.width - 80, this.height - 35);
     Entity.prototype.update.call(this);
 }
