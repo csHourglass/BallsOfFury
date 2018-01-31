@@ -44,11 +44,11 @@ ASSET_MANAGER.downloadAll(function () {
     // gameEngine.addEntity(bg);
     // gameEngine.addEntity(player);
     var player1 = new Player(gameEngine, 0, 400, 1, ASSET_MANAGER.getAsset("./img/player.png"));
-    var player2 = new Player (gameEngine, 800, 400, 2, ASSET_MANAGER.getAsset("./img/player.png"));
+    //var player2 = new Player (gameEngine, 800, 400, 2, ASSET_MANAGER.getAsset("./img/player.png"));
 
     gameEngine.addEntity(new Background(gameEngine, ASSET_MANAGER.getAsset("./img/bg20.png")));
     gameEngine.addEntity(player1);
-    gameEngine.addEntity(player2);
+    //gameEngine.addEntity(player2);
 
 
     gameEngine.init(ctx);
