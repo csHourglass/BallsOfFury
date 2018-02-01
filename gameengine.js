@@ -96,14 +96,24 @@ GameEngine.prototype.startInput = function () {
 	
 	// GAMEPAD START
 	
+	//keyboard's custom input
+	this.gamepad.setCustomMapping('keyboard', {
+    'button_1': 32,
+    'start': 27,
+    'd_pad_up': [38, 87],
+    'd_pad_down': [40, 83],
+    'd_pad_left': [37, 65],
+    'd_pad_right': [39, 68]
+});
+	
 	//connect event handler
 	this.gamepad.on('connect', e => {
-    console.log(`controller ${e.index} connected!`);
+		console.log(`controller ${e.index} connected!`);
 	});
 	
 	//disconnect event handler
 	this.gamepad.on('disconnect', e => {
-    console.log(`controller ${e.index} disconnected!`);
+		console.log(`controller ${e.index} disconnected!`);
 	});
 
 	//Gamepad Analog Sticks
@@ -111,118 +121,122 @@ GameEngine.prototype.startInput = function () {
 	//Analog stick Press
 	//METHOD 1 of handling analog stick press
 	this.gamepad.on('press', 'stick_axis_left', e => {
-    console.log(`player ${e.player} pressed ${e.button}!`);
+		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 	
 	this.gamepad.on('press', 'stick_axis_right', e => {
-    console.log(`player ${e.player} pressed ${e.button}!`);
+		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 	
 	//Analog stick hold
 	this.gamepad.on('hold', 'stick_axis_left', e => {
-    console.log(`player ${e.player} holding ${e.value}!`);
+		console.log(`player ${e.player} holding ${e.value}!`);
 	});
 	
 	this.gamepad.on('hold', 'stick_axis_right', e => {
-    console.log(`player ${e.player} holding ${e.value}!`);
+		console.log(`player ${e.player} holding ${e.value}!`);
 	});
 	
 	//Analog stick release
 	this.gamepad.on('release', 'stick_axis_left', e => {
-    console.log(`player ${e.player} released ${e.value}!`);
+		console.log(`player ${e.player} released ${e.value}!`);
 	});
 	
 	this.gamepad.on('release', 'stick_axis_right', e => {
-    console.log(`player ${e.player} released ${e.value}!`);
+		console.log(`player ${e.player} released ${e.value}!`);
 	});
 	
 	// PRESS START
 
 	//button_1 - A (XBOX) / X (PS3/PS4)
 	this.gamepad.on('press', 'button_1', e => {
+		that.space = true;
+		that.spaceReleased = false;
     console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 	
 	//button_2 - B (XBOX) / Circle (PS3/PS4)
 	this.gamepad.on('press', 'button_2', e => {
-    console.log(`player ${e.player} pressed ${e.button}!`);
+		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 	
 	//button_3 - X (XBOX) / Square (PS3/PS4)
 	this.gamepad.on('press', 'button_3', e => {
-    console.log(`player ${e.player} pressed ${e.button}!`);
+		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 	
 	//button_4 - Y (XBOX) / Triangle (PS3/PS4)
 	this.gamepad.on('press', 'button_4', e => {
-    console.log(`player ${e.player} pressed ${e.button}!`);
+		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 	
 	//shoulder_top_left - LB (XBOX) / L1 (PS3/PS4)
 	this.gamepad.on('press', 'shoulder_top_left', e => {
-    console.log(`player ${e.player} pressed ${e.button}!`);
+		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 	
 	//shoulder_top_right - RB (XBOX) / R1 (PS3/PS4)
 	this.gamepad.on('press', 'shoulder_top_right', e => {
-    console.log(`player ${e.player} pressed ${e.button}!`);
+		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 	
 	//shoulder_bottom_left - LT (XBOX) / L2 (PS3/PS4)
 	this.gamepad.on('press', 'shoulder_bottom_left', e => {
-    console.log(`player ${e.player} pressed ${e.button}!`);
+		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 	
 	//shoulder_bottom_right - RT (XBOX) / R2 (PS3/PS4)
 	this.gamepad.on('press', 'shoulder_bottom_right', e => {
-    console.log(`player ${e.player} pressed ${e.button}!`);
+		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 	
 	//select - Back (XBOX) / Select (PS3/PS4)
 	this.gamepad.on('press', 'select', e => {
-    console.log(`player ${e.player} pressed ${e.button}!`);
+		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 	
 	//start - Start (XBOX/PS3/PS4)
 	this.gamepad.on('press', 'start', e => {
-    console.log(`player ${e.player} pressed ${e.button}!`);
+		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 	
 	//stick_button_left - Left Analog Stick (XBOX/PS3/PS4)
 	//METHOD 2 of analog stick
 	this.gamepad.on('press', 'stick_button_left', e => {
-    console.log(`player ${e.player} pressed ${e.button}!`);
+		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 	
 	//stick_button_right - Right Analog Stick (XBOX/PS3/PS4)
 	//METHOD 2 of analog stick
 	this.gamepad.on('press', 'stick_button_right', e => {
-    console.log(`player ${e.player} pressed ${e.button}!`);
+		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 	
 	//d_pad_up - Up on the D-Pad (XBOX/PS3/PS4)
 	this.gamepad.on('press', 'd_pad_up', e => {
-    console.log(`player ${e.player} pressed ${e.button}!`);
+		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 	
 	//d_pad_down - Down on the D-Pad (XBOX/PS3/PS4)
 	this.gamepad.on('press', 'd_pad_down', e => {
-    console.log(`player ${e.player} pressed ${e.button}!`);
+		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 	
 	//d_pad_left - Left on the D-Pad (XBOX/PS3/PS4)
 	this.gamepad.on('press', 'd_pad_left', e => {
-    console.log(`player ${e.player} pressed ${e.button}!`);
+		that.aKey = true;
+		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 	
 	//d_pad_right - Right on the D-Pad (XBOX/PS3/PS4)
 	this.gamepad.on('press', 'd_pad_right', e => {
-    console.log(`player ${e.player} pressed ${e.button}!`);
+		that.dKey = true;
+		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 	
 	//vendor - XBOX Button (XBOX) / Playstation Button (PS3/PS4)
 	this.gamepad.on('press', 'vendor', e => {
-    console.log(`player ${e.player} pressed ${e.button}!`);
+		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 	
 	// PRESS END
@@ -231,87 +245,87 @@ GameEngine.prototype.startInput = function () {
 	
 	//button_1 - A (XBOX) / X (PS3/PS4)
 	this.gamepad.on('hold', 'button_1', e => {
-    console.log(`player ${e.player} holding ${e.button}!`);
+		console.log(`player ${e.player} holding ${e.button}!`);
 	});
 	
 	//button_2 - B (XBOX) / Circle (PS3/PS4)
 	this.gamepad.on('hold', 'button_2', e => {
-    console.log(`player ${e.player} holding ${e.button}!`);
+		console.log(`player ${e.player} holding ${e.button}!`);
 	});
 	
 	//button_3 - X (XBOX) / Square (PS3/PS4)
 	this.gamepad.on('hold', 'button_3', e => {
-    console.log(`player ${e.player} holding ${e.button}!`);
+		console.log(`player ${e.player} holding ${e.button}!`);
 	});
 	
 	//button_4 - Y (XBOX) / Triangle (PS3/PS4)
 	this.gamepad.on('hold', 'button_4', e => {
-    console.log(`player ${e.player} holding ${e.button}!`);
+		console.log(`player ${e.player} holding ${e.button}!`);
 	});
 	
 	//shoulder_top_left - LB (XBOX) / L1 (PS3/PS4)
 	this.gamepad.on('hold', 'shoulder_top_left', e => {
-    console.log(`player ${e.player} holding ${e.button}!`);
+		console.log(`player ${e.player} holding ${e.button}!`);
 	});
 	
 	//shoulder_top_right - RB (XBOX) / R1 (PS3/PS4)
 	this.gamepad.on('hold', 'shoulder_top_right', e => {
-    console.log(`player ${e.player} holding ${e.button}!`);
+		console.log(`player ${e.player} holding ${e.button}!`);
 	});
 	
 	//shoulder_bottom_left - LT (XBOX) / L2 (PS3/PS4)
 	this.gamepad.on('hold', 'shoulder_bottom_left', e => {
-    console.log(`player ${e.player} holding ${e.button}!`);
+		console.log(`player ${e.player} holding ${e.button}!`);
 	});
 	
 	//shoulder_bottom_right - RT (XBOX) / R2 (PS3/PS4)
 	this.gamepad.on('hold', 'shoulder_bottom_right', e => {
-    console.log(`player ${e.player} holding ${e.button}!`);
+		console.log(`player ${e.player} holding ${e.button}!`);
 	});
 	
 	//select - Back (XBOX) / Select (PS3/PS4)
 	this.gamepad.on('hold', 'select', e => {
-    console.log(`player ${e.player} holding ${e.button}!`);
+		console.log(`player ${e.player} holding ${e.button}!`);
 	});
 	
 	//start - Start (XBOX/PS3/PS4)
 	this.gamepad.on('hold', 'start', e => {
-    console.log(`player ${e.player} holding ${e.button}!`);
+		console.log(`player ${e.player} holding ${e.button}!`);
 	});
 	
 	//stick_button_left - Left Analog Stick (XBOX/PS3/PS4)
 	this.gamepad.on('hold', 'stick_button_left', e => {
-    console.log(`player ${e.player} holding ${e.button}!`);
+		console.log(`player ${e.player} holding ${e.button}!`);
 	});
 	
 	//stick_button_right - Right Analog Stick (XBOX/PS3/PS4)
 	this.gamepad.on('hold', 'stick_button_right', e => {
-    console.log(`player ${e.player} holding ${e.button}!`);
+		console.log(`player ${e.player} holding ${e.button}!`);
 	});
 	
 	//d_pad_up - Up on the D-Pad (XBOX/PS3/PS4)
 	this.gamepad.on('hold', 'd_pad_up', e => {
-    console.log(`player ${e.player} holding ${e.button}!`);
+		console.log(`player ${e.player} holding ${e.button}!`);
 	});
 	
 	//d_pad_down - Down on the D-Pad (XBOX/PS3/PS4)
 	this.gamepad.on('hold', 'd_pad_down', e => {
-    console.log(`player ${e.player} holding ${e.button}!`);
+		console.log(`player ${e.player} holding ${e.button}!`);
 	});
 	
 	//d_pad_left - Left on the D-Pad (XBOX/PS3/PS4)
 	this.gamepad.on('hold', 'd_pad_left', e => {
-    console.log(`player ${e.player} holding ${e.button}!`);
+		console.log(`player ${e.player} holding ${e.button}!`);
 	});
 	
 	//d_pad_right - Right on the D-Pad (XBOX/PS3/PS4)
 	this.gamepad.on('hold', 'd_pad_right', e => {
-    console.log(`player ${e.player} holding ${e.button}!`);
+		console.log(`player ${e.player} holding ${e.button}!`);
 	});
 	
 	//vendor - XBOX Button (XBOX) / Playstation Button (PS3/PS4)
 	this.gamepad.on('hold', 'vendor', e => {
-    console.log(`player ${e.player} holding ${e.button}!`);
+		console.log(`player ${e.player} holding ${e.button}!`);
 	});
 	
 	// HOLD END
@@ -320,94 +334,98 @@ GameEngine.prototype.startInput = function () {
 	
 	//button_1 - A (XBOX) / X (PS3/PS4)
 	this.gamepad.on('release', 'button_1', e => {
+		that.space = false;
+		that.spaceReleased = true;
     console.log(`player ${e.player} released ${e.button}!`);
 	});
 	
 	//button_2 - B (XBOX) / Circle (PS3/PS4)
 	this.gamepad.on('release', 'button_2', e => {
-    console.log(`player ${e.player} released ${e.button}!`);
+		console.log(`player ${e.player} released ${e.button}!`);
 	});
 	
 	//button_3 - X (XBOX) / Square (PS3/PS4)
 	this.gamepad.on('release', 'button_3', e => {
-    console.log(`player ${e.player} released ${e.button}!`);
+		console.log(`player ${e.player} released ${e.button}!`);
 	});
 	
 	//button_4 - Y (XBOX) / Triangle (PS3/PS4)
 	this.gamepad.on('release', 'button_4', e => {
-    console.log(`player ${e.player} released ${e.button}!`);
+		console.log(`player ${e.player} released ${e.button}!`);
 	});
 	
 	//shoulder_top_left - LB (XBOX) / L1 (PS3/PS4)
 	this.gamepad.on('release', 'shoulder_top_left', e => {
-    console.log(`player ${e.player} released ${e.button}!`);
+		console.log(`player ${e.player} released ${e.button}!`);
 	});
 	
 	//shoulder_top_right - RB (XBOX) / R1 (PS3/PS4)
 	this.gamepad.on('release', 'shoulder_top_right', e => {
-    console.log(`player ${e.player} released ${e.button}!`);
+		console.log(`player ${e.player} released ${e.button}!`);
 	});
 	
 	//shoulder_bottom_left - LT (XBOX) / L2 (PS3/PS4)
 	this.gamepad.on('release', 'shoulder_bottom_left', e => {
-    console.log(`player ${e.player} released ${e.button}!`);
+		console.log(`player ${e.player} released ${e.button}!`);
 	});
 	
 	//shoulder_bottom_right - RT (XBOX) / R2 (PS3/PS4)
 	this.gamepad.on('release', 'shoulder_bottom_right', e => {
-    console.log(`player ${e.player} released ${e.button}!`);
+		console.log(`player ${e.player} released ${e.button}!`);
 	});
 	
 	//select - Back (XBOX) / Select (PS3/PS4)
 	this.gamepad.on('release', 'select', e => {
-    console.log(`player ${e.player} released ${e.button}!`);
+		console.log(`player ${e.player} released ${e.button}!`);
 	});
 	
 	//start - Start (XBOX/PS3/PS4)
 	this.gamepad.on('release', 'start', e => {
-    console.log(`player ${e.player} released ${e.button}!`);
+		console.log(`player ${e.player} released ${e.button}!`);
 	});
 	
 	//stick_button_left - Left Analog Stick (XBOX/PS3/PS4)
 	this.gamepad.on('release', 'stick_button_left', e => {
-    console.log(`player ${e.player} released ${e.button}!`);
+		console.log(`player ${e.player} released ${e.button}!`);
 	});
 	
 	//stick_button_right - Right Analog Stick (XBOX/PS3/PS4)
 	this.gamepad.on('release', 'stick_button_right', e => {
-    console.log(`player ${e.player} released ${e.button}!`);
+		console.log(`player ${e.player} released ${e.button}!`);
 	});
 	
 	//d_pad_up - Up on the D-Pad (XBOX/PS3/PS4)
 	this.gamepad.on('release', 'd_pad_up', e => {
-    console.log(`player ${e.player} released ${e.button}!`);
+		console.log(`player ${e.player} released ${e.button}!`);
 	});
 	
 	//d_pad_down - Down on the D-Pad (XBOX/PS3/PS4)
 	this.gamepad.on('release', 'd_pad_down', e => {
-    console.log(`player ${e.player} released ${e.button}!`);
+		console.log(`player ${e.player} released ${e.button}!`);
 	});
 	
 	//d_pad_left - Left on the D-Pad (XBOX/PS3/PS4)
 	this.gamepad.on('release', 'd_pad_left', e => {
-    console.log(`player ${e.player} released ${e.button}!`);
+		that.aKey = false;
+		console.log(`player ${e.player} released ${e.button}!`);
 	});
 	
 	//d_pad_right - Right on the D-Pad (XBOX/PS3/PS4)
 	this.gamepad.on('release', 'd_pad_right', e => {
-    console.log(`player ${e.player} released ${e.button}!`);
+		that.dKey = false;
+		console.log(`player ${e.player} released ${e.button}!`);
 	});
 	
 	//vendor - XBOX Button (XBOX) / Playstation Button (PS3/PS4)
 	this.gamepad.on('release', 'vendor', e => {
-    console.log(`player ${e.player} released ${e.button}!`);
+		console.log(`player ${e.player} released ${e.button}!`);
 	});
 	
 	// RELEASE END
 	
 	// GAMEPAD END
 	
-	//DON'T NEED OLD HANDLERS ANYMORE 
+	//don't need some of the event handlers here, commented out for now.
     /*this.ctx.canvas.addEventListener("keydown", function (e) {
         if (String.fromCharCode(e.which) === ' ')   {
             that.space = true;
@@ -431,7 +449,7 @@ GameEngine.prototype.startInput = function () {
         if (String.fromCharCode(e.which) === 'R') that.rKey = false;
 //        console.log(e);
         e.preventDefault();
-    }, false); */
+    }, false);*/
 
     console.log('Input started');
 }
