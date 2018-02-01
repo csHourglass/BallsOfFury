@@ -103,6 +103,7 @@ Player.prototype.update = function ()   {
         var ent = this.game.entities[i];
 
         if (ent !== this && ent.canCollide && this.boundingBox.hasCollided(ent.boundingBox)) {
+            //ent.canCollide = false;  // need to implement returning to true when picked back up
             if (ent.team != this.team && ent.speed > 1) {
                 this.removeFromWorld = true;
             } else if (ent.speed <= 1 && this.ballState == 0) {
@@ -216,7 +217,10 @@ Player.prototype.update = function ()   {
     }
 	//if we press mouse down, begin charging stopwatch.
 	if (this.ballState == 1 && this.game.mousedown) {
+<<<<<<< HEAD
         this.game.mouseup = false;
+=======
+>>>>>>> added collision with stationary ball to pick it up.  bug exists when player throws with no ball (ballState 0) then picks up ball
 		this.ballState = 2;
 
 		//increment the total charging time by the game's clock tick.
