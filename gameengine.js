@@ -38,6 +38,8 @@ function GameEngine() {
     this.click = null;
     this.mouseup = null;
 	this.mousedown = null;
+	this.triggerup = null;
+	this.triggerdown = null;
     this.mousex = 0;
 	this.mousey = 0;
 	this.stickx = 0;
@@ -209,7 +211,8 @@ GameEngine.prototype.startInput = function () {
 	
 	//shoulder_bottom_right - RT (XBOX) / R2 (PS3/PS4)
 	this.gamepad.on('press', 'shoulder_bottom_right', e => {
-		that.mousedown = true;
+		that.triggerdown = true;
+		console.log("triggerdown = " + that.triggerdown);
 		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 	
@@ -394,7 +397,8 @@ GameEngine.prototype.startInput = function () {
 	
 	//shoulder_bottom_right - RT (XBOX) / R2 (PS3/PS4)
 	this.gamepad.on('release', 'shoulder_bottom_right', e => {
-		that.mouseup = true;
+		that.triggerup = true;
+		console.log("triggerup = " + that.triggerup);
 		console.log(`player ${e.player} released ${e.button}!`);
 	});
 	

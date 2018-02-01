@@ -203,7 +203,7 @@ Player.prototype.update = function ()   {
         this.ballState = 1;
     }
 	//if we press mouse down, begin charging stopwatch.
-	if (this.game.mousedown) {
+	if (this.game.mousedown || this.game.triggerdown) {
 		this.ballState = 2;
 		//increment the total charging time by the game's clock tick.
 		this.chargingTime += this.game.clockTick;
@@ -219,7 +219,7 @@ Player.prototype.update = function ()   {
     }
 
 	if (this.ballState === 3) {
-		if (this.game.mouseup) {
+		if (this.game.mouseup || this.game.triggerup) {
 			//spawn a ball entity
             this.throwBall(this.boundingBox);
 
@@ -234,6 +234,8 @@ Player.prototype.update = function ()   {
 			this.chargingTime = 0;
 			this.game.mouseup = false;
 			this.game.mousedown = false;
+			this.game.triggerup = false;
+			this.game.triggerdown = false;
 		}
 	}
 	// console.log("Ball state = " + this.ballState);
