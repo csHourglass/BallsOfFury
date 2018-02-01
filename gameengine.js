@@ -406,7 +406,9 @@ GameEngine.prototype.startInput = function () {
 	// RELEASE END
 	
 	// GAMEPAD END
-    this.ctx.canvas.addEventListener("keydown", function (e) {
+	
+	//DON'T NEED OLD HANDLERS ANYMORE 
+    /*this.ctx.canvas.addEventListener("keydown", function (e) {
         if (String.fromCharCode(e.which) === ' ')   {
             that.space = true;
             that.spaceReleased = false;
@@ -429,7 +431,7 @@ GameEngine.prototype.startInput = function () {
         if (String.fromCharCode(e.which) === 'R') that.rKey = false;
 //        console.log(e);
         e.preventDefault();
-    }, false);
+    }, false); */
 
     console.log('Input started');
 }
