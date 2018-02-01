@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 function Ball(game, x, y, team, chargingTime) {
     this.idleAnimation = new Animation(ASSET_MANAGER.getAsset("./img/ball.png"), 0, 0, 20, 20, .5, 1, true, false);  // this might be dumb cause it isnt moving
     this.flyingAnimation = new Animation(ASSET_MANAGER.getAsset("./img/ball.png"), 0, 0, 20, 20, .3, 4, true, false);
@@ -99,7 +98,6 @@ Ball.prototype.draw = function() {
     }
     Entity.prototype.draw.call(this);
 }
-=======
 function Ball(game, x, y, chargingTime) {
     this.idleAnimation = new Animation(ASSET_MANAGER.getAsset("./img/ball.png"), 0, 0, 20, 20, .5, 1, true, false);  // this might be dumb cause it isnt moving
     this.flyingAnimation = new Animation(ASSET_MANAGER.getAsset("./img/ball.png"), 0, 0, 20, 20, .3, 4, true, false);
@@ -189,4 +187,4 @@ Ball.prototype.draw = function(ctx) {
     }
     Entity.prototype.draw.call(this);
 }
->>>>>>> added boundingBoxe/hitbox to player and ball for testing
+

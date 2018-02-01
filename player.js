@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 function Player(game, x, y, team)   {
     //Loading Animations
 //// Right Animations ////
@@ -308,7 +307,6 @@ Player.prototype.draw = function(ctx)   {
 
     Entity.prototype.draw.call(this);
 }
-=======
 /* the purpose of this class is essentially just for
    collision detection between entities */
 function BoundingBox (x, y, width, height) {
@@ -657,4 +655,3 @@ Player.prototype.draw = function(ctx)   {
 
     Entity.prototype.draw.call(this);
 }
->>>>>>> added boundingBoxe/hitbox to player and ball for testing
