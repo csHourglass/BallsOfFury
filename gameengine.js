@@ -121,6 +121,14 @@ GameEngine.prototype.startInput = function () {
 	//Analog stick Press
 	//METHOD 1 of handling analog stick press
 	this.gamepad.on('press', 'stick_axis_left', e => {
+		if (e.x < 0) {
+			that.aKey = true;
+			that.dKey = false;
+		} 
+		if (e.x > 0) {
+			that.dKey = true;
+			that.aKey = false;
+		}
 		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 	
@@ -130,6 +138,14 @@ GameEngine.prototype.startInput = function () {
 	
 	//Analog stick hold
 	this.gamepad.on('hold', 'stick_axis_left', e => {
+		if (e.x > 0) {
+			that.dKey = true;
+			that.aKey = false;
+		}
+		if (e.x < 0) {
+			that.aKey = true;
+			that.dKey = false;
+		} 
 		console.log(`player ${e.player} holding x=${e.x}, y=${e.y}!`);
 	});
 	
@@ -139,6 +155,8 @@ GameEngine.prototype.startInput = function () {
 	
 	//Analog stick release
 	this.gamepad.on('release', 'stick_axis_left', e => {
+		that.aKey = false;
+		that.dKey = false;
 		console.log(`player ${e.player} released ${e.value}!`);
 	});
 	
@@ -187,6 +205,7 @@ GameEngine.prototype.startInput = function () {
 	
 	//shoulder_bottom_right - RT (XBOX) / R2 (PS3/PS4)
 	this.gamepad.on('press', 'shoulder_bottom_right', e => {
+		that.mousedown = true;
 		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 	
@@ -371,6 +390,7 @@ GameEngine.prototype.startInput = function () {
 	
 	//shoulder_bottom_right - RT (XBOX) / R2 (PS3/PS4)
 	this.gamepad.on('release', 'shoulder_bottom_right', e => {
+		that.mouseup = true;
 		console.log(`player ${e.player} released ${e.button}!`);
 	});
 	
