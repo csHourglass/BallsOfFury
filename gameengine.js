@@ -39,7 +39,9 @@ function GameEngine() {
     this.mouseup = null;
 	this.mousedown = null;
     this.mousex = 0;
-    this.mousey = 0;
+	this.mousey = 0;
+	this.stickx = 0;
+	this.sticky = 0;
     this.wheel = null;
     this.surfaceWidth = null;
     this.surfaceHeight = null;
@@ -103,7 +105,7 @@ GameEngine.prototype.startInput = function () {
     'd_pad_up': [38, 87],
     'd_pad_down': [40, 83],
     'd_pad_left': [37, 65],
-    'd_pad_right': [39, 68]
+	'd_pad_right': [39, 68]
 });
 	
 	//connect event handler
@@ -151,6 +153,8 @@ GameEngine.prototype.startInput = function () {
 	
 	this.gamepad.on('hold', 'stick_axis_right', e => {
 		console.log(`player ${e.player} holding ${e.value}!`);
+		this.stickx = e.x;
+		this.sticky = e.y;
 	});
 	
 	//Analog stick release
