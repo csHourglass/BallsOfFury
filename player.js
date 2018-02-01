@@ -210,6 +210,7 @@ Player.prototype.update = function ()   {
 	}
 	//if ball state is 2, then winding up our arm
     if (this.ballState === 2) {
+        console.log(this.chargingTime);
         if (this.LThrowAnimation.elapsedTime + this.game.clockTick > this.LThrowAnimation.totalTime) {
             this.ballState = 3;
         } else if (this.RThrowAnimation.elapsedTime + this.game.clockTick > this.RThrowAnimation.totalTime) {
