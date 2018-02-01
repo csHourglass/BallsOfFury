@@ -152,6 +152,8 @@
                             }
 
                             self._events.gamepad[controller.index][key].value = button.value;
+							self._events.gamepad[controller.index][key].x = button.x;
+							self._events.gamepad[controller.index][key].y = button.y;
 
                         } else if (!button.pressed && self._events.gamepad[controller.index][key]) {
 
@@ -186,7 +188,9 @@
                         pressed: self._events.axes[controller.index][key] ? false : true,
                         hold: self._events.axes[controller.index][key] ? true : false,
                         released: false,
-                        value: axes
+                        value: axes,
+						x: axes[0],
+						y: axes[1]
                     };
 
                 } else if (self._events.axes[controller.index][key]) {
@@ -195,7 +199,9 @@
                         pressed: false,
                         hold: false,
                         released: true,
-                        value: axes
+                        value: axes,
+						x: axes[0],
+						y: axes[1]
                     };
 
                 }
@@ -240,18 +246,18 @@
 
         if (events[key].pressed) {
 
-            this.trigger('press', key, events[key].value, player);
+            this.trigger('press', key, events[key].value, events[key].x, events[key].y, player);
 
             events[key].pressed = false;
             events[key].hold = true;
 
         } else if (events[key].hold) {
 
-            this.trigger('hold', key, events[key].value, player);
+            this.trigger('hold', key, events[key].value, events[key].x, events[key].y, player);
 
         } else if (events[key].released) {
 
-            this.trigger('release', key, events[key].value, player);
+            this.trigger('release', key, events[key].value, events[key].x, events[key].y, player);
 
             delete events[key];
 
@@ -458,7 +464,7 @@
 
     };
 
-    Gamepad.prototype.trigger = function (type, button, value, player) {
+    Gamepad.prototype.trigger = function (type, button, value, x, y, player) {
 
         if (this._listeners) {
 
@@ -470,6 +476,8 @@
                         type: listener.type,
                         button: listener.button,
                         value: value,
+						x: x,
+						y: y,
                         player: player,
                         event: listener,
                         timestamp: Date.now()

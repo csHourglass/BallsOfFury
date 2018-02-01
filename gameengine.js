@@ -130,7 +130,7 @@ GameEngine.prototype.startInput = function () {
 	
 	//Analog stick hold
 	this.gamepad.on('hold', 'stick_axis_left', e => {
-		console.log(`player ${e.player} holding ${e.value}!`);
+		console.log(`player ${e.player} holding x=${e.x}, y=${e.y}!`);
 	});
 	
 	this.gamepad.on('hold', 'stick_axis_right', e => {
