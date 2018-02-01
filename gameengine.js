@@ -35,10 +35,7 @@ function GameEngine() {
     this.showOutlines = false;
     this.ctx = null;
     this.click = null;
-    this.mouseup = null;
-	this.mousedown = null;
-    this.mousex = 0;
-    this.mousey = 0;
+    this.mouse = null;
     this.wheel = null;
     this.surfaceWidth = null;
     this.surfaceHeight = null;
@@ -65,16 +62,6 @@ GameEngine.prototype.start = function () {
 GameEngine.prototype.startInput = function () {
     console.log('Starting input');
     var that = this;
-    this.ctx.canvas.addEventListener("mousemove", function (e)  {
-        that.mousex = e.clientX;
-        that.mousey = e.clientY;
-    })
-    this.ctx.canvas.addEventListener("mouseup", function (e)    {
-        that.mouseup = true;
-    }, false);
-	this.ctx.canvas.addEventListener("mousedown", function (e)    {
-        that.mousedown = true;
-    }, false);
 
     this.ctx.canvas.addEventListener("keydown", function (e) {
         if (String.fromCharCode(e.which) === ' ')   {
@@ -140,17 +127,18 @@ GameEngine.prototype.loop = function () {
     this.clockTick = this.timer.tick();
     this.update();
     this.draw();
-
+    //this.space = null;
+    // this.aKey = null;
+    // this.dKey = null;
     this.direction = 0;
 }
 
-function Entity(game, x, y, xv, yv, canCollide) {
+function Entity(game, x, y, xv, yv) {
     this.game = game;
     this.x = x;
     this.y = y;
     this.xv = xv;
     this.yv = yv;
-    this.canCollide = canCollide;
     this.removeFromWorld = false;
 }
 
