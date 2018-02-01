@@ -36,10 +36,10 @@ function GameEngine() {
     this.showOutlines = false;
     this.ctx = null;
     this.click = null;
-    this.mouseup = null;
-	this.mousedown = null;
-	this.triggerup = null;
-	this.triggerdown = null;
+    this.mouseUp = null;
+	this.mouseDown = null;
+	this.triggerUp = null;
+	this.triggerDown = null;
     this.mousex = 0;
 	this.mousey = 0;
 	this.stickx = 0;
@@ -77,10 +77,10 @@ GameEngine.prototype.startInput = function () {
         that.mousey = e.clientY;
     })
     this.ctx.canvas.addEventListener("mouseup", function (e)    {
-        that.mouseup = true;
+        that.mouseUp = true;
     }, false);
 	this.ctx.canvas.addEventListener("mousedown", function (e)    {
-        that.mousedown = true;
+        that.mouseDown = true;
     }, false);
 
 	/*
@@ -211,8 +211,8 @@ GameEngine.prototype.startInput = function () {
 	
 	//shoulder_bottom_right - RT (XBOX) / R2 (PS3/PS4)
 	this.gamepad.on('press', 'shoulder_bottom_right', e => {
-		that.triggerdown = true;
-		console.log("triggerdown = " + that.triggerdown);
+		that.triggerDown = true;
+		console.log("triggerDown = " + that.triggerDown);
 		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 	
@@ -397,8 +397,8 @@ GameEngine.prototype.startInput = function () {
 	
 	//shoulder_bottom_right - RT (XBOX) / R2 (PS3/PS4)
 	this.gamepad.on('release', 'shoulder_bottom_right', e => {
-		that.triggerup = true;
-		console.log("triggerup = " + that.triggerup);
+		that.triggerUp = true;
+		console.log("triggerUp = " + that.triggerUp);
 		console.log(`player ${e.player} released ${e.button}!`);
 	});
 	
