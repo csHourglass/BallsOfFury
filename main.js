@@ -28,6 +28,8 @@ var ASSET_MANAGER = new AssetManager();
 ASSET_MANAGER.queueDownload("./img/bg20.png");
 ASSET_MANAGER.queueDownload("./img/player.png");
 ASSET_MANAGER.queueDownload("./img/ball.png");
+ASSET_MANAGER.queueDownload("./img/Training_dummy.png");
+ASSET_MANAGER.queueDownload("./img/explosion.png");
 //ASSET_MANAGER.queueDownload("./bgmusic.mp3");
 //ASSET_MANAGER.queueDownload("./fight.mp3");
 
@@ -39,7 +41,7 @@ ASSET_MANAGER.downloadAll(function () {
     var gameEngine = new GameEngine();
     // var bg = new Background(gameEngine);
     // var player = new Player(gameEngine);
-
+    var dummy = new Dummy(gameEngine, 800, 380, 2, ASSET_MANAGER.getAsset("./img/Training_dummy.png"));
 
     // gameEngine.addEntity(bg);
     // gameEngine.addEntity(player);
@@ -48,6 +50,7 @@ ASSET_MANAGER.downloadAll(function () {
 
     gameEngine.addEntity(new Background(gameEngine, ASSET_MANAGER.getAsset("./img/bg20.png")));
     gameEngine.addEntity(player1);
+    gameEngine.addEntity(dummy);
     //gameEngine.addEntity(player2);
 
 

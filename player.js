@@ -339,7 +339,7 @@ BoundingBox.prototype.draw = function(ctx) {
     ctx.strokeRect(this.x, this.y, this.width, this.height);
 }
 
-function Player(game, x, y)   {
+function Player(game, x, y, team)   {
     //Loading Animations
 //// Right Animations ////
     this.LIdleAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 0, 128, 128, 0.08, 8, true, false);
@@ -381,7 +381,7 @@ function Player(game, x, y)   {
     this.height = 128;
     this.boundingBox = new BoundingBox(this.x + 25, this.y + 25, this.width - 25, this.height - 25);
     this.showBoxes = true;  // show Bounding boxes for testing
-    this.team = 1;
+    this.team = team;
 
     Entity.call(this, game, this.x, this.y, 0, 0, false);
 }
