@@ -88,7 +88,11 @@ Player.prototype.throwBall = function(boundingBox) {
     } else {
             this.game.addEntity(new Ball(this.game, this.boundingBox.x + this.boundingBox.width + 1,
                                 this.boundingBox.y, this.chargingTime));
-        }
+    }
+    //reset the ball's current state
+    this.ballState = 0; // change to 0 to remove ball from player
+    //play the sound of the throw animation
+    throwsound.play();
 }
 
 
@@ -100,8 +104,11 @@ Player.prototype.update = function ()   {
 
         if (ent !== this && ent.canCollide && this.boundingBox.hasCollided(ent.boundingBox)) {
             //ent.canCollide = false;  // need to implement returning to true when picked back up
-            if (ent.team != this.team) {
+            if (ent.team != this.team && ent.speed > 1) {
                 this.removeFromWorld = true;
+            } else if (ent.speed <= 1 && this.ballState == 0) {
+                ent.removeFromWorld = true;
+                this.ballState = 1;  // pickup ball
             }
         }
     }
@@ -203,7 +210,7 @@ Player.prototype.update = function ()   {
         this.ballState = 1;
     }
 	//if we press mouse down, begin charging stopwatch.
-	if (this.game.mousedown) {
+	if (this.ballState == 1 && this.game.mousedown) {
 		this.ballState = 2;
 		//increment the total charging time by the game's clock tick.
 		this.chargingTime += this.game.clockTick;
@@ -225,10 +232,7 @@ Player.prototype.update = function ()   {
             //reset throw animation's elapsed time because we've finished the throw animation.
             this.LThrowAnimation.elapsedTime = 0;
 			this.RThrowAnimation.elapsedTime = 0;
-			//reset the ball's current state
-            this.ballState = 1; // change to 0 to remove ball from player
-			//play the sound of the throw animation
-            throwsound.play();
+
 			//reset the charging time to 0 since we've thrown the ball.
 			this.chargingTime = 0;
 			this.game.mouseup = false;
