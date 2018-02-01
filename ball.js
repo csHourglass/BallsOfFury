@@ -112,8 +112,15 @@ function Ball(game, x, y, chargingTime) {
     this.team = 1;
     this.speed = 1500;
     this.state = 0;
-    this.targetx = (x + game.stickx*100) - x;
-    this.targety = (y + game.sticky*100) - y;
+    if (game.triggerUp) {
+        this.targetx = (x + game.stickx*100) - x;
+        this.targety = (y + game.sticky*100) - y;
+        game.triggerUp = false;
+    }
+    else    {
+        this.targetx = game.mousex - x - 50;
+        this.targety = game.mousey - y - 50;
+    }
 
 	//minimum charge time required for a boost to xspeed and yspeed is 1.
 	if (chargingTime < 1) {
