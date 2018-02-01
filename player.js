@@ -410,7 +410,7 @@ Player.prototype.update = function ()   {
         var ent = this.game.entities[i];
 
         if (ent !== this && ent.canCollide && this.boundingBox.hasCollided(ent.boundingBox)) {
-            console.log("hit");
+            //ent.canCollide = false;  // need to implement returning to true when picked back up
             if (ent.team != this.team) {
                 this.removeFromWorld = true;
             }

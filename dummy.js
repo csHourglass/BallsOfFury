@@ -20,8 +20,9 @@ Dummy.prototype.update = function() {
     for (var i = 0; i < this.game.entities.length; i++) {
         var ent = this.game.entities[i];
 
-        if (ent != this && ent.canCollide && this.boundingBox.hasCollided(ent.boundingBox)) {
+        if (ent != this && ent.canCollide && ent.speed >= 1 && this.boundingBox.hasCollided(ent.boundingBox)) {
             this.isHit = true;
+            //ent.canCollide = false;
         }
     }
 
