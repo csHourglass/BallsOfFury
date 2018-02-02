@@ -261,14 +261,14 @@ Player.prototype.update = function ()   {
 	///////////////////////////// WALL COLLISION ////////////////////////////////
     this.x += 100 * this.xv * this.game.clockTick;
     this.y -= this.yv * this.game.clockTick;
-	if (this.x < 0)
-		this.x = 0;
+	if (this.x < -40)
+		this.x = -40;
 	//Ceiling collision
 	if (this.y < 0)
 		this.y = 0;
 
-	if (this.x > width - 128) //canvasWidth - playerWidth = 1600 - 128 = 1472
-		this.x = width - 128;
+	if (this.x > width - 88) //canvasWidth - playerWidth = 1600 - 128 = 1472
+		this.x = width - 88;
 
 	if (this.y > height - 128) //canvasHeight - playerHeight = 800 - 128 = 672
 		this.y = height - 128;
