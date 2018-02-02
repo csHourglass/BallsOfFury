@@ -1,6 +1,9 @@
+
+const io = require('socket.io-client');
+
 var width = 1136;
 var height = 544;
-
+console.log("HELLO?");
 
 function Background(game) {
 //    this.bgAnimation = new Animation(ASSET_MANAGER.getAsset("./img/bg15.png"), 0, 0, width, height, 0.1, 8, true, false);
