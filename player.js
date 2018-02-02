@@ -217,6 +217,7 @@ Player.prototype.update = function ()   {
 	//if we press mouse down, begin charging stopwatch.
 	if (this.game.mouseDown || this.game.triggerDown) {
 	if (this.ballState == 1 && this.game.mousedown) {
+
         this.game.mouseup = false;
 		this.ballState = 2;
 
