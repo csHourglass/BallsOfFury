@@ -211,12 +211,15 @@ Player.prototype.update = function ()   {
 
     // if player has no ball, we down want mouse clicks
     if (this.ballState === 0) {
-        this.game.mousedown = false;
-        this.game.mouseup = false;
+        this.game.mouseDown = false;
+        this.game.mouseUp = false;
+        this.game.triggerDown = false;
+        this.game.triggerUp = false;
     }
 	//if we press mouse down, begin charging stopwatch.
 	if (this.ballState == 1 && (this.game.mouseDown || this.game.triggerDown)) {
-        this.game.mouseup = false;
+        this.game.mouseUp = false;
+        this.game.rtiggerUp = false;
 		this.ballState = 2;
 
 		//increment the total charging time by the game's clock tick.
