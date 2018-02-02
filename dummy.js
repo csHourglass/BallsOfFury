@@ -7,13 +7,12 @@ function Dummy(game, x, y, team) {
     this.y = y;
     this.team = team;
     this.counter = 0;
-    //this.boundingBox = new BoundingBox(this.x, this.y, 122, 146);
+    this.boundingBox = new BoundingBox(this.x, this.y, 122, 146);
     this.showBox = true;
     this.isHit = false;
 
     Entity.call(this, game, this.x, this.y, 0, 0, false);
 }
-
 
 Dummy.prototype = new Entity();
 Dummy.prototype.constructor = Dummy;
