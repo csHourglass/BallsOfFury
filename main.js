@@ -1,6 +1,3 @@
-
-const io = require('socket.io-client');
-
 var width = 1136;
 var height = 544;
 console.log("HELLO?");
