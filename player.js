@@ -166,10 +166,11 @@ Player.prototype.update = function ()   {
     }
 
 /////***** Running *****/////
-    if (this.game.aKey) {
+    if (this.game.aKey && this.ballState < 2) {
         this.facingLeft = true;
         this.moving = true;  //All this does is help with the runningState logic.
         this.xv = -10;
+
     } else if (!this.game.aKey && !this.game.dKey) {
         if (this.xv < 0) {
             this.xv += 1;
@@ -177,7 +178,7 @@ Player.prototype.update = function ()   {
         }
     }
 
-    if (this.game.dKey) {
+    if (this.game.dKey && this.ballState < 2) {
         this.facingLeft = false;
         this.xv = 10;
         this.moving = true;
@@ -219,7 +220,7 @@ Player.prototype.update = function ()   {
 	//if we press mouse down, begin charging stopwatch.
 	if (this.ballState == 1 && (this.game.mouseDown || this.game.triggerDown)) {
         this.game.mouseUp = false;
-        this.game.rtiggerUp = false;
+        this.game.triggerUp = false;
 		this.ballState = 2;
 
 		//increment the total charging time by the game's clock tick.
@@ -227,7 +228,6 @@ Player.prototype.update = function ()   {
 	}
 	//if ball state is 2, then winding up our arm
     if (this.ballState === 2) {
-        console.log(this.chargingTime);
         if (this.LThrowAnimation.elapsedTime + this.game.clockTick > this.LThrowAnimation.totalTime) {
             this.ballState = 3;
         } else if (this.RThrowAnimation.elapsedTime + this.game.clockTick > this.RThrowAnimation.totalTime) {
@@ -236,6 +236,15 @@ Player.prototype.update = function ()   {
     }
 
 	if (this.ballState === 3) {
+
+        if (this.xv > 0 && this.jumpingState == 0) {
+            this.xv -= 1;
+        }
+        else if (this.xv < 0 && this.jumpingState == 0) {
+            this.xv += 0;
+        }
+        this.moving = false;
+
 		if (this.game.mouseUp || this.game.triggerUp) {
 			//spawn a ball entity
             this.throwBall(this.boundingBox);
@@ -252,23 +261,22 @@ Player.prototype.update = function ()   {
 			this.game.triggerDown = false;
 		}
 	}
-	// console.log("Ball state = " + this.ballState);
-	// console.log("Mouse up = " + this.game.mouseUp);
-	// console.log("Mouse down = " + this.game.mouseDown);
+
+
 ///////////////////////  End Throwing ///////////////////////////////////////////
 
 
 	///////////////////////////// WALL COLLISION ////////////////////////////////
     this.x += 100 * this.xv * this.game.clockTick;
     this.y -= this.yv * this.game.clockTick;
-	if (this.x < 0)
-		this.x = 0;
+	if (this.x < -40)
+		this.x = -40;
 	//Ceiling collision
 	if (this.y < 0)
 		this.y = 0;
 
-	if (this.x > width - 128) //canvasWidth - playerWidth = 1600 - 128 = 1472
-		this.x = width - 128;
+	if (this.x > width - 88) //canvasWidth - playerWidth = 1600 - 128 = 1472
+		this.x = width - 88;
 
 	if (this.y > height - 128) //canvasHeight - playerHeight = 800 - 128 = 672
 		this.y = height - 128;
