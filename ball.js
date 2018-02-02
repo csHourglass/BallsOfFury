@@ -20,7 +20,7 @@ function Ball(game, x, y, team, chargingTime) {
     this.targetx = game.stickx - x - 50;
     this.targety = game.sticky - y - 50;
     //console.log(this.targetx, this.targety);
-	
+
 	//minimum charge time required for a boost to xspeed and yspeed is 1.
 	if (chargingTime < 1) {
 		chargingTime = 0;
@@ -33,7 +33,7 @@ function Ball(game, x, y, team, chargingTime) {
     //max charge time will double the speed of the ball.
     this.speedDefault = 1500;
     this.speed = this.speedDefault + (this.speedDefault * chargingTime/3);
-    //how much the speed will decrease by 
+    //how much the speed will decrease by
     this.speedDecrease = 100;
 
     this.ySpeed = this.targety / (Math.sqrt(Math.pow(this.targetx, 2) + Math.pow(this.targety, 2)));
@@ -194,4 +194,3 @@ Ball.prototype.draw = function(ctx) {
     }
     Entity.prototype.draw.call(this);
 }
-

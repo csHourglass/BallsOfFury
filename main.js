@@ -17,8 +17,8 @@ Background.prototype.update = function () {
 
 Background.prototype.draw = function (ctx) {
     this.bgAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
-}
 
+}
 //////////////// the "main" code begins here  ////////////////////////
 
 var ASSET_MANAGER = new AssetManager();
@@ -52,9 +52,7 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.addEntity(player1);
     gameEngine.addEntity(dummy);
     //gameEngine.addEntity(player2);
-    var player = new Player(gameEngine);
 
-    var player = new Player(gameEngine);
 
 
     gameEngine.init(ctx);
