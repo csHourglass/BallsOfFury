@@ -5,13 +5,15 @@ function Dummy(game, x, y, team) {
     this.explosion = new Animation(ASSET_MANAGER.getAsset("./img/explosion.png"), 0, 0, 256, 256, 0.05, 48, false, false);
     this.x = x;
     this.y = y;
+    this.width = 122;
+    this.height = 146;
     this.team = team;
     this.counter = 0;
     this.boundingBox = new BoundingBox(this.x, this.y, 122, 146);
     this.showBox = true;
     this.isHit = false;
 
-    Entity.call(this, game, this.x, this.y, 0, 0, false);
+    Entity.call(this, game, this.x, this.y, 0, 0, false, 4);
 }
 
 Dummy.prototype = new Entity();
