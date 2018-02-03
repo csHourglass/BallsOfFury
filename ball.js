@@ -39,7 +39,7 @@ function Ball(game, x, y, team, chargingTime) {
     this.ySpeed = this.targety / (Math.sqrt(Math.pow(this.targetx, 2) + Math.pow(this.targety, 2)));
     this.xSpeed = this.targetx / (Math.sqrt(Math.pow(this.targetx, 2) + Math.pow(this.targety, 2)));
 
-    Entity.call(this, game, this.x, this.y, 0, 0, true);
+    Entity.call(this, game, this.x, this.y, 0, 0, true, 5);
 
 }
 

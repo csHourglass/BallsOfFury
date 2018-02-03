@@ -66,13 +66,15 @@ function Player(game, x, y, team)   {
 
     this.x = x;
     this.y = y;
+    this.prevX = x;
+    this.prevY = y;
     this.width = 128;
     this.height = 128;
-    this.boundingBox = new BoundingBox(this.x + 25, this.y + 25, this.width - 25, this.height - 25);
+    this.boundingBox = new BoundingBox(this.x + 40, this.y + 30, this.width - 80, this.height - 35);
     this.showBoxes = true;  // show Bounding boxes for testing
     this.team = team;
 
-    Entity.call(this, game, this.x, this.y, 0, 0, false);
+    Entity.call(this, game, this.x, this.y, 0, 0, true, 4);
 }
 Player.prototype = new Entity();
 Player.prototype.constructor = Player;
@@ -103,6 +105,9 @@ Player.prototype.update = function ()   {
         var ent = this.game.entities[i];
 
         if (ent !== this && ent.canCollide && this.boundingBox.hasCollided(ent.boundingBox)) {
+            if (ent.id === 1)   {
+
+            }
             if (ent.team != this.team && ent.speed > 1) {
                 this.removeFromWorld = true;
             } else if (ent.speed <= 1 && this.ballState == 0) {
@@ -156,21 +161,20 @@ Player.prototype.update = function ()   {
     } else if (this.jumpingState === 4) {
         // jumpingState 4 is when the player is falling.
         this.yv -= 100;
-        if (this.y > 400) {
-            this.y = 400;
-            this.LFallAnimation.elapsedTime = 0;
-            this.RFallAnimation.elapsedTime = 0;
-            this.jumpingState = 0;  // Instead of making this 0, we should increment this by 1 so it progresses to the next jumpingState.
-            this.yv = 0;
-        }
+        // if (this.y > 400) {
+        //     this.y = 400;
+        //     this.LFallAnimation.elapsedTime = 0;
+        //     this.RFallAnimation.elapsedTime = 0;
+        //     this.jumpingState = 0;  // Instead of making this 0, we should increment this by 1 so it progresses to the next jumpingState.
+        //     this.yv = 0;
+        // }
     }
 
 /////***** Running *****/////
-    if (this.game.aKey && this.ballState < 2) {
+    if (this.game.aKey) {
         this.facingLeft = true;
         this.moving = true;  //All this does is help with the runningState logic.
         this.xv = -10;
-
     } else if (!this.game.aKey && !this.game.dKey) {
         if (this.xv < 0) {
             this.xv += 1;
@@ -178,7 +182,7 @@ Player.prototype.update = function ()   {
         }
     }
 
-    if (this.game.dKey && this.ballState < 2) {
+    if (this.game.dKey) {
         this.facingLeft = false;
         this.xv = 10;
         this.moving = true;
@@ -220,7 +224,7 @@ Player.prototype.update = function ()   {
 	//if we press mouse down, begin charging stopwatch.
 	if (this.ballState == 1 && (this.game.mouseDown || this.game.triggerDown)) {
         this.game.mouseUp = false;
-        this.game.triggerUp = false;
+        this.game.rtiggerUp = false;
 		this.ballState = 2;
 
 		//increment the total charging time by the game's clock tick.
@@ -228,6 +232,7 @@ Player.prototype.update = function ()   {
 	}
 	//if ball state is 2, then winding up our arm
     if (this.ballState === 2) {
+        console.log(this.chargingTime);
         if (this.LThrowAnimation.elapsedTime + this.game.clockTick > this.LThrowAnimation.totalTime) {
             this.ballState = 3;
         } else if (this.RThrowAnimation.elapsedTime + this.game.clockTick > this.RThrowAnimation.totalTime) {
@@ -236,15 +241,6 @@ Player.prototype.update = function ()   {
     }
 
 	if (this.ballState === 3) {
-
-        if (this.xv > 0 && this.jumpingState == 0) {
-            this.xv -= 1;
-        }
-        else if (this.xv < 0 && this.jumpingState == 0) {
-            this.xv += 0;
-        }
-        this.moving = false;
-
 		if (this.game.mouseUp || this.game.triggerUp) {
 			//spawn a ball entity
             this.throwBall(this.boundingBox);
@@ -261,30 +257,61 @@ Player.prototype.update = function ()   {
 			this.game.triggerDown = false;
 		}
 	}
-
-
+	// console.log("Ball state = " + this.ballState);
+	// console.log("Mouse up = " + this.game.mouseUp);
+	// console.log("Mouse down = " + this.game.mouseDown);
 ///////////////////////  End Throwing ///////////////////////////////////////////
 
 
-	///////////////////////////// WALL COLLISION ////////////////////////////////
+    ///////////////////////////// WALL COLLISION ////////////////////////////////
+
     this.x += 100 * this.xv * this.game.clockTick;
     this.y -= this.yv * this.game.clockTick;
-	if (this.x < -40)
-		this.x = -40;
-	//Ceiling collision
-	if (this.y < 0)
-		this.y = 0;
+    this.boundingBox = new BoundingBox(this.x + 40, this.y + 30, this.width - 80, this.height - 35);
 
-	if (this.x > width - 88) //canvasWidth - playerWidth = 1600 - 128 = 1472
-		this.x = width - 88;
+    for (var i = 0; i < this.game.entities.length; i++) {
+        var ent = this.game.entities[i];
 
-	if (this.y > height - 128) //canvasHeight - playerHeight = 800 - 128 = 672
-		this.y = height - 128;
+        if (ent !== this && ent.canCollide && this.boundingBox.hasCollided(ent.boundingBox)) {
+            console.log("derp, collision");
+            if (ent.id === 1)   {
+                if (this.prevY < this.y && (this.y + this.height - 5) > ent.y && this.prevY + 30 + this.boundingBox.height <= ent.y)  {
+                    if (this.y > ent.y - this.height + 5)   {
+                        this.y = ent.y - this.height + 5;
+                        this.yv = 0;
+                        this.jumpingState = 0;
+                    }
+                }
+                else if (this.prevX > this.x && (this.x < (ent.x + ent.width)))  {
+                    if (this.x + 40 < ent.x + ent.width) {
+                        this.x = ent.x + ent.width - 40;
+                        this.xv = 0;
+                        this.runningState = 0;
+                        this.moving = false;
+                    }
+                }
+            }
+        }
+    }
+    this.prevX = this.x;
+    this.prevY = this.y;
+    this.boundingBox = new BoundingBox(this.x + 40, this.y + 30, this.width - 80, this.height - 35);
+	// if (this.x < 0)
+	// 	this.x = 0;
+	// //Ceiling collision
+	// if (this.y < 0)
+	// 	this.y = 0;
+
+	// if (this.x > width - 128) //canvasWidth - playerWidth = 1600 - 128 = 1472
+	// 	this.x = width - 128;
+    // 
+	// if (this.y > height - 128) //canvasHeight - playerHeight = 800 - 128 = 672
+	// 	this.y = height - 128;
 	/////////////////////////// END WALL COLLISION //////////////////////////////
 
     // updates position of boundingBoxs.  should happen differently for
     // every animation
-    this.boundingBox = new BoundingBox(this.x + 40, this.y + 30, this.width - 80, this.height - 35);
+
     Entity.prototype.update.call(this);
 }
 
