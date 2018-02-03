@@ -34,6 +34,7 @@ function GameEngine() {
 	const gamepad = new Gamepad();
     this.entities = [];
     this.players = [];
+    this.teams = 0;
     this.showOutlines = false;
     this.ctx = null;
     this.click = null;
@@ -114,6 +115,9 @@ GameEngine.prototype.startInput = function () {
 	//connect event handler
 	this.gamepad.on('connect', e => {
 		console.log(`controller ${e.index} connected!`);
+        var player = new Player(gameEngine, (100 * Math.random()), 400, teams++, ASSET_MANAGER.getAsset("./img/player.png"));
+        that.players.push(player);
+        that.addEntity(player);
 	});
 
 	//disconnect event handler
