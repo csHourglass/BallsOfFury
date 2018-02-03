@@ -98,11 +98,12 @@ Ball.prototype.draw = function() {
     }
     Entity.prototype.draw.call(this);
 }
-function Ball(game, x, y, chargingTime) {
+function Ball(game, player, x, y, chargingTime) {
     this.idleAnimation = new Animation(ASSET_MANAGER.getAsset("./img/ball.png"), 0, 0, 20, 20, .5, 1, true, false);  // this might be dumb cause it isnt moving
     this.flyingAnimation = new Animation(ASSET_MANAGER.getAsset("./img/ball.png"), 0, 0, 20, 20, .3, 4, true, false);
 
     this.ctx = game.ctx;
+    this.player = player;
     this.x = x;
     this.y = y;
     this.height = 20;
@@ -112,14 +113,14 @@ function Ball(game, x, y, chargingTime) {
     this.team = 1;
     this.speed = 1500;
     this.state = 0;
-    if (game.triggerUp) {
-        this.targetx = (x + game.stickx*100) - x;
-        this.targety = (y + game.sticky*100) - y;
-        game.triggerUp = false;
+    if (this.player.triggerUp) {
+        this.targetx = (x + this.player.stickx*100) - x;
+        this.targety = (y + this.player.sticky*100) - y;
+        this.player.triggerUp = false;
     }
     else    {
-        this.targetx = game.mousex - x - 50;
-        this.targety = game.mousey - y - 50;
+        this.targetx = this.player.mousex - x - 50;
+        this.targety = this.player.mousey - y - 50;
     }
 
 	//minimum charge time required for a boost to xspeed and yspeed is 1.

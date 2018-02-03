@@ -98,11 +98,11 @@ Player.prototype.constructor = Player;
 Player.prototype.throwBall = function(boundingBox) {
     // throw left
     if (this.mousex < this.x) {
-        this.addEntity(new Ball(this.game, this.boundingBox.x - 20,
+        this.game.addEntity(new Ball(this.game, this, this.boundingBox.x - 20,
                             this.boundingBox.y, this.chargingTime));
     // throw right
     } else {
-            this.game.addEntity(new Ball(this.game, this.boundingBox.x + this.boundingBox.width + 1,
+            this.game.addEntity(new Ball(this.game, this, this.boundingBox.x + this.boundingBox.width + 1,
                                 this.boundingBox.y, this.chargingTime));
     }
     //reset the ball's current state
