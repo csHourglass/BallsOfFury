@@ -37,8 +37,7 @@ ASSET_MANAGER.downloadAll(function () {
     console.log("Powering up!");
     var canvas = document.getElementById('gameWorld');
     var ctx = canvas.getContext('2d');
-    // const gamepad1 = new Gamepad();
-    // const gamepad2 = new Gamepad();
+
     var gameEngine = new GameEngine();
     // var bg = new Background(gameEngine);
     // var player = new Player(gameEngine);

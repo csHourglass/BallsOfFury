@@ -56,7 +56,6 @@ GameEngine.prototype.init = function (ctx) {
     this.ctx = ctx;
     this.surfaceWidth = this.ctx.canvas.width;
     this.surfaceHeight = this.ctx.canvas.height;
-    for (int i = 0; i < )
     this.startInput();
     this.timer = new Timer();
     console.log('game initialized');
@@ -115,7 +114,6 @@ GameEngine.prototype.startInput = function () {
 	//connect event handler
 	this.gamepad.on('connect', e => {
 		console.log(`controller ${e.index} connected!`);
-        
 	});
 
 	//disconnect event handler
