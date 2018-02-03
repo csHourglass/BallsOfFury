@@ -72,6 +72,22 @@ function Player(game, x, y, team)   {
     this.showBoxes = true;  // show Bounding boxes for testing
     this.team = team;
 
+    //// Controls ////
+    this.aKey = false;
+    this.dKey = false;
+    this.space = false;
+    this.spaceReleased = false;
+    this.triggerUp = false;
+    this.triggerDown = false;
+    this.mouseUp = false;
+    this.mouseDown = false;
+    this.mousex = 1;
+    this.mousey = 0;
+    this.stickx = 1;
+    this.sticky = 0;
+
+
+
     Entity.call(this, game, this.x, this.y, 0, 0, false);
 }
 Player.prototype = new Entity();

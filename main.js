@@ -37,7 +37,8 @@ ASSET_MANAGER.downloadAll(function () {
     console.log("Powering up!");
     var canvas = document.getElementById('gameWorld');
     var ctx = canvas.getContext('2d');
-
+    // const gamepad1 = new Gamepad();
+    // const gamepad2 = new Gamepad();
     var gameEngine = new GameEngine();
     // var bg = new Background(gameEngine);
     // var player = new Player(gameEngine);
@@ -46,12 +47,12 @@ ASSET_MANAGER.downloadAll(function () {
     // gameEngine.addEntity(bg);
     // gameEngine.addEntity(player);
     var player1 = new Player(gameEngine, 0, 400, 1, ASSET_MANAGER.getAsset("./img/player.png"));
-    //var player2 = new Player (gameEngine, 800, 400, 2, ASSET_MANAGER.getAsset("./img/player.png"));
+    var player2 = new Player (gameEngine, 800, 400, 2, ASSET_MANAGER.getAsset("./img/player.png"));
 
     gameEngine.addEntity(new Background(gameEngine, ASSET_MANAGER.getAsset("./img/bg20.png")));
-    gameEngine.addEntity(player1);
     gameEngine.addEntity(dummy);
-    //gameEngine.addEntity(player2);
+    gameEngine.addEntity(player1);
+    gameEngine.addEntity(player2);
 
 
 
