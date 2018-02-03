@@ -115,7 +115,7 @@ GameEngine.prototype.startInput = function () {
 	//connect event handler
 	this.gamepad.on('connect', e => {
 		console.log(`controller ${e.index} connected!`);
-        var player = new Player(gameEngine, (100 * Math.random()), 400, teams++, ASSET_MANAGER.getAsset("./img/player.png"));
+        var player = new Player(that, (100 * Math.random()), 400, that.teams++, ASSET_MANAGER.getAsset("./img/player.png"));
         that.players.push(player);
         that.addEntity(player);
 	});

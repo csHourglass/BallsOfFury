@@ -97,8 +97,8 @@ Player.prototype.constructor = Player;
 // throws ball based on the location of mouse click
 Player.prototype.throwBall = function(boundingBox) {
     // throw left
-    if (this.game.mousex < this.x) {
-        this.game.addEntity(new Ball(this.game, this.boundingBox.x - 20,
+    if (this.mousex < this.x) {
+        this.addEntity(new Ball(this.game, this.boundingBox.x - 20,
                             this.boundingBox.y, this.chargingTime));
     // throw right
     } else {
@@ -129,12 +129,12 @@ Player.prototype.update = function ()   {
     }
 
 /////***** Jumping *****/////
-    if (this.game.space && this.canJump)    {
+    if (this.space && this.canJump)    {
         this.jumpingState = 1;
         this.canJump = false;
     }
 
-    if (this.jumpingState === 0 && this.game.spaceReleased) this.canJump = true;
+    if (this.jumpingState === 0 && this.spaceReleased) this.canJump = true;
 
     if (this.jumpingState === 1) {
         // jumpingState 1 is for the initial jumping wind up animation.  The character is about to kick off the ground.
@@ -182,22 +182,22 @@ Player.prototype.update = function ()   {
     }
 
 /////***** Running *****/////
-    if (this.game.aKey) {
+    if (this.aKey) {
         this.facingLeft = true;
         this.moving = true;  //All this does is help with the runningState logic.
         this.xv = -10;
-    } else if (!this.game.aKey && !this.game.dKey) {
+    } else if (!this.aKey && !this.dKey) {
         if (this.xv < 0) {
             this.xv += 1;
             this.moving = false;
         }
     }
 
-    if (this.game.dKey) {
+    if (this.dKey) {
         this.facingLeft = false;
         this.xv = 10;
         this.moving = true;
-    } else if (!this.game.dKey && !this.game.aKey) {
+    } else if (!this.dKey && !this.aKey) {
         if (this.xv > 0) {
             this.xv -= 1;
             this.moving = false;
@@ -221,21 +221,21 @@ Player.prototype.update = function ()   {
     }
 
     // reload (for testing)
-    if (this.game.rKey) {
-        this.ballState = 1;
-    }
+    // if (this.grKey) {
+    //     this.ballState = 1;
+    // }
 
     // if player has no ball, we down want mouse clicks
     if (this.ballState === 0) {
-        this.game.mouseDown = false;
-        this.game.mouseUp = false;
-        this.game.triggerDown = false;
-        this.game.triggerUp = false;
+        this.mouseDown = false;
+        this.mouseUp = false;
+        this.triggerDown = false;
+        this.triggerUp = false;
     }
 	//if we press mouse down, begin charging stopwatch.
-	if (this.ballState == 1 && (this.game.mouseDown || this.game.triggerDown)) {
-        this.game.mouseUp = false;
-        this.game.rtiggerUp = false;
+	if (this.ballState == 1 && (this.mouseDown || this.triggerDown)) {
+        this.mouseUp = false;
+        this.rtiggerUp = false;
 		this.ballState = 2;
 
 		//increment the total charging time by the game's clock tick.
@@ -252,7 +252,7 @@ Player.prototype.update = function ()   {
     }
 
 	if (this.ballState === 3) {
-		if (this.game.mouseUp || this.game.triggerUp) {
+		if (this.mouseUp || this.triggerUp) {
 			//spawn a ball entity
             this.throwBall(this.boundingBox);
 
@@ -262,10 +262,10 @@ Player.prototype.update = function ()   {
 
 			//reset the charging time to 0 since we've thrown the ball.
 			this.chargingTime = 0;
-			this.game.mouseUp = false;
-			this.game.mouseDown = false;
-			this.game.triggerUp = false;
-			this.game.triggerDown = false;
+			this.mouseUp = false;
+			this.mouseDown = false;
+			this.triggerUp = false;
+			this.triggerDown = false;
 		}
 	}
 	// console.log("Ball state = " + this.ballState);
