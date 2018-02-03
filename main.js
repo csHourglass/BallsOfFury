@@ -1,5 +1,7 @@
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 
+//var socket = io.connect("http://localhost:3000");
+const io = require('socket.io-client');
 var width = 1136;
 var height = 544;
 

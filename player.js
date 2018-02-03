@@ -1,3 +1,4 @@
+
 /* the purpose of this class is essentially just for
    collision detection between entities */
 function BoundingBox (x, y, width, height) {
