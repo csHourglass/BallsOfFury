@@ -24,6 +24,18 @@ Background.prototype.draw = function (ctx) {
 var ASSET_MANAGER = new AssetManager();
 
 
+
+ASSET_MANAGER.queueDownload("./img/Stage1Background.png");
+ASSET_MANAGER.queueDownload("./img/TestPlatform.png");
+ASSET_MANAGER.queueDownload("./img/TestWall.png");
+ASSET_MANAGER.queueDownload("./img/player.png");
+
+
+
+
+
+
+
 //ASSET_MANAGER.queueDownload("./img/bg15.png");
 ASSET_MANAGER.queueDownload("./img/bg20.png");
 ASSET_MANAGER.queueDownload("./img/Stage1Background.png");
