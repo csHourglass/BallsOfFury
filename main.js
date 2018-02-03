@@ -1,3 +1,5 @@
+var socket = io();
+
 var width = 1136;
 var height = 544;
 
