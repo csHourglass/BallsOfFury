@@ -115,7 +115,7 @@ GameEngine.prototype.startInput = function () {
 	//connect event handler
 	this.gamepad.on('connect', e => {
 		console.log(`controller ${e.index} connected!`);
-        var player = new Player(gameEngine, (100 * Math.random()), 400, teams++, ASSET_MANAGER.getAsset("./img/player.png"));
+        var player = new Player(that, (100 * Math.random()), 400, teams++, ASSET_MANAGER.getAsset("./img/player.png"));
         that.players.push(player);
         that.addEntity(player);
 	});
@@ -131,12 +131,12 @@ GameEngine.prototype.startInput = function () {
 	//METHOD 1 of handling analog stick press
 	this.gamepad.on('press', 'stick_axis_left', e => {
 		if (e.x < 0) {
-			that.aKey = true;
-			that.dKey = false;
+            that.players[e.index].aKey = true;
+			that.players[e.index].dKey = false;
 		}
 		if (e.x > 0) {
-			that.dKey = true;
-			that.aKey = false;
+			that.players[e.index].dKey = true;
+			that.players[e.index].aKey = false;
 		}
 		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
@@ -148,26 +148,26 @@ GameEngine.prototype.startInput = function () {
 	//Analog stick hold
 	this.gamepad.on('hold', 'stick_axis_left', e => {
 		if (e.x > 0) {
-			that.dKey = true;
-			that.aKey = false;
+			that.players[e.index].dKey = true;
+			that.players[e.index].aKey = false;
 		}
 		if (e.x < 0) {
-			that.aKey = true;
-			that.dKey = false;
+			that.players[e.index].aKey = true;
+			that.players[e.index].dKey = false;
 		}
 		console.log(`player ${e.player} holding x=${e.x}, y=${e.y}!`);
 	});
 
 	this.gamepad.on('hold', 'stick_axis_right', e => {
 		console.log(`player ${e.player} holding ${e.value}!`);
-		this.stickx = e.x;
-		this.sticky = e.y;
+		this.players[e.index].stickx = e.x;
+		this.players[e.index].sticky = e.y;
 	});
 
 	//Analog stick release
 	this.gamepad.on('release', 'stick_axis_left', e => {
-		that.aKey = false;
-		that.dKey = false;
+		that.players[e.index].aKey = false;
+		that.players[e.index].dKey = false;
 		console.log(`player ${e.player} released ${e.value}!`);
 	});
 
@@ -179,8 +179,8 @@ GameEngine.prototype.startInput = function () {
 
 	//button_1 - A (XBOX) / X (PS3/PS4)
 	this.gamepad.on('press', 'button_1', e => {
-		that.space = true;
-		that.spaceReleased = false;
+		that.players[e.index].space = true;
+		that.players[e.index].spaceReleased = false;
     console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 
@@ -255,13 +255,13 @@ GameEngine.prototype.startInput = function () {
 
 	//d_pad_left - Left on the D-Pad (XBOX/PS3/PS4)
 	this.gamepad.on('press', 'd_pad_left', e => {
-		that.aKey = true;
+		that.players[e.index].aKey = true;
 		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 
 	//d_pad_right - Right on the D-Pad (XBOX/PS3/PS4)
 	this.gamepad.on('press', 'd_pad_right', e => {
-		that.dKey = true;
+		that.players[e.index].dKey = true;
 		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 
@@ -365,8 +365,8 @@ GameEngine.prototype.startInput = function () {
 
 	//button_1 - A (XBOX) / X (PS3/PS4)
 	this.gamepad.on('release', 'button_1', e => {
-		that.space = false;
-		that.spaceReleased = true;
+		that.players[e.index].space = false;
+		that.players[e.index].spaceReleased = true;
     console.log(`player ${e.player} released ${e.button}!`);
 	});
 
@@ -402,7 +402,7 @@ GameEngine.prototype.startInput = function () {
 
 	//shoulder_bottom_right - RT (XBOX) / R2 (PS3/PS4)
 	this.gamepad.on('release', 'shoulder_bottom_right', e => {
-		that.triggerUp = true;
+		that.players[e.index].triggerUp = true;
 		console.log("triggerUp = " + that.triggerUp);
 		console.log(`player ${e.player} released ${e.button}!`);
 	});
@@ -439,13 +439,13 @@ GameEngine.prototype.startInput = function () {
 
 	//d_pad_left - Left on the D-Pad (XBOX/PS3/PS4)
 	this.gamepad.on('release', 'd_pad_left', e => {
-		that.aKey = false;
+		that.players[e.index].aKey = false;
 		console.log(`player ${e.player} released ${e.button}!`);
 	});
 
 	//d_pad_right - Right on the D-Pad (XBOX/PS3/PS4)
 	this.gamepad.on('release', 'd_pad_right', e => {
-		that.dKey = false;
+		that.players[e.index].dKey = false;
 		console.log(`player ${e.player} released ${e.button}!`);
 	});
 
