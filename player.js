@@ -119,6 +119,7 @@ Player.prototype.update = function ()   {
         var ent = this.game.entities[i];
 
         if (ent !== this && ent.canCollide && this.boundingBox.hasCollided(ent.boundingBox)) {
+            console.log("ent.team = " + ent.team);
             if (ent.team != this.team && ent.speed > 1) {
                 this.removeFromWorld = true;
             } else if (ent.speed <= 1 && this.ballState == 0) {

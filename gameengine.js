@@ -119,6 +119,7 @@ GameEngine.prototype.startInput = function () {
 
         that.players.push(player);
         that.addEntity(player);
+        //"that.players[0].team);
 	});
 
 	//disconnect event handler
@@ -220,7 +221,7 @@ GameEngine.prototype.startInput = function () {
 	//shoulder_bottom_right - RT (XBOX) / R2 (PS3/PS4)
 	this.gamepad.on('press', 'shoulder_bottom_right', e => {
 		that.players[e.player].triggerDown = true;
-		console.log("triggerDown = " + that.triggerDown);
+		console.log("triggerDown = " + that.players[e.player].triggerDown);
 		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 
