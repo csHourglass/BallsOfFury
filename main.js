@@ -1,4 +1,4 @@
-var socket = io();
+import io from 'socket.io-client';
 
 var width = 1136;
 var height = 544;
