@@ -29,6 +29,7 @@ ASSET_MANAGER.queueDownload("./img/bg20.png");
 ASSET_MANAGER.queueDownload("./img/Stage1Background.png");
 ASSET_MANAGER.queueDownload("./img/TestPlatform.png");
 ASSET_MANAGER.queueDownload("./img/TestWall.png");
+ASSET_MANAGER.queueDownload("./img/TestCeiling.png");
 ASSET_MANAGER.queueDownload("./img/player.png");
 ASSET_MANAGER.queueDownload("./img/ball.png");
 ASSET_MANAGER.queueDownload("./img/Training_dummy.png");
@@ -48,13 +49,14 @@ ASSET_MANAGER.downloadAll(function () {
 
     // gameEngine.addEntity(bg);
     // gameEngine.addEntity(player);
-    var player1 = new Player(gameEngine, 0, 400, 1, ASSET_MANAGER.getAsset("./img/player.png"));
+    var player1 = new Player(gameEngine, 128, 700, 1, ASSET_MANAGER.getAsset("./img/player.png"));
     //var player2 = new Player (gameEngine, 800, 400, 2, ASSET_MANAGER.getAsset("./img/player.png"));
 
     gameEngine.addEntity(new Background(gameEngine, ASSET_MANAGER.getAsset("./img/Stage1Background.png")));
     gameEngine.addEntity(new Wall(gameEngine, 0, 918, 1920, 162, "./img/TestPlatform.png", 0, ASSET_MANAGER.getAsset("./img/TestPlatform.png")));
     gameEngine.addEntity(new Wall(gameEngine, 21, 72, 48, 846, "./img/TestWall.png", 0, ASSET_MANAGER.getAsset("./img/TestWall.png")));
     gameEngine.addEntity(new Wall(gameEngine, 1851, 72, 48, 846, "./img/TestWall.png", 0, ASSET_MANAGER.getAsset("./img/TestWall.png")));
+    gameEngine.addEntity(new Wall(gameEngine, 0, 0, 1920, 72, "./img/TestCeiling.png", 0, ASSET_MANAGER.getAsset("./img/TestCeiling.png")));
     gameEngine.addEntity(player1);
     gameEngine.addEntity(dummy);
     //gameEngine.addEntity(player2);

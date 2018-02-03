@@ -68,13 +68,14 @@ function Player(game, x, y, team)   {
     this.y = y;
     this.prevX = x;
     this.prevY = y;
+    this.id = 4;
     this.width = 128;
     this.height = 128;
     this.boundingBox = new BoundingBox(this.x + 40, this.y + 30, this.width - 80, this.height - 35);
     this.showBoxes = true;  // show Bounding boxes for testing
     this.team = team;
 
-    Entity.call(this, game, this.x, this.y, 0, 0, true, 4);
+    Entity.call(this, game, this.x, this.y, 0, 0, true, this.id);
 }
 Player.prototype = new Entity();
 Player.prototype.constructor = Player;
@@ -85,11 +86,11 @@ Player.prototype.throwBall = function(boundingBox) {
     // throw left
     if (this.game.mousex < this.x) {
         this.game.addEntity(new Ball(this.game, this.boundingBox.x - 20,
-                            this.boundingBox.y, this.chargingTime));
+                            this.boundingBox.y, this.chargingTime, 5));
     // throw right
     } else {
             this.game.addEntity(new Ball(this.game, this.boundingBox.x + this.boundingBox.width + 1,
-                                this.boundingBox.y, this.chargingTime));
+                                this.boundingBox.y, this.chargingTime, 5));
     }
     //reset the ball's current state
     this.ballState = 0; // change to 0 to remove ball from player
@@ -282,6 +283,13 @@ Player.prototype.update = function ()   {
                         this.jumpingState = 0;
                     }
                 }
+                else if (this.prevY > this.y && this.boundingBox.y < (ent.boundingBox.y + ent.boundingBox.height) && this.prevY + 30 >= (ent.boundingBox.y + ent.boundingBox.height))  {
+
+                        this.y = ent.boundingBox.y + ent.boundingBox.height - 30;
+                        this.yv = 0;
+                        this.jumpingState = 4;
+
+                }
                 else if (this.prevX > this.x && (this.x < (ent.x + ent.width)))  {
                     if (this.x + 40 < ent.x + ent.width) {
                         this.x = ent.x + ent.width - 40;
@@ -290,6 +298,23 @@ Player.prototype.update = function ()   {
                         this.moving = false;
                     }
                 }
+                else if (this.prevX < this.x && (this.boundingBox.x + this.boundingBox.width) > ent.boundingBox.x)  {
+                    if ((this.boundingBox.x + this.boundingBox.width) > ent.boundingBox.x) {
+                        this.x = ent.boundingBox.x - this.boundingBox.width -40;
+                        this.xv = 0;
+                        this.runningState = 0;
+                        this.moving = false;
+                    }
+                }
+            }
+            if (ent.team !== this.team && ent.speed > 1) {
+                this.removeFromWorld = true;
+            }
+            console.log(ent.id);
+            if (ent.id === 5 && this.ballState === 0) {
+                console.log("MINE");
+                ent.removeFromWorld = true;
+                this.ballState = 1;  // pickup ball
             }
         }
     }
