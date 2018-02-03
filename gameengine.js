@@ -131,6 +131,8 @@ GameEngine.prototype.startInput = function () {
 	//Analog stick Press
 	//METHOD 1 of handling analog stick press
 	this.gamepad.on('press', 'stick_axis_left', e => {
+		console.log("e.index = "+e.player);
+		console.log("that.players[e.player].aKey = " + that.players[e.player].aKey);
 		if (e.x < 0) {
             that.players[e.player].aKey = true;
 			that.players[e.player].dKey = false;
