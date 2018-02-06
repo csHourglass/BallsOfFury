@@ -40,7 +40,7 @@ Wall.prototype.draw = function(ctx)   {
         this.boundingBox.draw(ctx);
     }
 
-    this.anim.drawFrame(0, ctx, this.x, this.y);
+    this.anim.drawFrame(0, ctx, this.getX(), this.getY(), this.game.drawScale);
 
     Entity.prototype.draw.call(this);
 }

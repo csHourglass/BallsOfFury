@@ -59,6 +59,7 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.addEntity(new Wall(gameEngine, 0, 0, 1920, 72, "./img/TestCeiling.png", 0, ASSET_MANAGER.getAsset("./img/TestCeiling.png")));
     gameEngine.addEntity(player1);
     gameEngine.addEntity(dummy);
+    gameEngine.addEntity(new Camera(gameEngine, 0, 0, 1920, 1080));
     //gameEngine.addEntity(player2);
 
 

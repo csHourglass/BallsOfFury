@@ -46,7 +46,10 @@ function GameEngine() {
 	this.sticky = 0;
     this.wheel = null;
     this.surfaceWidth = null;
-    this.surfaceHeight = null;
+	this.surfaceHeight = null;
+	this.xOffset = 0;
+	this.yOffset = 0;
+	this.drawScale = 1;
 	//we should only be creating one gamepad object.
 	this.gamepad = gamepad;
 }
@@ -563,4 +566,12 @@ Entity.prototype.rotateAndCache = function (image, angle) {
     //offscreenCtx.strokeStyle = "red";
     //offscreenCtx.strokeRect(0,0,size,size);
     return offscreenCanvas;
+}
+
+Entity.prototype.getX = function()	{
+	return (this.x-this.game.xOffset)*this.game.drawScale;
+}
+
+Entity.prototype.getY = function()	{
+	return (this.y-this.game.yOffset)*this.game.drawScale;
 }
