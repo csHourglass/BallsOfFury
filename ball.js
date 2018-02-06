@@ -130,10 +130,10 @@ Ball.prototype.draw = function(ctx) {
         this.boundingBox.draw(ctx);
     }
     if (this.state === 2)   {
-        this.idleAnimation.drawFrame(this.game.clockTick, this.ctx, this.x, this.y);
+        this.idleAnimation.drawFrame(this.game.clockTick, this.ctx, this.getX(), this.getY(), this.game.drawScale);
     }
     else {
-        this.flyingAnimation.drawFrame(this.game.clockTick, this.ctx, this.x, this.y);
+        this.flyingAnimation.drawFrame(this.game.clockTick, this.ctx, this.getX(), this.getY(), this.game.drawScale);
     }
     Entity.prototype.draw.call(this);
 }
