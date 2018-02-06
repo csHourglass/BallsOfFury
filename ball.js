@@ -10,7 +10,7 @@ function Ball(game, player, x, y, chargingTime) {
     this.width = 20;
     this.boundingBox = new BoundingBox(this.x, this.y, this.width, this.height);
     this.box = true; // draw box for testing
-    this.team = 1;
+    this.team = player.team;
     this.speed = 1500;
     this.state = 0;
     if (this.player.triggerUp) {
