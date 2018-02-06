@@ -1,5 +1,5 @@
 
-function Ball(game, player, x, y, chargingTime) {
+function Ball(game, player, x, y, chargingTime, id) {
 
     this.idleAnimation = new Animation(ASSET_MANAGER.getAsset("./img/ball.png"), 0, 0, 20, 20, .5, 1, true, false);  // this might be dumb cause it isnt moving
     this.flyingAnimation = new Animation(ASSET_MANAGER.getAsset("./img/ball.png"), 0, 0, 20, 20, .3, 4, true, false);
@@ -43,7 +43,7 @@ function Ball(game, player, x, y, chargingTime) {
 	//arbitrary calculation for how much charging affects xspeed
 	this.xSpeed += (this.xSpeed * (chargingTime/2));
 
-    Entity.call(this, game, this.x, this.y, 0, 0, true, 5);
+    Entity.call(this, game, this.x, this.y, 0, 0, true, id);
 }
 
 Ball.prototype = new Entity();
@@ -74,9 +74,9 @@ Ball.prototype.update = function() {
         if (this.x > width || this.x < 0)   {
             this.xSpeed = -this.xSpeed; //xSpeed is retained even in falling
         }
-            this.ySpeed = -(this.ySpeed/1.5); //Reverse ySpeed on bounce and reduce magnitude.
-            if (this.speed <= 0)   { //Once speed is completely depleted, enter state 2
-                this.state = 2;
+        // if (this.y > height - 32)   { //If the ball hits the ground...
+        //     this.y = height - 32;
+        //     this.speed -= 100; //Lower speed overall
         //     this.ySpeed = -(this.ySpeed/1.5); //Reverse ySpeed on bounce and reduce magnitude.
         //     if (this.speed <= 0)   { //Once speed is completely depleted, enter state 2
         //         this.state = 2;

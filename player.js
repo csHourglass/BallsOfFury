@@ -220,9 +220,10 @@ Player.prototype.update = function ()   {
         this.triggerUp = false;
     }
 	//if we press mouse down, begin charging stopwatch.
-	if (this.ballState == 1 && (this.mouseDown || this.triggerDown)) {
+	if (this.ballState === 1 && (this.mouseDown || this.triggerDown)) {
         this.mouseUp = false;
         this.triggerUp = false;
+        this.ballState = 2;
 
 		//increment the total charging time by the game's clock tick.
 		this.chargingTime += this.game.clockTick;
