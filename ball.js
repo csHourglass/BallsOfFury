@@ -1,4 +1,6 @@
+
 function Ball(game, player, x, y, chargingTime) {
+
     this.idleAnimation = new Animation(ASSET_MANAGER.getAsset("./img/ball.png"), 0, 0, 20, 20, .5, 1, true, false);  // this might be dumb cause it isnt moving
     this.flyingAnimation = new Animation(ASSET_MANAGER.getAsset("./img/ball.png"), 0, 0, 20, 20, .3, 4, true, false);
 
@@ -6,6 +8,8 @@ function Ball(game, player, x, y, chargingTime) {
     this.player = player;
     this.x = x;
     this.y = y;
+    this.prevX = this.x;
+    this.prevY = this.y;
     this.height = 20;
     this.width = 20;
     this.boundingBox = new BoundingBox(this.x, this.y, this.width, this.height);
@@ -39,7 +43,7 @@ function Ball(game, player, x, y, chargingTime) {
 	//arbitrary calculation for how much charging affects xspeed
 	this.xSpeed += (this.xSpeed * (chargingTime/2));
 
-    Entity.call(this, game, this.x, this.y, 0, 0, true);
+    Entity.call(this, game, this.x, this.y, 0, 0, true, 5);
 }
 
 Ball.prototype = new Entity();
@@ -70,15 +74,53 @@ Ball.prototype.update = function() {
         if (this.x > width || this.x < 0)   {
             this.xSpeed = -this.xSpeed; //xSpeed is retained even in falling
         }
-        if (this.y > height - 32)   { //If the ball hits the ground...
-            this.y = height - 32;
-            this.speed -= 100; //Lower speed overall
             this.ySpeed = -(this.ySpeed/1.5); //Reverse ySpeed on bounce and reduce magnitude.
             if (this.speed <= 0)   { //Once speed is completely depleted, enter state 2
                 this.state = 2;
+        //     this.ySpeed = -(this.ySpeed/1.5); //Reverse ySpeed on bounce and reduce magnitude.
+        //     if (this.speed <= 0)   { //Once speed is completely depleted, enter state 2
+        //         this.state = 2;
+        //     }
+        // }
+    }
+
+    //// COLLISION ////
+    this.boundingBox = new BoundingBox (this.x, this.y, this.width, this.height);
+    for (var i = 0; i < this.game.entities.length; i++) {
+        var ent = this.game.entities[i];
+
+        if (ent !== this && ent.canCollide && this.boundingBox.hasCollided(ent.boundingBox)) {
+            console.log("BOUNCE!!!!");
+            if (ent.id === 1)   {
+                console.log("IM HERE");
+                if (this.prevY < this.y && (this.y + this.height) > ent.y && this.prevY + this.height <= ent.y)  {
+                    this.y = ent.y - this.height;
+                    this.speed -= 100;
+                    this.ySpeed = -(this.ySpeed/1.5); //Reverse ySpeed on bounce and reduce magnitude.
+                }
+                else if (this.prevY > this.y && this.boundingBox.y < (ent.boundingBox.y + ent.boundingBox.height) && this.prevY >= (ent.boundingBox.y + ent.boundingBox.height))  {
+
+                    this.y = ent.boundingBox.y + ent.boundingBox.height;
+                    this.ySpeed = -this.ySpeed;
+                    this.speed -= 100;
+
+
+                }
+                else if (this.prevX > this.x && (this.x < (ent.x + ent.width)))  {
+                    this.x = ent.x + ent.width;
+                    this.xSpeed = -this.xSpeed;
+                    this.speed -= 100;
+                }
+                else if (this.prevX < this.x && (this.boundingBox.x + this.boundingBox.width) > ent.boundingBox.x)  {
+                    this.x = ent.x - this.width;
+                    this.xSpeed = -this.xSpeed;
+                    this.speed -= 100;
+                }
             }
         }
     }
+    this.prevX = this.x;
+    this.prevY = this.y;
     this.boundingBox = new BoundingBox (this.x, this.y, this.width, this.height);
     Entity.prototype.update.call(this);
 }

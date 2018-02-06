@@ -48,7 +48,10 @@ function GameEngine() {
 	this.sticky = 0;
     this.wheel = null;
     this.surfaceWidth = null;
-    this.surfaceHeight = null;
+	this.surfaceHeight = null;
+	this.xOffset = 0;
+	this.yOffset = 0;
+	this.drawScale = 1;
 	//we should only be creating one gamepad object.
 	this.gamepad = gamepad;
 }
@@ -531,13 +534,14 @@ GameEngine.prototype.loop = function () {
     this.direction = 0;
 }
 
-function Entity(game, x, y, xv, yv, canCollide) {
+function Entity(game, x, y, xv, yv, canCollide, id) {
     this.game = game;
     this.x = x;
     this.y = y;
     this.xv = xv;
     this.yv = yv;
-    this.canCollide = canCollide;
+	this.canCollide = canCollide;
+	this.id = id;
     this.removeFromWorld = false;
 }
 
@@ -571,4 +575,12 @@ Entity.prototype.rotateAndCache = function (image, angle) {
     //offscreenCtx.strokeStyle = "red";
     //offscreenCtx.strokeRect(0,0,size,size);
     return offscreenCanvas;
+}
+
+Entity.prototype.getX = function()	{
+	return (this.x-this.game.xOffset)*this.game.drawScale;
+}
+
+Entity.prototype.getY = function()	{
+	return (this.y-this.game.yOffset)*this.game.drawScale;
 }

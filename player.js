@@ -66,6 +66,9 @@ function Player(game, x, y, team)   {
 
     this.x = x;
     this.y = y;
+    this.prevX = x;
+    this.prevY = y;
+    this.id = 4;
     this.width = 128;
     this.height = 128;
     this.boundingBox = new BoundingBox(this.x + 25, this.y + 25, this.width - 25, this.height - 25);
@@ -85,10 +88,8 @@ function Player(game, x, y, team)   {
     this.mousey = 0;
     this.stickx = 1;
     this.sticky = 0;
-
-
-
-    Entity.call(this, game, this.x, this.y, 0, 0, false);
+    
+    Entity.call(this, game, this.x, this.y, 0, 0, true, this.id);
 }
 Player.prototype = new Entity();
 Player.prototype.constructor = Player;
@@ -99,11 +100,11 @@ Player.prototype.throwBall = function(boundingBox) {
     // throw left
     if (this.mousex < this.x) {
         this.game.addEntity(new Ball(this.game, this, this.boundingBox.x - 20,
-                            this.boundingBox.y, this.chargingTime));
+                            this.boundingBox.y, this.chargingTime, 5));
     // throw right
     } else {
-            this.game.addEntity(new Ball(this.game, this, this.boundingBox.x + this.boundingBox.width + 1,
-                                this.boundingBox.y, this.chargingTime));
+        this.game.addEntity(new Ball(this.game, this, this.boundingBox.x + this.boundingBox.width + 1,
+            this.boundingBox.y, this.chargingTime, 5));
     }
     //reset the ball's current state
     this.ballState = 0; // change to 0 to remove ball from player
@@ -113,21 +114,6 @@ Player.prototype.throwBall = function(boundingBox) {
 
 
 Player.prototype.update = function ()   {
-
-/////***** Collision *****/////
-    for (var i = 0; i < this.game.entities.length; i++) {
-        var ent = this.game.entities[i];
-
-        if (ent !== this && ent.canCollide && this.boundingBox.hasCollided(ent.boundingBox)) {
-            console.log("ent.team = " + ent.team);
-            if (ent.team != this.team && ent.speed > 1) {
-                this.removeFromWorld = true;
-            } else if (ent.speed <= 1 && this.ballState == 0) {
-                ent.removeFromWorld = true;
-                this.ballState = 1;  // pickup ball
-            }
-        }
-    }
 
 /////***** Jumping *****/////
     if (this.space && this.canJump)    {
@@ -173,16 +159,16 @@ Player.prototype.update = function ()   {
     } else if (this.jumpingState === 4) {
         // jumpingState 4 is when the player is falling.
         this.yv -= 100;
-        if (this.y > 400) {
-            this.y = 400;
-            this.LFallAnimation.elapsedTime = 0;
-            this.RFallAnimation.elapsedTime = 0;
-            this.jumpingState = 0;  // Instead of making this 0, we should increment this by 1 so it progresses to the next jumpingState.
-            this.yv = 0;
-        }
+        // if (this.y > 400) {
+        //     this.y = 400;
+        //     this.LFallAnimation.elapsedTime = 0;
+        //     this.RFallAnimation.elapsedTime = 0;
+        //     this.jumpingState = 0;  // Instead of making this 0, we should increment this by 1 so it progresses to the next jumpingState.
+        //     this.yv = 0;
+        // }
     }
 
-/////***** Running *****/////
+    /////***** Running *****/////
     if (this.aKey) {
         this.facingLeft = true;
         this.moving = true;  //All this does is help with the runningState logic.
@@ -222,7 +208,7 @@ Player.prototype.update = function ()   {
     }
 
     // reload (for testing)
-    // if (this.grKey) {
+    // if (this.game.rKey) {
     //     this.ballState = 1;
     // }
 
@@ -236,8 +222,7 @@ Player.prototype.update = function ()   {
 	//if we press mouse down, begin charging stopwatch.
 	if (this.ballState == 1 && (this.mouseDown || this.triggerDown)) {
         this.mouseUp = false;
-        this.rtiggerUp = false;
-		this.ballState = 2;
+        this.triggerUp = false;
 
 		//increment the total charging time by the game's clock tick.
 		this.chargingTime += this.game.clockTick;
@@ -275,25 +260,79 @@ Player.prototype.update = function ()   {
 ///////////////////////  End Throwing ///////////////////////////////////////////
 
 
-	///////////////////////////// WALL COLLISION ////////////////////////////////
+    ///////////////////////////// WALL COLLISION ////////////////////////////////
+
     this.x += 100 * this.xv * this.game.clockTick;
     this.y -= this.yv * this.game.clockTick;
-	if (this.x < 0)
-		this.x = 0;
-	//Ceiling collision
-	if (this.y < 0)
-		this.y = 0;
+    this.boundingBox = new BoundingBox(this.x + 40, this.y + 30, this.width - 80, this.height - 35);
 
-	if (this.x > width - 128) //canvasWidth - playerWidth = 1600 - 128 = 1472
-		this.x = width - 128;
+    for (var i = 0; i < this.game.entities.length; i++) {
+        var ent = this.game.entities[i];
 
-	if (this.y > height - 128) //canvasHeight - playerHeight = 800 - 128 = 672
-		this.y = height - 128;
+        if (ent !== this && ent.canCollide && this.boundingBox.hasCollided(ent.boundingBox)) {
+            console.log("derp, collision");
+            if (ent.id === 1)   {
+                if (this.prevY < this.y && (this.y + this.height - 5) > ent.y && this.prevY + 30 + this.boundingBox.height <= ent.y)  {
+                    if (this.y > ent.y - this.height + 5)   {
+                        this.y = ent.y - this.height + 5;
+                        this.yv = 0;
+                        this.jumpingState = 0;
+                    }
+                }
+                else if (this.prevY > this.y && this.boundingBox.y < (ent.boundingBox.y + ent.boundingBox.height) && this.prevY + 30 >= (ent.boundingBox.y + ent.boundingBox.height))  {
+
+                        this.y = ent.boundingBox.y + ent.boundingBox.height - 30;
+                        this.yv = 0;
+                        this.jumpingState = 4;
+
+                }
+                else if (this.prevX > this.x && (this.x < (ent.x + ent.width)))  {
+                    if (this.x + 40 < ent.x + ent.width) {
+                        this.x = ent.x + ent.width - 40;
+                        this.xv = 0;
+                        this.runningState = 0;
+                        this.moving = false;
+                    }
+                }
+                else if (this.prevX < this.x && (this.boundingBox.x + this.boundingBox.width) > ent.boundingBox.x)  {
+                    if ((this.boundingBox.x + this.boundingBox.width) > ent.boundingBox.x) {
+                        this.x = ent.boundingBox.x - this.boundingBox.width -40;
+                        this.xv = 0;
+                        this.runningState = 0;
+                        this.moving = false;
+                    }
+                }
+            }
+            if (ent.team !== this.team && ent.speed > 1) {
+                this.removeFromWorld = true;
+            }
+            console.log(ent.id);
+            if (ent.id === 5 && this.ballState === 0 && ent.state !== 0) {
+                console.log("MINE");
+                ent.removeFromWorld = true;
+                this.ballState = 1;  // pickup ball
+            }
+        }
+    }
+    this.prevX = this.x;
+    this.prevY = this.y;
+    this.boundingBox = new BoundingBox(this.x + 40, this.y + 30, this.width - 80, this.height - 35);
+	// if (this.x < 0)
+	// 	this.x = 0;
+	// //Ceiling collision
+	// if (this.y < 0)
+	// 	this.y = 0;
+
+	// if (this.x > width - 128) //canvasWidth - playerWidth = 1600 - 128 = 1472
+	// 	this.x = width - 128;
+    // 
+	// if (this.y > height - 128) //canvasHeight - playerHeight = 800 - 128 = 672
+	// 	this.y = height - 128;
 	/////////////////////////// END WALL COLLISION //////////////////////////////
 
     // updates position of boundingBoxs.  should happen differently for
     // every animation
-    this.boundingBox = new BoundingBox(this.x + 40, this.y + 30, this.width - 80, this.height - 35);
+
     Entity.prototype.update.call(this);
 }
 
@@ -306,75 +345,75 @@ Player.prototype.draw = function(ctx)   {
     if (this.facingLeft) {
 		//if we're ready to throw, play throwing animation
         if (this.ballState === 2) {
-            this.LThrowAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+            this.LThrowAnimation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
 		else if (this.ballState === 3) {  // holding the ball
-            this.LChargeThrowAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+            this.LChargeThrowAnimation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
         else if (this.jumpingState === 1) {  //Drawing initial jump wind up animation
-            this.LJumpStartAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+            this.LJumpStartAnimation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
         else if (this.jumpingState === 2)   { //Drawing rising animation
-            this.LJumpAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+            this.LJumpAnimation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
         else if (this.jumpingState === 3)   { //Drawing transition from rising to falling
-            this.LFallStartAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+            this.LFallStartAnimation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
         else if (this.jumpingState === 4)   { //Drawing falling animation
-            this.LFallAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+            this.LFallAnimation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
         else if (this.runningState === 2) {
             this.direction = this.x;
-            this.LRunAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+            this.LRunAnimation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
         else if (this.runningState === 1)   {
-            this.LRunStartAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+            this.LRunStartAnimation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
         else if (this.ballState === 0) {
-            this.LIdleAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+            this.LIdleAnimation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
         else if (this.ballState === 1) {
-            this.LBallAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+            this.LBallAnimation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
         else {
-            this.LIdleAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+            this.LIdleAnimation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
 /////////////// Left facing sprites ///////////////////
     } else {  // left facing sprites
 		//else if we're ready to throw, play throwing animation
         if (this.ballState === 2) {  // winding up
-            this.RThrowAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+            this.RThrowAnimation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
 		else if (this.ballState === 3) {  // holding the ball
-            this.RChargeThrowAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+            this.RChargeThrowAnimation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
         else if (this.jumpingState === 1) {  //Drawing initial jump wind up animation
-            this.RJumpStartAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+            this.RJumpStartAnimation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
         else if (this.jumpingState === 2)   { //Drawing rising animation
-            this.RJumpAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+            this.RJumpAnimation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
         else if (this.jumpingState === 3)   { //Drawing transition from rising to falling
-            this.RFallStartAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+            this.RFallStartAnimation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
         else if (this.jumpingState === 4)   { //Drawing falling animation
-            this.RFallAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+            this.RFallAnimation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
         else if (this.runningState === 2) {
             this.direction = this.x;
-            this.RRunAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+            this.RRunAnimation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
         else if (this.runningState === 1)   {
-            this.RRunStartAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+            this.RRunStartAnimation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
         else if (this.ballState === 0) {  // no ball
-            this.RIdleAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+            this.RIdleAnimation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
         else if (this.ballState === 1) {  // holding ball
-            this.RBallAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+            this.RBallAnimation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
         else {
-            this.RIdleAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+            this.RIdleAnimation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
     }
 
