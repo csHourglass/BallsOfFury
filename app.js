@@ -61,6 +61,7 @@ server.listen(3000);
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
+console.log("We're on");
 
 // app.get('/browserify', function(req, res){
 //   res.sendFile(__dirname + '/browserify.js');
