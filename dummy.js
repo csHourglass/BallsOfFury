@@ -40,9 +40,9 @@ Dummy.prototype.update = function() {
 Dummy.prototype.draw = function(ctx){
     if (this.showBox) this.boundingBox.draw(ctx);
     if (this.isHit) {
-        this.explosion.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+        this.explosion.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
     } else {
-        this.animation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
+        this.animation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
     }
     Entity.prototype.draw.call(this);
 };

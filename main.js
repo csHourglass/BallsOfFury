@@ -52,7 +52,7 @@ ASSET_MANAGER.downloadAll(function () {
     var gameEngine = new GameEngine();
     // var bg = new Background(gameEngine);
     // var player = new Player(gameEngine);
-    var dummy = new Dummy(gameEngine, 800, 380, 2, ASSET_MANAGER.getAsset("./img/Training_dummy.png"));
+    var dummy = new Dummy(gameEngine, 960, 772, 2, ASSET_MANAGER.getAsset("./img/Training_dummy.png"));
 
     // gameEngine.addEntity(bg);
     // gameEngine.addEntity(player);

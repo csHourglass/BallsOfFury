@@ -34,35 +34,56 @@ Camera.prototype.update = function ()   {
             players++;
         }
     }
-    var xMin = 480;
-    var xMax = 960;
-    var yMin = 270;
-    var yMax = 540;
+    var xMin = 1920;
+    var xMax = 0;
+    var yMin = 1080;
+    var yMax = 0;
     if (players === 0)  {
         this.goalx = this.defaultWidth/2;
-        this.goaly - this.defaultHeight/2;
+        this.goaly = this.defaultHeight/2;
     } else  {
         this.goalx = 0;
         this.goaly = 0;
         for (var i = 0; i < players; i++) {
-            this.goalx += xCoord[i];
-            this.goaly += yCoord[i];
+            var playerX = xCoord[i];
+            var playerY = yCoord[i];
+            if (playerX > xMax) xMax = playerX;
+            if (playerX < xMin) xMin = playerX;
+            if (playerY > yMax) yMax = playerY;
+            if (playerY < yMin) yMin = playerY;
+            this.goalx += playerX;
+            this.goaly += playerY;
 
         }
         this.goalx /= players;
         this.goaly /= players;
     }
+    if (this.goalx - xMin > xMax - this.goalx)  this.goalWidth = this.goalx - xMin + 500;
+    else    this.goalWidth = xMax - this.goalx + 500;
+    if (this.goaly - yMin > yMax - this.goaly)  this.goalHeight = this.goaly - yMin + 250;
+    else    this.goalHeight = yMax - this.goaly + 250;
 
-    this.x = this.goalx - xMax;
-    this.y = this.goaly - yMax;
-    this.width = (this.width + this.goalWidth)/2;
-    this.height = (this.height + this.goalHeight)/2;
-    this.scale = this.defaultWidth/(this.x+(this.goalx*2));
+
+    if (this.defaultRatio > this.goalWidth/this.goalHeight) {
+        var newHeight = this.goalWidth/this.defaultRatio;
+        this.goalHeight = newHeight;
+    } else  {
+        var newWidth = this.goalHeight*this.defaultRatio;
+        this.goalWidth = newWidth;
+    }
+    this.goalWidth *= this.defaultRatio;
+    this.goalheight /= this.defaultRatio;
+    this.width = this.goalWidth*2;
+    this.height = this.goalHeight*2;
+
+    this.x = this.goalx - this.goalWidth;
+    this.y = this.goaly - this.goalHeight;
+    this.scale = this.defaultWidth/this.width;
     this.game.xOffset = this.x;
     this.game.yOffset = this.y;
     this.game.drawScale = this.scale;
 
-    // console.log(this.x, this.y, this.width, this.height);
+    console.log(this.x, this.y, this.width, this.height);
     Entity.prototype.update.call(this);
 }
 
