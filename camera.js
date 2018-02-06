@@ -62,7 +62,7 @@ Camera.prototype.update = function ()   {
     this.game.yOffset = this.y;
     this.game.drawScale = this.scale;
 
-    console.log(this.x, this.y, this.width, this.height);
+    // console.log(this.x, this.y, this.width, this.height);
     Entity.prototype.update.call(this);
 }
 

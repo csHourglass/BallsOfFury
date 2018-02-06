@@ -101,23 +101,6 @@ Player.prototype.throwBall = function(boundingBox) {
 
 Player.prototype.update = function ()   {
 
-/////***** Collision *****/////
-    for (var i = 0; i < this.game.entities.length; i++) {
-        var ent = this.game.entities[i];
-
-        if (ent !== this && ent.canCollide && this.boundingBox.hasCollided(ent.boundingBox)) {
-            if (ent.id === 1)   {
-
-            }
-            if (ent.team != this.team && ent.speed > 1) {
-                this.removeFromWorld = true;
-            } else if (ent.speed <= 1 && this.ballState == 0) {
-                ent.removeFromWorld = true;
-                this.ballState = 1;  // pickup ball
-            }
-        }
-    }
-
 /////***** Jumping *****/////
     if (this.game.space && this.canJump)    {
         this.jumpingState = 1;
@@ -311,7 +294,7 @@ Player.prototype.update = function ()   {
                 this.removeFromWorld = true;
             }
             console.log(ent.id);
-            if (ent.id === 5 && this.ballState === 0) {
+            if (ent.id === 5 && this.ballState === 0 && ent.state !== 0) {
                 console.log("MINE");
                 ent.removeFromWorld = true;
                 this.ballState = 1;  // pickup ball
