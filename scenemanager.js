@@ -53,13 +53,13 @@ SceneManager.prototype.removeEntity = function () {
 	var i;
     for (i = 0; i < this.gameEngine.entities.length; i++) {
 		//remove the entity from gameEngine's entity array
-		this.gameEngine.entities.removeFromWorld = true;
+		this.gameEngine.entities[i].removeFromWorld = true;
 	}
 	
 	//loop over all players in game engine
 	for (i = 0; i < this.gameEngine.players.length; i++) {
 		//remove the player from gameEngine's entity array
-		this.gameEngine.players.removeFromWorld = true;
+		this.gameEngine.players[i].removeFromWorld = true;
 	}
 }
 
