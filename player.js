@@ -396,7 +396,7 @@ Player.prototype.draw = function(ctx)   {
         }
         else if (this.jumpingState === 3)   { //Drawing transition from rising to falling
             this.RFallStartAnimation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
-        }
+		}
         else if (this.jumpingState === 4)   { //Drawing falling animation
             this.RFallAnimation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }

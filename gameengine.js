@@ -120,8 +120,8 @@ GameEngine.prototype.startInput = function () {
 		console.log(`controller ${e.index} connected!`);
         var player = new Player(that, (1136 * Math.random()), 400, that.teams++, ASSET_MANAGER.getAsset("./img/player.png"));
 
-        that.players.push(player);
-        that.addEntity(player);
+        //that.players.push(player);
+        that.addEntity(1, player);
         //"that.players[0].team);
 	});
 
@@ -494,14 +494,26 @@ GameEngine.prototype.startInput = function () {
     console.log('Input started');
 }
 
-GameEngine.prototype.addEntity = function (entity) {
-    console.log('added entity');
-    this.entities.push(entity);
+// isPlayer 0 - not a player
+// isPlayer 1 - is a player
+GameEngine.prototype.addEntity = function (isPlayer, entity) {
+	if (isPlayer === 1) {
+		console.log('added player');
+		return this.players.push(entity);
+	}
+	else if (isPlayer === 0) {
+		console.log('added entity');
+		return this.entities.push(entity);
+	}
 }
 
 GameEngine.prototype.draw = function () {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.ctx.save();
+	for (var i = 0; i < this.players.length; i++) {
+        this.players[i].draw(this.ctx);
+    }
+	
     for (var i = 0; i < this.entities.length; i++) {
         this.entities[i].draw(this.ctx);
     }
@@ -509,19 +521,36 @@ GameEngine.prototype.draw = function () {
 }
 
 GameEngine.prototype.update = function () {
+	
+	var playersCount = this.players.length;
+
+    for (var i = 0; i < playersCount; i++) {
+        var players = this.players[i];
+
+        if (!players.removeFromWorld) {
+            players.update();
+        }
+    }
+	
     var entitiesCount = this.entities.length;
 
-    for (var i = 0; i < entitiesCount; i++) {
-        var entity = this.entities[i];
+    for (var j = 0; j < entitiesCount; j++) {
+        var entity = this.entities[j];
 
         if (!entity.removeFromWorld) {
             entity.update();
         }
     }
-
-    for (var i = this.entities.length - 1; i >= 0; --i) {
-        if (this.entities[i].removeFromWorld) {
-            this.entities.splice(i, 1);
+	
+	for (var i = this.players.length - 1; i >= 0; --i) {
+        if (this.players[i].removeFromWorld) {
+            this.players.splice(i, 1);
+        }
+    }
+	
+    for (var j = this.entities.length - 1; j >= 0; --j) {
+        if (this.entities[j].removeFromWorld) {
+            this.entities.splice(j, 1);
         }
     }
 }
