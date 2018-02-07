@@ -23,6 +23,9 @@ Camera.prototype = new Entity();
 Camera.prototype.constructor = Camera;
 
 Camera.prototype.update = function ()   {
+    // var canvas = document.getElementsByTagName('canvas')[0];
+    // canvas.width = $(window).width();
+    // canvas.height = $(window).height();
     var xCoord = [];
     var yCoord = [];
     var players = 0;
@@ -51,12 +54,12 @@ Camera.prototype.update = function ()   {
             if (playerX < xMin) xMin = playerX;
             if (playerY > yMax) yMax = playerY;
             if (playerY < yMin) yMin = playerY;
-            this.goalx += playerX;
-            this.goaly += playerY;
+            // this.goalx += playerX;
+            // this.goaly += playerY;
 
         }
-        this.goalx /= players;
-        this.goaly /= players;
+        this.goalx = (xMax + xMin)/2;
+        this.goaly = (yMax + yMin)/2;
     }
     if (this.goalx - xMin > xMax - this.goalx)  this.goalWidth = this.goalx - xMin + 500;
     else    this.goalWidth = xMax - this.goalx + 500;
@@ -66,9 +69,11 @@ Camera.prototype.update = function ()   {
 
     if (this.defaultRatio > this.goalWidth/this.goalHeight) {
         var newHeight = this.goalWidth/this.defaultRatio;
+        this.goaly += newHeight - this.goalHeight;
         this.goalHeight = newHeight;
     } else  {
         var newWidth = this.goalHeight*this.defaultRatio;
+        this.goalx += newWidth - this.goalWidth;
         this.goalWidth = newWidth;
     }
     this.goalWidth *= this.defaultRatio;
