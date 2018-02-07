@@ -29,15 +29,15 @@ SceneManager.prototype.levelOne = function () {
 	// gameEngine.addEntity(player);
 	//var player1 = new Player(gameEngine, 128, 700, 1, ASSET_MANAGER.getAsset("./img/player.png"));
 	//var player2 = new Player (gameEngine, 800, 400, 2, ASSET_MANAGER.getAsset("./img/player.png"));
-	var newLength= this.gameEngine.addEntity(0, new Background(this.gameEngine, ASSET_MANAGER.getAsset("./img/Stage1Background.png")));
+	var newLength= this.gameEngine.addEntity(new Background(this.gameEngine, ASSET_MANAGER.getAsset("./img/Stage1Background.png")));
 	console.log(newLength - 1);
-	this.gameEngine.addEntity(0, new Wall(this.gameEngine, 0, 918, 1920, 162, "./img/TestPlatform.png", 0, ASSET_MANAGER.getAsset("./img/TestPlatform.png")));
-	this.gameEngine.addEntity(0, new Wall(this.gameEngine, 21, 72, 48, 846, "./img/TestWall.png", 0, ASSET_MANAGER.getAsset("./img/TestWall.png")));
-	this.gameEngine.addEntity(0, new Wall(this.gameEngine, 1851, 72, 48, 846, "./img/TestWall.png", 0, ASSET_MANAGER.getAsset("./img/TestWall.png")));
-	this.gameEngine.addEntity(0, new Wall(this.gameEngine, 0, 0, 1920, 72, "./img/TestCeiling.png", 0, ASSET_MANAGER.getAsset("./img/TestCeiling.png")));
+	this.gameEngine.addEntity(new Wall(this.gameEngine, 0, 918, 1920, 162, "./img/TestPlatform.png", 0, ASSET_MANAGER.getAsset("./img/TestPlatform.png")));
+	this.gameEngine.addEntity(new Wall(this.gameEngine, 21, 72, 48, 846, "./img/TestWall.png", 0, ASSET_MANAGER.getAsset("./img/TestWall.png")));
+	this.gameEngine.addEntity(new Wall(this.gameEngine, 1851, 72, 48, 846, "./img/TestWall.png", 0, ASSET_MANAGER.getAsset("./img/TestWall.png")));
+	this.gameEngine.addEntity(new Wall(this.gameEngine, 0, 0, 1920, 72, "./img/TestCeiling.png", 0, ASSET_MANAGER.getAsset("./img/TestCeiling.png")));
 	// gameEngine.addEntity(player1);
-	this.gameEngine.addEntity(0, dummy);
-	this.gameEngine.addEntity(0, new Camera(this.gameEngine, 0, 0, 1920, 1080));
+	this.gameEngine.addEntity(dummy);
+	this.gameEngine.addEntity(new Camera(this.gameEngine, 0, 0, 1920, 1080));
 	//gameEngine.addEntity(player2);
 }
 

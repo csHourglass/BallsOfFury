@@ -67,7 +67,9 @@ ASSET_MANAGER.downloadAll(function () {
 	var sceneManager = new SceneManager();
 	sceneManager.init(gameEngine);
 	sceneManager.levelOne();
-	
+	setTimeout(function(){
+    sceneManager.removeLevelOne();
+}, 10000);
     gameEngine.init(ctx);
 	
 	
