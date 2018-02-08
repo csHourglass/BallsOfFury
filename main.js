@@ -26,6 +26,9 @@ var ASSET_MANAGER = new AssetManager();
 
 //ASSET_MANAGER.queueDownload("./img/bg15.png");
 ASSET_MANAGER.queueDownload("./img/bg20.png");
+ASSET_MANAGER.queueDownload("./img/bof.png");
+ASSET_MANAGER.queueDownload("./img/load.png");
+ASSET_MANAGER.queueDownload("./img/text.png");
 ASSET_MANAGER.queueDownload("./img/Stage1Background.png");
 ASSET_MANAGER.queueDownload("./img/TestPlatform.png");
 ASSET_MANAGER.queueDownload("./img/TestWall.png");
@@ -66,7 +69,8 @@ ASSET_MANAGER.downloadAll(function () {
 	
 	var sceneManager = new SceneManager();
 	sceneManager.init(gameEngine);
-	sceneManager.levelOne();
+	//sceneManager.levelOne();
+	sceneManager.loadingScreen();
 	/*setTimeout(function(){
     sceneManager.removeLevelOne();
 }, 10000);*/

@@ -11,7 +11,8 @@ SceneManager.prototype.init = function (gameEngine) {
 
 SceneManager.prototype.loadingScreen = function () {
     console.log("loading the loading screen");
-    
+	this.gameEngine.addEntity(new LoadingScreen(this.gameEngine));
+
 }
 
 SceneManager.prototype.removeLoadingScreen = function () {

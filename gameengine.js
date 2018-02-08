@@ -43,8 +43,8 @@ function GameEngine() {
 	this.mouseDown = null;
 	this.triggerUp = null;
 	this.triggerDown = null;
-    this.mousex = 0;
-	this.mousey = 0;
+    this.mousex = -100;
+	this.mousey = -100;
 	this.stickx = 0;
 	this.sticky = 0;
     this.wheel = null;
@@ -98,6 +98,9 @@ GameEngine.prototype.startInput = function () {
     this.ctx.canvas.addEventListener("mousemove", function (e)  {
         that.players[0].mousex = e.clientX;
         that.players[0].mousey = e.clientY;
+		that.mousex = e.clientX;
+        that.mousey = e.clientY;
+		console.log("mousex=" + that.mousex + " ,mousey=" + that.mousey);
     })
     this.ctx.canvas.addEventListener("mouseup", function (e)    {
         that.players[0].mouseUp = true;
