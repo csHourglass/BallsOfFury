@@ -26,6 +26,7 @@ Dummy.prototype.update = function() {
         if (ent != this && ent.canCollide && ent.speed >= 1 && this.boundingBox.hasCollided(ent.boundingBox)) {
             this.isHit = true;
             //ent.canCollide = false;
+            
         }
     }
 

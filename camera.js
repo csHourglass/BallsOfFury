@@ -11,6 +11,8 @@ function Camera(game, x, y, width, height)  {
     this.goalHeight = this.height;
     this.defaultRatio = this.defaultWidth/this.defaultHeight;
     this.scale = 1.00;
+
+    // This is here due to collision coupling.  As soon as that is rewritten, this can be removed.
     this.left = -1000;
     this.top = -1000;
     this.right = -1000;
@@ -23,12 +25,12 @@ Camera.prototype = new Entity();
 Camera.prototype.constructor = Camera;
 
 Camera.prototype.update = function ()   {
-    // var canvas = document.getElementsByTagName('canvas')[0];
-    // canvas.width = $(window).width();
-    // canvas.height = $(window).height();
+    //Store the coordinates of every Player entity.
     var xCoord = [];
     var yCoord = [];
-    var players = 0;
+    var players = 0; //Player counter
+
+    //Iterate through the entity array, searching for players.
     for (var i = 0; i < this.game.entities.length; i++) {
         var ent = this.game.entities[i];
         if (ent.id === 4)   {
@@ -37,14 +39,21 @@ Camera.prototype.update = function ()   {
             players++;
         }
     }
+
+    // These variables store the min and max x and y across all current Players.
     var xMin = 1920;
     var xMax = 0;
     var yMin = 1080;
     var yMax = 0;
-    if (players === 0)  {
+
+
+    if (players === 0)  { // If no players are present...
+
         this.goalx = this.defaultWidth/2;
         this.goaly = this.defaultHeight/2;
+
     } else  {
+
         this.goalx = 0;
         this.goaly = 0;
         for (var i = 0; i < players; i++) {
@@ -58,37 +67,29 @@ Camera.prototype.update = function ()   {
             // this.goaly += playerY;
 
         }
+        // The midpoint is the center of the camera.
         this.goalx = (xMax + xMin)/2;
         this.goaly = (yMax + yMin)/2;
+
     }
-    if (this.goalx - xMin > xMax - this.goalx)  this.goalWidth = this.goalx - xMin + 500;
-    else    this.goalWidth = xMax - this.goalx + 500;
-    if (this.goaly - yMin > yMax - this.goaly)  this.goalHeight = this.goaly - yMin + 250;
-    else    this.goalHeight = yMax - this.goaly + 250;
 
+    this.goalWidth = (xMax - xMin)*1.5; // The bare minimum width to show all Players + 50%
+    this.goalHeight = (yMax - yMin)*1.5; // The bare minimum height + 50%
+    //If the camera width and height are below half the default width and height, increase it
+    if (this.goalWidth < this.defaultWidth)  this.goalWidth = this.defaultWidth;
+    if (this.goalHeight < this.defaultHeight)  this.goalHeight = this.defaultHeight;
 
-    if (this.defaultRatio > this.goalWidth/this.goalHeight) {
-        var newHeight = this.goalWidth/this.defaultRatio;
-        this.goaly += newHeight - this.goalHeight;
-        this.goalHeight = newHeight;
-    } else  {
-        var newWidth = this.goalHeight*this.defaultRatio;
-        this.goalx += newWidth - this.goalWidth;
-        this.goalWidth = newWidth;
-    }
-    this.goalWidth *= this.defaultRatio;
-    this.goalheight /= this.defaultRatio;
-    this.width = this.goalWidth*2;
-    this.height = this.goalHeight*2;
-
-    this.x = this.goalx - this.goalWidth;
-    this.y = this.goaly - this.goalHeight;
-    this.scale = this.defaultWidth/this.width;
+    // Getting the actual coords for the camera
+    this.x = this.goalx - this.goalWidth/2;
+    this.y = this.goaly - this.goalHeight/2;
+    // The scale needed for drawing all entities
+    this.scale = this.defaultWidth/this.goalWidth;
+    // Store camera coords and scale in the GameEngine
     this.game.xOffset = this.x;
     this.game.yOffset = this.y;
     this.game.drawScale = this.scale;
 
-    console.log(this.x, this.y, this.width, this.height);
+    // console.log(this.x, this.y, this.width, this.height);
     Entity.prototype.update.call(this);
 }
 
