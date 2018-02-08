@@ -34,7 +34,8 @@ function GameEngine() {
 	const gamepad = new Gamepad();
     this.entities = [];
     this.players = [];
-    this.teams = 0;
+    //team 0 is keyboard
+    this.teams = 1;
     this.showOutlines = false;
     this.ctx = null;
     this.click = null;
@@ -67,6 +68,12 @@ GameEngine.prototype.init = function (ctx) {
 
 GameEngine.prototype.start = function () {
     console.log("starting game");
+    //keyboard player's team is 10 - arbitrary
+    var player = new Player(this, (1136 * Math.random()), 400, 0, ASSET_MANAGER.getAsset("./img/player.png"));
+        
+        this.players.push(player);
+        this.addEntity(player);
+
     var that = this;
     (function gameLoop() {
         that.loop();
@@ -74,12 +81,25 @@ GameEngine.prototype.start = function () {
     })();
 }
 
+GameEngine.prototype.getID = function (e) {
+	var index;
+	if (e.player === 'keyboard') {
+			index = 0;
+	}
+	else {
+		index = e.player;
+	}
+
+	return index;
+}
 GameEngine.prototype.startInput = function () {
     console.log('Starting input');
     var that = this;
     this.ctx.canvas.addEventListener("mousemove", function (e)  {
         that.mousex = e.clientX;
         that.mousey = e.clientY;
+        console.log('x=' + that.mousex);
+        console.log('y=' + that.mousey);
     })
     this.ctx.canvas.addEventListener("mouseup", function (e)    {
         that.mouseUp = true;
@@ -135,15 +155,16 @@ GameEngine.prototype.startInput = function () {
 	//Analog stick Press
 	//METHOD 1 of handling analog stick press
 	this.gamepad.on('press', 'stick_axis_left', e => {
-		console.log("e.index = "+e.player);
-		console.log("that.players[e.player].aKey = " + that.players[e.player].aKey);
+		var index = this.getID(e);
+		console.log("e.index = "+index);
+		console.log("that.players[index].aKey = " + that.players[index].aKey);
 		if (e.x < 0) {
-            that.players[e.player].aKey = true;
-			that.players[e.player].dKey = false;
+            that.players[index].aKey = true;
+			that.players[index].dKey = false;
 		}
 		if (e.x > 0) {
-			that.players[e.player].dKey = true;
-			that.players[e.player].aKey = false;
+			that.players[index].dKey = true;
+			that.players[index].aKey = false;
 		}
 		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
@@ -154,27 +175,30 @@ GameEngine.prototype.startInput = function () {
 
 	//Analog stick hold
 	this.gamepad.on('hold', 'stick_axis_left', e => {
+		var index = this.getID(e);
 		if (e.x > 0) {
-			that.players[e.player].dKey = true;
-			that.players[e.player].aKey = false;
+			that.players[index].dKey = true;
+			that.players[index].aKey = false;
 		}
 		if (e.x < 0) {
-			that.players[e.player].aKey = true;
-			that.players[e.player].dKey = false;
+			that.players[index].aKey = true;
+			that.players[index].dKey = false;
 		}
 		console.log(`player ${e.player} holding x=${e.x}, y=${e.y}!`);
 	});
 
 	this.gamepad.on('hold', 'stick_axis_right', e => {
+		var index = this.getID(e);
 		console.log(`player ${e.player} holding ${e.value}!`);
-		this.players[e.player].stickx = e.x;
-		this.players[e.player].sticky = e.y;
+		this.players[index].stickx = e.x;
+		this.players[index].sticky = e.y;
 	});
 
 	//Analog stick release
 	this.gamepad.on('release', 'stick_axis_left', e => {
-		that.players[e.player].aKey = false;
-		that.players[e.player].dKey = false;
+		var index = this.getID(e);
+		that.players[index].aKey = false;
+		that.players[index].dKey = false;
 		console.log(`player ${e.player} released ${e.value}!`);
 	});
 
@@ -186,8 +210,9 @@ GameEngine.prototype.startInput = function () {
 
 	//button_1 - A (XBOX) / X (PS3/PS4)
 	this.gamepad.on('press', 'button_1', e => {
-		that.players[e.player].space = true;
-		that.players[e.player].spaceReleased = false;
+		var index = this.getID(e);
+		that.players[index].space = true;
+		that.players[index].spaceReleased = false;
     console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 
@@ -223,8 +248,9 @@ GameEngine.prototype.startInput = function () {
 
 	//shoulder_bottom_right - RT (XBOX) / R2 (PS3/PS4)
 	this.gamepad.on('press', 'shoulder_bottom_right', e => {
-		that.players[e.player].triggerDown = true;
-		console.log("triggerDown = " + that.players[e.player].triggerDown);
+		var index = this.getID(e);
+		that.players[index].triggerDown = true;
+		console.log("triggerDown = " + that.players[index].triggerDown);
 		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 
@@ -262,13 +288,15 @@ GameEngine.prototype.startInput = function () {
 
 	//d_pad_left - Left on the D-Pad (XBOX/PS3/PS4)
 	this.gamepad.on('press', 'd_pad_left', e => {
-		that.players[e.player].aKey = true;
+		var index = this.getID(e);
+		that.players[index].aKey = true;
 		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 
 	//d_pad_right - Right on the D-Pad (XBOX/PS3/PS4)
 	this.gamepad.on('press', 'd_pad_right', e => {
-		that.players[e.player].dKey = true;
+		var index = this.getID(e);
+		that.players[index].dKey = true;
 		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 
@@ -372,8 +400,9 @@ GameEngine.prototype.startInput = function () {
 
 	//button_1 - A (XBOX) / X (PS3/PS4)
 	this.gamepad.on('release', 'button_1', e => {
-		that.players[e.player].space = false;
-		that.players[e.player].spaceReleased = true;
+		var index = this.getID(e);
+		that.players[index].space = false;
+		that.players[index].spaceReleased = true;
     console.log(`player ${e.player} released ${e.button}!`);
 	});
 
@@ -409,7 +438,8 @@ GameEngine.prototype.startInput = function () {
 
 	//shoulder_bottom_right - RT (XBOX) / R2 (PS3/PS4)
 	this.gamepad.on('release', 'shoulder_bottom_right', e => {
-		that.players[e.player].triggerUp = true;
+		var index = this.getID(e);
+		that.players[index].triggerUp = true;
 		console.log("triggerUp = " + that.triggerUp);
 		console.log(`player ${e.player} released ${e.button}!`);
 	});
@@ -446,13 +476,15 @@ GameEngine.prototype.startInput = function () {
 
 	//d_pad_left - Left on the D-Pad (XBOX/PS3/PS4)
 	this.gamepad.on('release', 'd_pad_left', e => {
-		that.players[e.player].aKey = false;
+		var index = this.getID(e);
+		that.players[index].aKey = false;
 		console.log(`player ${e.player} released ${e.button}!`);
 	});
 
 	//d_pad_right - Right on the D-Pad (XBOX/PS3/PS4)
 	this.gamepad.on('release', 'd_pad_right', e => {
-		that.players[e.player].dKey = false;
+		var index = this.getID(e);
+		that.players[index].dKey = false;
 		console.log(`player ${e.player} released ${e.button}!`);
 	});
 
