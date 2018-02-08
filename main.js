@@ -64,6 +64,7 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.addEntity(new Wall(gameEngine, 21, 72, 48, 846, "./img/TestWall.png", 0, ASSET_MANAGER.getAsset("./img/TestWall.png")));
     gameEngine.addEntity(new Wall(gameEngine, 1851, 72, 48, 846, "./img/TestWall.png", 0, ASSET_MANAGER.getAsset("./img/TestWall.png")));
     gameEngine.addEntity(new Wall(gameEngine, 0, 0, 1920, 72, "./img/TestCeiling.png", 0, ASSET_MANAGER.getAsset("./img/TestCeiling.png")));
+    // gameEngine.addEntity(new Platform(gameEngine, 69, 1020, ))
     // gameEngine.addEntity(player1);
     gameEngine.addEntity(dummy);
     gameEngine.addEntity(new Camera(gameEngine, 0, 0, 1920, 1080));

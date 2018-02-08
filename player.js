@@ -304,6 +304,15 @@ Player.prototype.update = function ()   {
                     }
                 }
             }
+            if (ent.id === 2)   {
+                if (this.prevY < this.y && (this.y + this.height - 5) > ent.y && this.prevY + 30 + this.boundingBox.height <= ent.y)  {
+                    if (this.y > ent.y - this.height + 5)   {
+                        this.y = ent.y - this.height + 5;
+                        this.yv = 0;
+                        this.jumpingState = 0;
+                    }
+                }
+            }
             if (ent.team !== this.team && ent.speed > 1) {
                 this.removeFromWorld = true;
             }
