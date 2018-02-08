@@ -26,10 +26,12 @@ LoadingScreen.prototype.draw = function(ctx){
 	this.singlePlayer.drawFrame(this.game.clockTick, ctx, 1920/25, 1080/2);
 	this.multiPlayer.drawFrame(this.game.clockTick, ctx, 1920/25, 1080/2 + 80);
 	this.settings.drawFrame(this.game.clockTick, ctx, 1920/25, 1080/2 + 80*2);
+	
 	this.playerOne.drawFrame(this.game.clockTick, ctx, 1920/8, 1080 - 80 * 3);
 	this.playerTwo.drawFrame(this.game.clockTick, ctx, 1920/8 + 357, 1080 - 80 * 3);
 	this.playerThree.drawFrame(this.game.clockTick, ctx, 1920/8 + 357*2, 1080 - 80 * 3);
 	this.playerFour.drawFrame(this.game.clockTick, ctx, 1920/8 + 357*3, 1080 - 80 * 3);
+	
 	number = ballNearest(this.game.mousex, this.game.mousey);
 	
 	//single player hover
@@ -43,6 +45,22 @@ LoadingScreen.prototype.draw = function(ctx){
 	//settings hover
 	else if (number === 3) {
 		this.baller.drawFrame(this.game.clockTick, ctx, (1920/25) + 357-150, 1080/2 + 190);
+	}
+	//player one hover
+	else if (number === 4) {
+		this.baller.drawFrame(this.game.clockTick, ctx, 1920/8, (1080 - 80 * 3) + 30);
+	}
+	//player two hover
+	else if (number === 5) {
+		this.baller.drawFrame(this.game.clockTick, ctx, 1920/8 + 357, (1080 - 80 * 3) + 30);
+	}
+	//player three hover
+	else if (number === 6) {
+		this.baller.drawFrame(this.game.clockTick, ctx, 1920/8 + 357*2, (1080 - 80 * 3) + 30);
+	}
+	//player four hover
+	else if (number === 7) {
+		this.baller.drawFrame(this.game.clockTick, ctx, 1920/8 + 357*3, (1080 - 80 * 3) + 30);
 	}
 	
     Entity.prototype.draw.call(this);
@@ -58,8 +76,25 @@ function ballNearest(x, y) {
 		}
 		else if (y > (1080/2) + 80*2 && y < (1080/2) + 80*3) {
 			return 3;
-		} else {
-			return 0;
 		}
+	}
+	if (x > (1920/8) && x < (1920/8) + 357*4) {
+		if (y > 1080 - 80*3 && y < (1080 - 80*3) + 80) {
+			if (x > (1920/8) && x < (1920/8) + 357*1) {
+				return 4;
+			}
+			else if (x > (1920/8) + 357*1 && x < (1920/8) + 357*2) {
+				return 5;
+			}
+			else if (x > (1920/8) + 357*2 && x < (1920/8) + 357*3) {
+				return 6;
+			}
+			else if (x > (1920/8) + 357*3 && x < (1920/8) + 357*4) {
+				return 7;
+			}
+		}
+	}
+	else {
+		return 0;
 	}
 }

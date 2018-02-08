@@ -100,7 +100,7 @@ GameEngine.prototype.startInput = function () {
         that.players[0].mousey = e.clientY;
 		that.mousex = e.clientX;
         that.mousey = e.clientY;
-		console.log("mousex=" + that.mousex + " ,mousey=" + that.mousey);
+		//console.log("mousex=" + that.mousex + " ,mousey=" + that.mousey);
     })
     this.ctx.canvas.addEventListener("mouseup", function (e)    {
         that.players[0].mouseUp = true;
