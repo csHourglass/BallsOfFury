@@ -275,7 +275,7 @@ Player.prototype.update = function ()   {
         var ent = this.game.entities[i];
 
         if (ent !== this && ent.canCollide && this.boundingBox.hasCollided(ent.boundingBox)) {
-            console.log("derp, collision");
+            //console.log("derp, collision");
             if (ent.id === 1)   {
                 if (this.prevY < this.y && (this.y + this.height - 5) > ent.y && this.prevY + 30 + this.boundingBox.height <= ent.y)  {
                     if (this.y > ent.y - this.height + 5)   {

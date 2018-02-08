@@ -119,6 +119,10 @@ Ball.prototype.update = function() {
             }
         }
     }
+    
+    if (this.speed < 1) {
+        this.state = 2;
+    }
     this.prevX = this.x;
     this.prevY = this.y;
     this.boundingBox = new BoundingBox (this.x, this.y, this.width, this.height);
