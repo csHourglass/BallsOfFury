@@ -87,7 +87,7 @@ GameEngine.prototype.getID = function (e) {
 			index = 0;
 	}
 	else {
-		index = e.player;
+		index = e.player + 1;
 	}
 
 	return index;

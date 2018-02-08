@@ -54,6 +54,8 @@ function Player(game, x, y, team)   {
     this.RThrowAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 1408, 128, 128, 0.04, 3, false, false);
 	this.RChargeThrowAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 256, 1408, 128, 128, 0.001, 1, true, false);
 
+    this.explosion = new Animation(ASSET_MANAGER.getAsset("./img/explosion.png"), 0, 0, 256, 256, 0.05, 48, false, false);
+
     this.jumpingState = 0; // 0 is on the ground, 1 is starting to jump, 2 is rising, 3 is beginning to fall, 4 is falling.  Has priority over running.
     this.runningState = 0; // 0 is idle, 1 is starting to run, 2 is running
     this.ballState = 1; //0- no ball, 1- has ball, 2- throwing.
@@ -74,6 +76,7 @@ function Player(game, x, y, team)   {
     this.boundingBox = new BoundingBox(this.x + 25, this.y + 25, this.width - 25, this.height - 25);
     this.showBoxes = true;  // show Bounding boxes for testing
     this.team = team;
+    this.isHit = false;
 
     //// Controls ////
     this.aKey = false;
@@ -306,7 +309,7 @@ Player.prototype.update = function ()   {
                 }
             }
             if (ent.team !== this.team && ent.speed > 1) {
-                this.removeFromWorld = true;
+                this.isHit = true;
             }
             console.log(ent.id);
             if (ent.id === 5 && this.ballState === 0 && ent.state !== 0) {
@@ -315,6 +318,9 @@ Player.prototype.update = function ()   {
                 this.ballState = 1;  // pickup ball
             }
         }
+    }
+    if (this.explosion.isDone()) {
+        this.removeFromWorld = true;
     }
     this.prevX = this.x;
     this.prevY = this.y;
@@ -343,8 +349,12 @@ Player.prototype.draw = function(ctx)   {
     if (this.showBoxes) {
         this.boundingBox.draw(ctx);
     }
+    /////////////// explosion animation /////////////
+    if (this.isHit) {
+        this.explosion.drawFrame(this.game.clockTick, ctx, this.x - (this.width/2), this.y - (this.height/2), this.game.drawScale);
+    }
 /////////////////////// Right facing sprites ///////////////////////////
-    if (this.facingLeft) {
+    else if (this.facingLeft) {
 		//if we're ready to throw, play throwing animation
         if (this.ballState === 2) {
             this.LThrowAnimation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
