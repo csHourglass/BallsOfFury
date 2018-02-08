@@ -1,4 +1,4 @@
-// This game shell was happily copied from Googler Seth Ladd's "Bad Aliens" game and his Google IO talk in 2011
+    // This game shell was happily copied from Googler Seth Ladd's "Bad Aliens" game and his Google IO talk in 2011
 window.onload = function() {
     document.getElementById("gameWorld").focus();
 };
@@ -70,7 +70,7 @@ GameEngine.prototype.start = function () {
     console.log("starting game");
     //keyboard player's team is 10 - arbitrary
     var player = new Player(this, (1136 * Math.random()), 400, 0, ASSET_MANAGER.getAsset("./img/player.png"));
-        
+
         this.players.push(player);
         this.addEntity(player);
 
@@ -96,16 +96,14 @@ GameEngine.prototype.startInput = function () {
     console.log('Starting input');
     var that = this;
     this.ctx.canvas.addEventListener("mousemove", function (e)  {
-        that.mousex = e.clientX;
-        that.mousey = e.clientY;
-        console.log('x=' + that.mousex);
-        console.log('y=' + that.mousey);
+        that.players[0].mousex = e.clientX;
+        that.players[0].mousey = e.clientY;
     })
     this.ctx.canvas.addEventListener("mouseup", function (e)    {
-        that.mouseUp = true;
+        that.players[0].mouseUp = true;
     }, false);
 	this.ctx.canvas.addEventListener("mousedown", function (e)    {
-        that.mouseDown = true;
+        that.players[0].mouseDown = true;
     }, false);
 
 	/*
@@ -543,7 +541,7 @@ GameEngine.prototype.draw = function () {
 }
 
 GameEngine.prototype.update = function () {
-	
+
     var entitiesCount = this.entities.length;
 
     for (var j = 0; j < entitiesCount; j++) {
@@ -553,7 +551,7 @@ GameEngine.prototype.update = function () {
             entity.update();
         }
     }
-	
+
     for (var j = this.entities.length - 1; j >= 0; --j) {
         if (this.entities[j].removeFromWorld) {
             this.entities.splice(j, 1);

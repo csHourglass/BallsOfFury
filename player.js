@@ -88,7 +88,7 @@ function Player(game, x, y, team)   {
     this.mousey = 0;
     this.stickx = 1;
     this.sticky = 0;
-    
+
     Entity.call(this, game, this.x, this.y, 0, 0, true, this.id);
 }
 Player.prototype = new Entity();
@@ -114,7 +114,6 @@ Player.prototype.throwBall = function(boundingBox) {
 
 
 Player.prototype.update = function ()   {
-
 /////***** Jumping *****/////
     if (this.space && this.canJump)    {
         this.jumpingState = 1;
@@ -328,7 +327,7 @@ Player.prototype.update = function ()   {
 
 	// if (this.x > width - 128) //canvasWidth - playerWidth = 1600 - 128 = 1472
 	// 	this.x = width - 128;
-    // 
+    //
 	// if (this.y > height - 128) //canvasHeight - playerHeight = 800 - 128 = 672
 	// 	this.y = height - 128;
 	/////////////////////////// END WALL COLLISION //////////////////////////////
