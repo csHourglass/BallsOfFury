@@ -4,19 +4,31 @@
 <head>
     <meta charset="utf-8">
 	<style>
+    html {
+    overflow: scroll;
+    overflow-x: hidden;
+    }
+    ::-webkit-scrollbar {
+    width: 0px;  /* remove scrollbar space */
+    background: transparent;  /* optional: just make scrollbar invisible */
+    }
+    /* optional: show position indicator in red */
+    ::-webkit-scrollbar-thumb {
+        background: #FF0000;
+    }
 	#loading {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 100;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(192, 192, 192, 0.5);
-    background-image: url("http://i.stack.imgur.com/MnyxU.gif");
-    background-repeat: no-repeat;
-    background-position: center;
-}
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 100;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(192, 192, 192, 0.5);
+        background-image: url("http://i.stack.imgur.com/MnyxU.gif");
+        background-repeat: no-repeat;
+        background-position: center;
+    }
 	</style>
 	
     <title>Balls of Fury</title>
