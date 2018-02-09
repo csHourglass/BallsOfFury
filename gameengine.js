@@ -163,7 +163,7 @@ GameEngine.prototype.startInput = function () {
 	this.gamepad.on('press', 'stick_axis_left', e => {
 		var index = this.getID(e);
 		console.log("e.index = "+index);
-		console.log("that.players[index].aKey = " + that.players[index].aKey);
+		//console.log("that.players[index].aKey = " + that.players[index].aKey);
 		if (e.x < 0) {
             that.players[index].aKey = true;
 			that.players[index].dKey = false;
