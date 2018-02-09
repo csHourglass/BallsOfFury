@@ -1,12 +1,56 @@
 function SceneManager() {
     this.gameEngine = null;
+	this.scene = 0;
+	this.clickedWhereX = null;
+	this.clickedWhereY = null;
 }
 
 SceneManager.prototype.constructor = SceneManager;
 
 SceneManager.prototype.init = function (gameEngine) {
     this.gameEngine = gameEngine;
+	this.scene = 0;
     console.log('scene manager initialized');
+}
+
+SceneManager.prototype.update = function () {
+	if (this.scene != 0 && this.clickedWhereX === -50 && this.clickedWhereY === -50) {
+		this.scene = 0;
+		this.removeEntity();
+		this.loadingScreen();
+	}
+	else if (this.clickedWhereX > (1920/25) && this.clickedWhereX < (1920/25) + 357) {
+		if (this.clickedWhereY > (1080/2) && this.clickedWhereY < (1080/2) + 80) {
+			//1
+			if (this.scene !== 1) {
+				this.scene = 1;
+				this.removeEntity();
+				this.levelOne();
+			}
+		}
+		else if (this.clickedWhereY > (1080/2) + 80 && this.clickedWhereY < (1080/2) + 80*2) {
+			//2
+		}
+		else if (this.clickedWhereY > (1080/2) + 80*2 && this.clickedWhereY < (1080/2) + 80*3) {
+			//3
+		}
+	}
+	if (this.clickedWhereX > (1920/8) && this.clickedWhereX < (1920/8) + 357*4) {
+		if (this.clickedWhereY > 1080 - 80*3 && this.clickedWhereY < (1080 - 80*3) + 80) {
+			if (this.clickedWhereX > (1920/8) && this.clickedWhereX < (1920/8) + 357*1) {
+				//4
+			}
+			else if (this.clickedWhereX > (1920/8) + 357*1 && this.clickedWhereX < (1920/8) + 357*2) {
+				//5
+			}
+			else if (this.clickedWhereX > (1920/8) + 357*2 && this.clickedWhereX < (1920/8) + 357*3) {
+				//6
+			}
+			else if (this.clickedWhereX > (1920/8) + 357*3 && this.clickedWhereX < (1920/8) + 357*4) {
+				//7
+			}
+		}
+	}
 }
 
 SceneManager.prototype.loadingScreen = function () {
@@ -22,6 +66,12 @@ SceneManager.prototype.removeLoadingScreen = function () {
 
 SceneManager.prototype.levelOne = function () {
     console.log("loading level one screen");
+	
+    var player = new Player(this.gameEngine, (1136 * Math.random()), 400, 0, ASSET_MANAGER.getAsset("./img/player.png"));
+
+    this.gameEngine.players.push(player);
+    this.gameEngine.addEntity(player);
+	
     // var bg = new Background(gameEngine);
 	// var player = new Player(gameEngine);
 	var dummy = new Dummy(this.gameEngine, 800, 380, 2, ASSET_MANAGER.getAsset("./img/Training_dummy.png"));

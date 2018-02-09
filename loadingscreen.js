@@ -32,7 +32,7 @@ LoadingScreen.prototype.draw = function(ctx){
 	this.playerThree.drawFrame(this.game.clockTick, ctx, 1920/8 + 357*2, 1080 - 80 * 3);
 	this.playerFour.drawFrame(this.game.clockTick, ctx, 1920/8 + 357*3, 1080 - 80 * 3);
 	
-	number = ballNearest(this.game.mousex, this.game.mousey);
+	var number = ballNearest(this.game.mousex, this.game.mousey);
 	
 	//single player hover
 	if (number === 1) {

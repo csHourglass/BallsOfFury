@@ -54,25 +54,22 @@ function GameEngine() {
 	this.yOffset = 0;
 	this.drawScale = 1;
 	//we should only be creating one gamepad object.
+
 	this.gamepad = gamepad;
 }
 
-GameEngine.prototype.init = function (ctx) {
+GameEngine.prototype.init = function (ctx, sceneManager) {
     this.ctx = ctx;
     this.surfaceWidth = this.ctx.canvas.width;
     this.surfaceHeight = this.ctx.canvas.height;
     this.startInput();
     this.timer = new Timer();
+	this.sceneManager = sceneManager;
     console.log('game initialized');
 }
 
 GameEngine.prototype.start = function () {
     console.log("starting game");
-    //keyboard player's team is 10 - arbitrary
-    var player = new Player(this, (1136 * Math.random()), 400, 0, ASSET_MANAGER.getAsset("./img/player.png"));
-
-        this.players.push(player);
-        this.addEntity(player);
 
     var that = this;
     (function gameLoop() {
@@ -96,17 +93,25 @@ GameEngine.prototype.startInput = function () {
     console.log('Starting input');
     var that = this;
     this.ctx.canvas.addEventListener("mousemove", function (e)  {
-        that.players[0].mousex = e.clientX;
-        that.players[0].mousey = e.clientY;
+		if (that.players.length > 0) {
+			that.players[0].mousex = e.clientX;
+			that.players[0].mousey = e.clientY;
+		}
 		that.mousex = e.clientX;
         that.mousey = e.clientY;
 		//console.log("mousex=" + that.mousex + " ,mousey=" + that.mousey);
     })
     this.ctx.canvas.addEventListener("mouseup", function (e)    {
-        that.players[0].mouseUp = true;
+		if (that.players.length > 0) {
+			that.players[0].mouseUp = true;
+		}
+		that.sceneManager.clickedWhereX = that.mousex;
+		that.sceneManager.clickedWhereY = that.mousey;
     }, false);
 	this.ctx.canvas.addEventListener("mousedown", function (e)    {
-        that.players[0].mouseDown = true;
+		if (that.players.length > 0) {
+			that.players[0].mouseDown = true;
+		}
     }, false);
 
 	/*
@@ -453,6 +458,8 @@ GameEngine.prototype.startInput = function () {
 	//start - Start (XBOX/PS3/PS4)
 	this.gamepad.on('release', 'start', e => {
 		console.log(`player ${e.player} released ${e.button}!`);
+		that.sceneManager.clickedWhereX = -50;
+		that.sceneManager.clickedWhereY = -50;
 	});
 
 	//stick_button_left - Left Analog Stick (XBOX/PS3/PS4)
@@ -540,6 +547,10 @@ GameEngine.prototype.draw = function () {
     for (var i = 0; i < this.entities.length; i++) {
         this.entities[i].draw(this.ctx);
     }
+	for (var i = 0; i < this.players.length; i++) {
+        this.players[i].draw(this.ctx);
+		console.log(this.players.length);
+    }
     this.ctx.restore();
 }
 
@@ -560,13 +571,29 @@ GameEngine.prototype.update = function () {
             this.entities.splice(j, 1);
         }
     }
+	
+	var playersCount = this.players.length;
+
+    for (var j = 0; j < playersCount; j++) {
+        var player = this.players[j];
+
+        if (!player.removeFromWorld) {
+            player.update();
+        }
+    }
+
+    for (var j = this.players.length - 1; j >= 0; --j) {
+        if (this.players[j].removeFromWorld) {
+            this.players.splice(j, 1);
+        }
+    }
 }
 
 GameEngine.prototype.loop = function () {
     this.clockTick = this.timer.tick();
     this.update();
+	this.sceneManager.update();
     this.draw();
-
     this.direction = 0;
 }
 
