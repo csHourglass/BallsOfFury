@@ -162,8 +162,8 @@ GameEngine.prototype.startInput = function () {
 	//METHOD 1 of handling analog stick press
 	this.gamepad.on('press', 'stick_axis_left', e => {
 		var index = this.getID(e);
-		console.log("e.index = "+index);
-		//console.log("that.players[index].aKey = " + that.players[index].aKey);
+		console.log("e.index = "+ index);
+		console.log("that.players[index].aKey = " + that.players[index].aKey);
 		if (e.x < 0) {
             that.players[index].aKey = true;
 			that.players[index].dKey = false;
@@ -545,7 +545,9 @@ GameEngine.prototype.draw = function () {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     this.ctx.save();
     for (var i = 0; i < this.entities.length; i++) {
-        this.entities[i].draw(this.ctx);
+        if (this.entities[i].id != 4) {
+            this.entities[i].draw(this.ctx);
+        }
     }
 	for (var i = 0; i < this.players.length; i++) {
         this.players[i].draw(this.ctx);
@@ -571,16 +573,16 @@ GameEngine.prototype.update = function () {
             this.entities.splice(j, 1);
         }
     }
-	
+
 	var playersCount = this.players.length;
 
-    for (var j = 0; j < playersCount; j++) {
-        var player = this.players[j];
-
-        if (!player.removeFromWorld) {
-            player.update();
-        }
-    }
+    // for (var j = 0; j < playersCount; j++) {
+    //     var player = this.players[j];
+    //
+    //     if (!player.removeFromWorld) {
+    //         player.update();
+    //     }
+    // }
 
     for (var j = this.players.length - 1; j >= 0; --j) {
         if (this.players[j].removeFromWorld) {
