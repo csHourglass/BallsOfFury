@@ -217,12 +217,21 @@ Player.prototype.update = function ()   {
     //     this.ballState = 1;
     // }
 
-    // if player has no ball, we down want mouse clicks
-    if (this.ballState === 0) {
+
+
+
+
+    if (this.ballState === 0) { // if player has no ball, we down want mouse clicks
+        if (this.LtriggerDown) {
+            this.canCatch = true;
+        }
         this.mouseDown = false;
         this.mouseUp = false;
         this.RtriggerDown = false;
         this.RtriggerUp = false;
+    }
+    if (this.LThrowAnimation.isDone() && this.RThrowAnimation.isDone()) {
+        this.canCatch = false;
     }
     console.log
 	//if we press mouse down, begin charging stopwatch.
@@ -356,8 +365,12 @@ Player.prototype.draw = function(ctx)   {
     if (this.isHit) {
         this.explosion.drawFrame(this.game.clockTick, ctx, this.x - (this.width/2), this.y - (this.height/2), this.game.drawScale);
     }
+
 /////////////////////// Right facing sprites ///////////////////////////
     else if (this.facingLeft) {
+        if (this.canCatch) {  // throwing animation is used for catch right now
+            this.LThrowAnimation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
+        }
 		//if we're ready to throw, play throwing animation
         if (this.ballState === 2) {
             this.LThrowAnimation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
@@ -393,8 +406,11 @@ Player.prototype.draw = function(ctx)   {
         else {
             this.LIdleAnimation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
-/////////////// Left facing sprites ///////////////////
-    } else {  // left facing sprites
+/////////////// Right facing sprites ///////////////////
+    } else {
+        if (this.canCatch) {  // throwing animation is used for catch right now
+            this.RThrowAnimation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
+        }
 		//else if we're ready to throw, play throwing animation
         if (this.ballState === 2) {  // winding up
             this.RThrowAnimation.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);

@@ -60,13 +60,13 @@ function GameEngine() {
 	this.gamepad = gamepad;
 }
 
-GameEngine.prototype.init = function (ctx, sceneManager) {
+GameEngine.prototype.init = function (ctx) {
     this.ctx = ctx;
     this.surfaceWidth = this.ctx.canvas.width;
     this.surfaceHeight = this.ctx.canvas.height;
     this.startInput();
     this.timer = new Timer();
-	this.sceneManager = sceneManager;
+//	this.sceneManager = sceneManager;
     console.log('game initialized');
 }
 
@@ -107,8 +107,8 @@ GameEngine.prototype.startInput = function () {
 		if (that.players.length > 0) {
 			that.players[0].mouseUp = true;
 		}
-		that.sceneManager.clickedWhereX = that.mousex;
-		that.sceneManager.clickedWhereY = that.mousey;
+		// that.sceneManager.clickedWhereX = that.mousex;
+		// that.sceneManager.clickedWhereY = that.mousey;
     }, false);
 	this.ctx.canvas.addEventListener("mousedown", function (e)    {
 		if (that.players.length > 0) {
@@ -466,8 +466,8 @@ GameEngine.prototype.startInput = function () {
 	//start - Start (XBOX/PS3/PS4)
 	this.gamepad.on('release', 'start', e => {
 		console.log(`player ${e.player} released ${e.button}!`);
-		that.sceneManager.clickedWhereX = -50;
-		that.sceneManager.clickedWhereY = -50;
+		// that.sceneManager.clickedWhereX = -50;
+		// that.sceneManager.clickedWhereY = -50;
 	});
 
 	//stick_button_left - Left Analog Stick (XBOX/PS3/PS4)
@@ -602,7 +602,7 @@ GameEngine.prototype.update = function () {
 GameEngine.prototype.loop = function () {
     this.clockTick = this.timer.tick();
     this.update();
-	this.sceneManager.update();
+//	this.sceneManager.update();
     this.draw();
     this.direction = 0;
 }
