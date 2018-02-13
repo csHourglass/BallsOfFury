@@ -1,4 +1,4 @@
-RtriggerUp    // This game shell was happily copied from Googler Seth Ladd's "Bad Aliens" game and his Google IO talk in 2011
+    // This game shell was happily copied from Googler Seth Ladd's "Bad Aliens" game and his Google IO talk in 2011
 window.onload = function() {
     document.getElementById("gameWorld").focus();
 };
@@ -251,9 +251,9 @@ GameEngine.prototype.startInput = function () {
 
 	//shoulder_bottom_left - LT (XBOX) / L2 (PS3/PS4)
 	this.gamepad.on('press', 'shoulder_bottom_left', e => {
-        var index = this.gerID(e);
+        var index = this.getID(e);
         that.players[index].LtriggerDown = true;
-        console.log("LtriggerDown = " + that.players[index].RtriggerDown);
+        console.log("LtriggerDown = " + that.players[index].LtriggerDown);
 		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 
@@ -444,7 +444,7 @@ GameEngine.prototype.startInput = function () {
 
 	//shoulder_bottom_left - LT (XBOX) / L2 (PS3/PS4)
 	this.gamepad.on('release', 'shoulder_bottom_left', e => {
-        var index = this.gerID(e);
+        var index = this.getID(e);
         that.players[index].LtriggerUp = true;
         console.log("LtriggerUp = " + that.players[index].LtriggerUp);
 		console.log(`player ${e.player} released ${e.button}!`);
