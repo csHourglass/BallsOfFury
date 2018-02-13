@@ -1,36 +1,16 @@
-/* the purpose of this class is essentially just for
-   collision detection between entities */
-function BoundingBox (x, y, width, height) {
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
-
-    this.left = x;
-    this.top = y;
-    this.right = x + width;
-    this.bottom = y + height;
-}
-
-BoundingBox.prototype.hasCollided = function (other) {
-    return (this.right > other.left && this.left < other.right &&
-            this.top < other.bottom && this.bottom > other.top);
-}
-
-BoundingBox.prototype.draw = function(ctx) {
-    //log red box console.log(this.x, this.y, this.width, this.height);
-    //log green box console.log(this.boundingBox.x, this.boundingBox.y, this.boundingBox.width, this.boundingBox.height);
-
-    // ctx.strokeStyle = "red";    // frame
-    // ctx.strokeRect(this.x, this.y, this.width, this.height);
-
-    ctx.strokeStyle = "green";  // bounding box
-    ctx.strokeRect(this.x, this.y, this.width, this.height);
-}
-
+/**
+ * The Player class is a foundation used by all the characters in our game.
+ * This class inherits the Entity class.
+ * @param {*} game : The game engine.
+ * @param {*} x : The starting x coordinate of our entity.
+ * @param {*} y : The starting y coordinate of our entity.
+ * @param {*} team : The team number of this Player.
+ */
 function Player(game, x, y, team)   {
-    //Loading Animations
-//// Right Animations ////
+    // Loading animations...
+    // NOTE: This needs to be moved out of Player like the Button class,
+    //  otherwise we can never have a Player that uses different sprites!
+    //// Right Animations ////
     this.LIdleAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 0, 128, 128, 0.08, 8, true, false);
     this.LRunAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 384, 128, 128, 128, 0.10, 6, true, false);
     this.LRunStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 128, 128, 128, 0.05, 3, false, false);
@@ -53,18 +33,41 @@ function Player(game, x, y, team)   {
     this.RBallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"),0, 1280, 128, 128, 0.08, 8, true, false);  // player has ball
     this.RThrowAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 1408, 128, 128, 0.04, 3, false, false);
 	this.RChargeThrowAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 256, 1408, 128, 128, 0.001, 1, true, false);
-
+    // Boom.  Plays on death.
     this.explosion = new Animation(ASSET_MANAGER.getAsset("./img/explosion.png"), 0, 0, 256, 256, 0.05, 48, false, false);
 
-    this.jumpingState = 0; // 0 is on the ground, 1 is starting to jump, 2 is rising, 3 is beginning to fall, 4 is falling.  Has priority over running.
-    this.runningState = 0; // 0 is idle, 1 is starting to run, 2 is running
-    this.ballState = 1; //0- no ball, 1- has ball, 2- throwing.
-    this.direction = 0;
-    this.facingLeft = false;
-    this.canJump = true;
-    this.radius = 100;
-    this.ground = 400;
-	this.chargingTime = 0;
+    /*  jumpingState is used to determine if the Player is
+        jumping or not.
+            0 - Player is on the ground.
+            1 - Player is pushing off the ground. (Started jumping)
+            2 - Player is rising in the air.
+            3 - Player is beginning to fall. (Top of the jump arc)
+            4 - Player is falling.
+    */
+    this.jumpingState = 0;
+    /*  runningState is used to determine if the Player is
+        running or not.
+            0 - Player is standing still.
+            1 - Player is starting to run.
+            2 - Player is running!
+    */
+    this.runningState = 0;
+    /*  ballState is used to determine if the Player is equipped
+        with a ball and what the Player is doing with it!
+            0 - Player has no ball!
+            1 - Player is holding a ball.
+            2 - Player is getting ready to throw the ball
+            3 - Player threw the ball!
+    */
+    this.ballState = 1;
+
+    this.direction = 0; //wtf is this?
+
+    this.facingLeft = false; // Is the Player facing left?
+    this.canJump = true; // Used to restrict jumping
+    this.radius = 100; //wtf is this?
+    this.ground = 400; //Obsolete with the inclusion of collision.
+	this.chargingTime = 0; //The amount of time the Player has charged the ball.
 
     this.x = x;
     this.y = y;
@@ -73,7 +76,7 @@ function Player(game, x, y, team)   {
     this.id = 4;
     this.width = 128;
     this.height = 128;
-    this.boundingBox = new BoundingBox(this.x + 25, this.y + 25, this.width - 25, this.height - 25);
+    this.boundingBox = new BoundingBox(this.x + 40, this.y + 30, this.width - 80, this.height - 35);
     this.showBoxes = true;  // show Bounding boxes for testing
     this.team = team;
     this.isHit = false;
@@ -115,7 +118,11 @@ Player.prototype.throwBall = function(boundingBox) {
     throwsound.play();
 }
 
-
+/**
+ * update() handles the default behavior of a player class.  The Player
+ * class handles all of its own logic to allow us to use any behavior
+ * we want in the game.
+ */
 Player.prototype.update = function ()   {
 /////***** Jumping *****/////
     if (this.space && this.canJump)    {
@@ -221,7 +228,6 @@ Player.prototype.update = function ()   {
         this.triggerDown = false;
         this.triggerUp = false;
     }
-    console.log
 	//if we press mouse down, begin charging stopwatch.
 	if (this.ballState === 1 && (this.mouseDown || this.triggerDown)) {
         console.log("ball state is 1");
@@ -325,21 +331,6 @@ Player.prototype.update = function ()   {
     this.prevX = this.x;
     this.prevY = this.y;
     this.boundingBox = new BoundingBox(this.x + 40, this.y + 30, this.width - 80, this.height - 35);
-	// if (this.x < 0)
-	// 	this.x = 0;
-	// //Ceiling collision
-	// if (this.y < 0)
-	// 	this.y = 0;
-
-	// if (this.x > width - 128) //canvasWidth - playerWidth = 1600 - 128 = 1472
-	// 	this.x = width - 128;
-    //
-	// if (this.y > height - 128) //canvasHeight - playerHeight = 800 - 128 = 672
-	// 	this.y = height - 128;
-	/////////////////////////// END WALL COLLISION //////////////////////////////
-
-    // updates position of boundingBoxs.  should happen differently for
-    // every animation
 
     Entity.prototype.update.call(this);
 }

@@ -534,8 +534,6 @@ GameEngine.prototype.startInput = function () {
     console.log('Input started');
 }
 
-// isPlayer 0 - not a player
-// isPlayer 1 - is a player
 GameEngine.prototype.addEntity = function (entity) {
 		console.log('added entity');
 		return this.entities.push(entity);
@@ -555,11 +553,16 @@ GameEngine.prototype.draw = function () {
     }
     this.ctx.restore();
 }
-
+/**
+ * When update() is called, every entity in the
+ * entities array will have their update() function
+ * called. Any entity that has been flagged for
+ * removal will be deleted as well.
+ */
 GameEngine.prototype.update = function () {
 
     var entitiesCount = this.entities.length;
-
+	// Calling all update() functions
     for (var j = 0; j < entitiesCount; j++) {
         var entity = this.entities[j];
 
@@ -567,7 +570,7 @@ GameEngine.prototype.update = function () {
             entity.update();
         }
     }
-
+	// Checking for removal
     for (var j = this.entities.length - 1; j >= 0; --j) {
         if (this.entities[j].removeFromWorld) {
             this.entities.splice(j, 1);
@@ -575,77 +578,20 @@ GameEngine.prototype.update = function () {
     }
 
 	var playersCount = this.players.length;
-
-    // for (var j = 0; j < playersCount; j++) {
-    //     var player = this.players[j];
-    //
-    //     if (!player.removeFromWorld) {
-    //         player.update();
-    //     }
-    // }
-
+	// Also removing the Players from the players array if necessary.
     for (var j = this.players.length - 1; j >= 0; --j) {
         if (this.players[j].removeFromWorld) {
             this.players.splice(j, 1);
         }
     }
 }
-
+/**
+ * The main game loop.  Constantly calls the update()
+ * and draw() functions.
+ */
 GameEngine.prototype.loop = function () {
     this.clockTick = this.timer.tick();
     this.update();
-	this.sceneManager.update();
     this.draw();
     this.direction = 0;
-}
-
-function Entity(game, x, y, xv, yv, canCollide, id) {
-    this.game = game;
-    this.x = x;
-    this.y = y;
-    this.xv = xv;
-    this.yv = yv;
-	this.canCollide = canCollide;
-	this.id = id;
-    this.removeFromWorld = false;
-}
-
-Entity.prototype.update = function () {
-}
-
-Entity.prototype.draw = function (ctx) {
-    if (this.game.showOutlines && this.radius) {
-        this.game.ctx.beginPath();
-        this.game.ctx.strokeStyle = "green";
-        var tempX = this.x + this.xv;
-        var tempY = this.y + this.yv;
-        this.game.ctx.arc(tempX, tempY, this.radius, 0, Math.PI * 2, false);
-        this.game.ctx.stroke();
-        this.game.ctx.closePath();
-    }
-}
-
-Entity.prototype.rotateAndCache = function (image, angle) {
-    var offscreenCanvas = document.createElement('canvas');
-    var size = Math.max(image.width, image.height);
-    offscreenCanvas.width = size;
-    offscreenCanvas.height = size;
-    var offscreenCtx = offscreenCanvas.getContext('2d');
-    offscreenCtx.save();
-    offscreenCtx.translate(size / 2, size / 2);
-    offscreenCtx.rotate(angle);
-    offscreenCtx.translate(0, 0);
-    offscreenCtx.drawImage(image, -(image.width / 2), -(image.height / 2));
-    offscreenCtx.restore();
-    //offscreenCtx.strokeStyle = "red";
-    //offscreenCtx.strokeRect(0,0,size,size);
-    return offscreenCanvas;
-}
-
-Entity.prototype.getX = function()	{
-	return (this.x-this.game.xOffset)*this.game.drawScale;
-}
-
-Entity.prototype.getY = function()	{
-	return (this.y-this.game.yOffset)*this.game.drawScale;
 }

@@ -13,49 +13,10 @@ SceneManager.prototype.init = function (gameEngine) {
     console.log('scene manager initialized');
 }
 
-SceneManager.prototype.update = function () {
-	if (this.scene != 0 && this.clickedWhereX === -50 && this.clickedWhereY === -50) {
-		this.scene = 0;
-		this.removeEntity();
-		this.loadingScreen();
-	}
-	else if (this.clickedWhereX > (1920/25) && this.clickedWhereX < (1920/25) + 357) {
-		if (this.clickedWhereY > (1080/2) && this.clickedWhereY < (1080/2) + 80) {
-			//1
-			if (this.scene !== 1) {
-				this.scene = 1;
-				this.removeEntity();
-				this.levelOne();
-			}
-		}
-		else if (this.clickedWhereY > (1080/2) + 80 && this.clickedWhereY < (1080/2) + 80*2) {
-			//2
-		}
-		else if (this.clickedWhereY > (1080/2) + 80*2 && this.clickedWhereY < (1080/2) + 80*3) {
-			//3
-		}
-	}
-	if (this.clickedWhereX > (1920/8) && this.clickedWhereX < (1920/8) + 357*4) {
-		if (this.clickedWhereY > 1080 - 80*3 && this.clickedWhereY < (1080 - 80*3) + 80) {
-			if (this.clickedWhereX > (1920/8) && this.clickedWhereX < (1920/8) + 357*1) {
-				//4
-			}
-			else if (this.clickedWhereX > (1920/8) + 357*1 && this.clickedWhereX < (1920/8) + 357*2) {
-				//5
-			}
-			else if (this.clickedWhereX > (1920/8) + 357*2 && this.clickedWhereX < (1920/8) + 357*3) {
-				//6
-			}
-			else if (this.clickedWhereX > (1920/8) + 357*3 && this.clickedWhereX < (1920/8) + 357*4) {
-				//7
-			}
-		}
-	}
-}
-
 SceneManager.prototype.loadingScreen = function () {
     console.log("loading the loading screen");
-	this.gameEngine.addEntity(new LoadingScreen(this.gameEngine));
+	// this.gameEngine.addEntity(new LoadingScreen(this.gameEngine));
+	LoadingScreen(this.gameEngine);
 
 }
 
