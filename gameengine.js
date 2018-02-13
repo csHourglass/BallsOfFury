@@ -1,4 +1,4 @@
-    // This game shell was happily copied from Googler Seth Ladd's "Bad Aliens" game and his Google IO talk in 2011
+RtriggerUp    // This game shell was happily copied from Googler Seth Ladd's "Bad Aliens" game and his Google IO talk in 2011
 window.onload = function() {
     document.getElementById("gameWorld").focus();
 };
@@ -41,8 +41,10 @@ function GameEngine() {
     this.click = null;
     this.mouseUp = null;
 	this.mouseDown = null;
-	this.triggerUp = null;
-	this.triggerDown = null;
+	this.RtriggerUp = null;
+	this.RtriggerDown = null;
+    this.LtriggerUp = null;
+    this.LtriggerDown = null;
     this.mousex = -100;
 	this.mousey = -100;
 	this.stickx = 0;
@@ -249,14 +251,17 @@ GameEngine.prototype.startInput = function () {
 
 	//shoulder_bottom_left - LT (XBOX) / L2 (PS3/PS4)
 	this.gamepad.on('press', 'shoulder_bottom_left', e => {
+        var index = this.gerID(e);
+        that.players[index].LtriggerDown = true;
+        console.log("LtriggerDown = " + that.players[index].RtriggerDown);
 		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 
 	//shoulder_bottom_right - RT (XBOX) / R2 (PS3/PS4)
 	this.gamepad.on('press', 'shoulder_bottom_right', e => {
 		var index = this.getID(e);
-		that.players[index].triggerDown = true;
-		console.log("triggerDown = " + that.players[index].triggerDown);
+		that.players[index].RtriggerDown = true;
+		console.log("RtriggerDown = " + that.players[index].RtriggerDown);
 		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 
@@ -439,14 +444,17 @@ GameEngine.prototype.startInput = function () {
 
 	//shoulder_bottom_left - LT (XBOX) / L2 (PS3/PS4)
 	this.gamepad.on('release', 'shoulder_bottom_left', e => {
+        var index = this.gerID(e);
+        that.players[index].LtriggerUp = true;
+        console.log("LtriggerUp = " + that.players[index].LtriggerUp);
 		console.log(`player ${e.player} released ${e.button}!`);
 	});
 
 	//shoulder_bottom_right - RT (XBOX) / R2 (PS3/PS4)
 	this.gamepad.on('release', 'shoulder_bottom_right', e => {
 		var index = this.getID(e);
-		that.players[index].triggerUp = true;
-		console.log("triggerUp = " + that.triggerUp);
+		that.players[index].RtriggerUp = true;
+		console.log("RtriggerUp = " + that.players[index].RtriggerUp);
 		console.log(`player ${e.player} released ${e.button}!`);
 	});
 

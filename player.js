@@ -77,14 +77,17 @@ function Player(game, x, y, team)   {
     this.showBoxes = true;  // show Bounding boxes for testing
     this.team = team;
     this.isHit = false;
+    this.canCatch = false;  //used for catching/parrying
 
     //// Controls ////
     this.aKey = false;
     this.dKey = false;
     this.space = false;
     this.spaceReleased = false;
-    this.triggerUp = false;
-    this.triggerDown = false;
+    this.RtriggerUp = false;
+    this.RtriggerDown = false;
+    this.LtriggerUp = false;
+    this.LtriggerDown = false;
     this.mouseUp = false;
     this.mouseDown = false;
     this.mousex = 1;
@@ -218,15 +221,15 @@ Player.prototype.update = function ()   {
     if (this.ballState === 0) {
         this.mouseDown = false;
         this.mouseUp = false;
-        this.triggerDown = false;
-        this.triggerUp = false;
+        this.RtriggerDown = false;
+        this.RtriggerUp = false;
     }
     console.log
 	//if we press mouse down, begin charging stopwatch.
-	if (this.ballState === 1 && (this.mouseDown || this.triggerDown)) {
+	if (this.ballState === 1 && (this.mouseDown || this.RtriggerDown)) {
         console.log("ball state is 1");
         this.mouseUp = false;
-        this.triggerUp = false;
+        this.RtriggerUp = false;
         this.ballState = 2;
 
 		//increment the total charging time by the game's clock tick.
@@ -243,7 +246,7 @@ Player.prototype.update = function ()   {
     }
 
 	if (this.ballState === 3) {
-		if (this.mouseUp || this.triggerUp) {
+		if (this.mouseUp || this.RtriggerUp) {
 			//spawn a ball entity
             this.throwBall(this.boundingBox);
 
@@ -255,8 +258,8 @@ Player.prototype.update = function ()   {
 			this.chargingTime = 0;
 			this.mouseUp = false;
 			this.mouseDown = false;
-			this.triggerUp = false;
-			this.triggerDown = false;
+			this.RtriggerUp = false;
+			this.RtriggerDown = false;
 		}
 	}
 	// console.log("Ball state = " + this.ballState);
