@@ -22,6 +22,8 @@ SceneManager.prototype.init = function (gameEngine) {
 	console.log('Scene Manager Initialized!');
 }
 
+
+
 /**
  * play() calls each scene's update() functions, then
  * their draw() functions.
@@ -32,7 +34,7 @@ SceneManager.prototype.play = function (ctx)	{
 	for (var i = 0; i < this.scenes.length; i++)	{
 		this.scenes[i].update();
 	}
-	
+
 	ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 	ctx.save();
 	// Drawing each entity.
@@ -41,13 +43,3 @@ SceneManager.prototype.play = function (ctx)	{
 	}
 	ctx.restore();
 }
-
-
-
-
-
-
-
-
-
-

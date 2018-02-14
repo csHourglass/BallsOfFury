@@ -1,22 +1,22 @@
 /**
  * ELEVATOR STAGE!!
- * 
+ *
  */
 function LevelZero(game)    {
     this.game = game;
     this.isPlaying = true;
     this.entities = [];
-    var bg = new Background(game);
+    this.bgAnimation = new Animation(ASSET_MANAGER.getAsset("./img/Stage1Background.png"), 0, 0, width, height, 1, 1, true, false);
+
+    var bg = new Background(game, this.bgAnimation);
     this.entities.push(bg);
     this.players = 0;
     for (; this.players < game.controllers.length; this.players++)   {
         var player = new Player(game, (1136 * Math.random()), 400, this.players, game.controllers[this.players], this);
         this.entities.push(player);
     }
-    
 
 	var dummy = new Dummy(game, 800, 380, 2, this);
-    
 
     var floor = [];
     floor.push(new Animation(ASSET_MANAGER.getAsset("./img/TestPlatform.png"), 0, 0, 1920, 162, 1, 1, true, false));

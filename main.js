@@ -2,23 +2,6 @@ var width = 1920;
 var height = 1080;
 
 
-function Background(game) {
-//    this.bgAnimation = new Animation(ASSET_MANAGER.getAsset("./img/bg15.png"), 0, 0, width, height, 0.1, 8, true, false);
-    this.bgAnimation = new Animation(ASSET_MANAGER.getAsset("./img/Stage1Background.png"), 0, 0, width, height, 1, 1, true, false);
-
-
-    Entity.call(this, game, 0, 0, 0, 0, false);
-}
-Background.prototype = new Entity();
-Background.prototype.constructor = Background;
-
-Background.prototype.update = function () {
-}
-
-Background.prototype.draw = function (ctx) {
-    this.bgAnimation.drawFrame(this.game.clockTick, ctx, this.x, this.y);
-
-}
 //////////////// the "main" code begins here  ////////////////////////
 
 var ASSET_MANAGER = new AssetManager();
@@ -65,16 +48,16 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.addEntity(new Camera(gameEngine, 0, 0, 1920, 1080));
     //gameEngine.addEntity(player2);
 */
-	
-	
+
+
 	var sceneManager = new SceneManager();
 	//sceneManager.levelOne();
 	/*setTimeout(function(){
     sceneManager.removeLevelOne();
 }, 10000);*/
     gameEngine.init(ctx, sceneManager);
-	
-	
+
+
     gameEngine.start();
 });
 
