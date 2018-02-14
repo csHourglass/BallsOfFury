@@ -40,6 +40,8 @@ function Controller()	{
 	this.pause = false;
 	this.aimX = 0;
 	this.aimY = 0;
+	this.targetX = 0;
+	this.targetY = 0;
 }
 
 Controller.prototype.constructor = Controller;
@@ -115,7 +117,9 @@ GameEngine.prototype.startInput = function () {
 		// 	that.players[0].mousey = e.clientY;
 		// }
 		that.mousex = e.clientX;
-        that.mousey = e.clientY;
+		that.mousey = e.clientY;
+		that.controllers[0].targetX = e.clientX;
+		that.controllers[0].targetY = e.clientY;
 		//console.log("mousex=" + that.mousex + " ,mousey=" + that.mousey);
     })
     this.ctx.canvas.addEventListener("mouseup", function (e)    {
@@ -124,11 +128,13 @@ GameEngine.prototype.startInput = function () {
 		// }
 		that.sceneManager.clickedWhereX = that.mousex;
 		that.sceneManager.clickedWhereY = that.mousey;
+		that.controllers[0].throw = false;
     }, false);
 	this.ctx.canvas.addEventListener("mousedown", function (e)    {
 		// if (that.players.length > 0) {
 		// 	that.players[0].mouseDown = true;
 		// }
+		that.controllers[0].throw = true;
     }, false);
 
 	/*

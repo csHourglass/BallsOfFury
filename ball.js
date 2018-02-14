@@ -24,8 +24,8 @@ function Ball(game, player, x, y, chargingTime, id, scene) {
         this.player.triggerUp = false;
     }
     else    {
-        this.targetx = this.player.mousex - x - 50;
-        this.targety = this.player.mousey - y - 50;
+        this.targetx = this.player.controller.targetX - x - 50;
+        this.targety = this.player.controller.targetY - y - 50;
     }
 
 	//minimum charge time required for a boost to xspeed and yspeed is 1.
