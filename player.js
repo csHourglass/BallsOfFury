@@ -80,6 +80,8 @@ function Player(game, x, y, team, controller, scene)   {
     this.showBoxes = true;  // show Bounding boxes for testing
     this.team = team;
     this.isHit = false;
+    this.isCatching = false;
+    this.catchTimer = 0;
 
     //// Controls ////
     this.controller = controller;
@@ -96,6 +98,7 @@ function Player(game, x, y, team, controller, scene)   {
     this.stickx = 1;
     this.sticky = 0;
     this.scene = scene;
+    this.armorlock = false; //This makes the player invincible to enemy balls, parrying nonstop.
 
     Entity.call(this, game, this.x, this.y, true, this.id);
 }
@@ -224,19 +227,23 @@ Player.prototype.update = function ()   {
     // }
 
     // if player has no ball, we down want mouse clicks
-    if (this.ballState === 0 && this.controller.throw) {
+    if (this.canCatch && this.controller.parry) {
         this.isCatching = true;
         this.canCatch = false;
     }
     if (this.isCatching)    {
         this.catchTimer += this.game.clockTick;
+        console.log("CATCHING ", this.catchTimer);
+
     }
     if (this.catchTimer > .5)   {
         this.isCatching = false;
+        this.catchTimer = 0;
     }
-    if (!this.isCatching && !this.controller.throw) {
+    if (!this.isCatching && !this.controller.parry) {
         this.canCatch = true;
     }
+
 	//if we press mouse down, begin charging stopwatch.
 	if (this.ballState === 1 && this.controller.throw) {
         console.log("ball state is 1");
@@ -333,10 +340,17 @@ Player.prototype.update = function ()   {
                     if (this.ballState === 0)   {
                         ent.removeFromWorld = true;
                         this.ballState = 1;  // pickup ball
+                        this.isCatching = false;
+                        this.catchTimer = 0;
                     }
-                } else if (this.isCatching) {
+                } else if (this.isCatching && this.ballState === 0) {
                     ent.removeFromWorld = true;
                     this.ballState = 1;  // pickup ball
+                    this.isCatching = false;
+                    this.catchTimer = 0;
+                } else if (this.isCatching || this.armorlock) {
+                    ent.speed += 1000;
+                    ent.team = this.team;
                 } else if (ent.team !== this.team) {
                     this.isHit = true;
                 }
