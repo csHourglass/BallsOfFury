@@ -10,20 +10,20 @@
 
 function Wall(game, x, y, width, height, animation)   {
 
-    this.idleAnim = animation;
+    this.idleAnim = animation[0];
 
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
-    this.team = team;
+    this.team = 0;
 
     // The bounding box of the wall.  (TODO: Need circles on corners as well)
     this.boundingBox = new BoundingBox(this.x, this.y, this.width, this.height);
 
     this.showBoxes = true;  // Shows the bounding box.  (this should be moved to game engine.)
 
-    Entity.call(this, game, this.x, this.y, 0, 0, true, 1);
+    Entity.call(this, game, this.x, this.y, true, 1);
 }
 Wall.prototype = new Entity();
 Wall.prototype.constructor = Wall;
@@ -45,6 +45,6 @@ Wall.prototype.draw = function(ctx)   {
         this.boundingBox.draw(ctx);
     }
 
-    this.anim.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
+    this.idleAnim.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
     Entity.prototype.draw.call(this);
 }

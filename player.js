@@ -6,7 +6,7 @@
  * @param {*} y : The starting y coordinate of our entity.
  * @param {*} team : The team number of this Player.
  */
-function Player(game, x, y, team)   {
+function Player(game, x, y, team, controller, scene)   {
     // Loading animations...
     // NOTE: This needs to be moved out of Player like the Button class,
     //  otherwise we can never have a Player that uses different sprites!
@@ -82,6 +82,7 @@ function Player(game, x, y, team)   {
     this.isHit = false;
 
     //// Controls ////
+    this.controller = controller;
     this.aKey = false;
     this.dKey = false;
     this.space = false;
@@ -94,8 +95,9 @@ function Player(game, x, y, team)   {
     this.mousey = 0;
     this.stickx = 1;
     this.sticky = 0;
+    this.scene = scene;
 
-    Entity.call(this, game, this.x, this.y, 0, 0, true, this.id);
+    Entity.call(this, game, this.x, this.y, true, this.id);
 }
 Player.prototype = new Entity();
 Player.prototype.constructor = Player;
@@ -104,13 +106,13 @@ Player.prototype.constructor = Player;
 // throws ball based on the location of mouse click
 Player.prototype.throwBall = function(boundingBox) {
     // throw left
-    if (this.mousex < this.x) {
-        this.game.addEntity(new Ball(this.game, this, this.boundingBox.x - 20,
-                            this.boundingBox.y, this.chargingTime, 5));
+    if (this.controller.aimX < 0) {
+        this.scene.addEntity(new Ball(this.game, this, this.boundingBox.x - 20,
+                            this.boundingBox.y, this.chargingTime, 5, this.scene));
     // throw right
     } else {
-        this.game.addEntity(new Ball(this.game, this, this.boundingBox.x + this.boundingBox.width + 1,
-            this.boundingBox.y, this.chargingTime, 5));
+        this.scene.addEntity(new Ball(this.game, this, this.boundingBox.x + this.boundingBox.width + 1,
+            this.boundingBox.y, this.chargingTime, 5, this.scene));
     }
     //reset the ball's current state
     this.ballState = 0; // change to 0 to remove ball from player
@@ -125,12 +127,12 @@ Player.prototype.throwBall = function(boundingBox) {
  */
 Player.prototype.update = function ()   {
 /////***** Jumping *****/////
-    if (this.space && this.canJump)    {
+    if (this.controller.jump && this.canJump)    {
         this.jumpingState = 1;
         this.canJump = false;
     }
 
-    if (this.jumpingState === 0 && this.spaceReleased) this.canJump = true;
+    if (this.jumpingState === 0 && !this.controller.jump) this.canJump = true;
 
     if (this.jumpingState === 1) {
         // jumpingState 1 is for the initial jumping wind up animation.  The character is about to kick off the ground.
@@ -178,22 +180,22 @@ Player.prototype.update = function ()   {
     }
 
     /////***** Running *****/////
-    if (this.aKey) {
+    if (this.controller.left) {
         this.facingLeft = true;
         this.moving = true;  //All this does is help with the runningState logic.
         this.xv = -10;
-    } else if (!this.aKey && !this.dKey) {
+    } else if (!this.controller.left && !this.controller.right) {
         if (this.xv < 0) {
             this.xv += 1;
             this.moving = false;
         }
     }
 
-    if (this.dKey) {
+    if (this.controller.right) {
         this.facingLeft = false;
         this.xv = 10;
         this.moving = true;
-    } else if (!this.dKey && !this.aKey) {
+    } else if (!this.controller.right && !this.controller.left) {
         if (this.xv > 0) {
             this.xv -= 1;
             this.moving = false;
@@ -229,18 +231,18 @@ Player.prototype.update = function ()   {
         this.triggerUp = false;
     }
 	//if we press mouse down, begin charging stopwatch.
-	if (this.ballState === 1 && (this.mouseDown || this.triggerDown)) {
+	if (this.ballState === 1 && this.controller.throw) {
         console.log("ball state is 1");
         this.mouseUp = false;
         this.triggerUp = false;
         this.ballState = 2;
 
-		//increment the total charging time by the game's clock tick.
-		this.chargingTime += this.game.clockTick;
 	}
 	//if ball state is 2, then winding up our arm
     if (this.ballState === 2) {
-        console.log(this.chargingTime);
+        console.log(this.chargingTime);	
+        //increment the total charging time by the game's clock tick.
+		this.chargingTime += this.game.clockTick;
         if (this.LThrowAnimation.elapsedTime + this.game.clockTick > this.LThrowAnimation.totalTime) {
             this.ballState = 3;
         } else if (this.RThrowAnimation.elapsedTime + this.game.clockTick > this.RThrowAnimation.totalTime) {
@@ -249,7 +251,7 @@ Player.prototype.update = function ()   {
     }
 
 	if (this.ballState === 3) {
-		if (this.mouseUp || this.triggerUp) {
+		if (!this.controller.throw) {
 			//spawn a ball entity
             this.throwBall(this.boundingBox);
 
@@ -271,17 +273,17 @@ Player.prototype.update = function ()   {
 ///////////////////////  End Throwing ///////////////////////////////////////////
 
 
-    ///////////////////////////// WALL COLLISION ////////////////////////////////
+    // ///////////////////////////// WALL COLLISION ////////////////////////////////
 
     this.x += 100 * this.xv * this.game.clockTick;
     this.y -= this.yv * this.game.clockTick;
     this.boundingBox = new BoundingBox(this.x + 40, this.y + 30, this.width - 80, this.height - 35);
 
-    for (var i = 0; i < this.game.entities.length; i++) {
-        var ent = this.game.entities[i];
+    for (var i = 0; i < this.scene.entities.length; i++) {
+        var ent = this.scene.entities[i];
 
         if (ent !== this && ent.canCollide && this.boundingBox.hasCollided(ent.boundingBox)) {
-            //console.log("derp, collision");
+            console.log("derp, collision with ", ent.id);
             if (ent.id === 1)   {
                 if (this.prevY < this.y && (this.y + this.height - 5) > ent.y && this.prevY + 30 + this.boundingBox.height <= ent.y)  {
                     if (this.y > ent.y - this.height + 5)   {

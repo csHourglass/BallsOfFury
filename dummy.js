@@ -1,6 +1,6 @@
 
 
-function Dummy(game, x, y, team) {
+function Dummy(game, x, y, team, scene) {
     this.animation = new Animation(ASSET_MANAGER.getAsset("./img/Training_dummy.png"), 0, 0, 122, 146, 1, 1, true, false);
     this.explosion = new Animation(ASSET_MANAGER.getAsset("./img/explosion.png"), 0, 0, 256, 256, 0.05, 48, false, false);
     this.x = x;
@@ -12,16 +12,17 @@ function Dummy(game, x, y, team) {
     this.boundingBox = new BoundingBox(this.x, this.y, 122, 146);
     this.showBox = true;
     this.isHit = false;
+    this.scene = scene;
 
-    Entity.call(this, game, this.x, this.y, 0, 0, false, 4);
+    Entity.call(this, game, this.x, this.y, false, 4);
 }
 
 Dummy.prototype = new Entity();
 Dummy.prototype.constructor = Dummy;
 
 Dummy.prototype.update = function() {
-    for (var i = 0; i < this.game.entities.length; i++) {
-        var ent = this.game.entities[i];
+    for (var i = 0; i < this.scene.entities.length; i++) {
+        var ent = this.scene.entities[i];
 
         if (ent != this && ent.canCollide && ent.speed >= 1 && this.boundingBox.hasCollided(ent.boundingBox)) {
             this.isHit = true;

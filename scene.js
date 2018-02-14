@@ -1,5 +1,5 @@
 /**
- * The Scene class handles a set of entities that will
+ * The Scene object handles a set of entities that will
  * appear on the canvas.
  * @param {*} game : The game engine.  Needed for clock ticks.
  * @param {*} entities : An array of entities.
@@ -10,7 +10,7 @@ function Scene(game, entities)    {
 
     // isPlaying determines if the entities in this scene
     // will update and animate.
-    this.isPlaying = false;
+    this.isPlaying = true;
     // isInteractable determines if user input will be checked
     // for the entities in this scene. (TODO: actually implement this.)
     this.isInteractable = false;
@@ -19,8 +19,6 @@ function Scene(game, entities)    {
     this.remove = false;
 }
 
-Scene.prototype.constructor = Scene;
-
 /**
  * The update() function will go through all the entities
  * in this scene of isPlaying is true.  Otherwise, it does
@@ -28,10 +26,10 @@ Scene.prototype.constructor = Scene;
  */
 Scene.prototype.update = function()    {
     if (this.isPlaying) {
-        var entityCount = entities.length;
+        var entityCount = this.entities.length;
         for (var i = 0; i < entityCount; i++)   {
-            if (!entities[i].removeFromWorld)   {
-                entities[i].update();
+            if (!this.entities[i].removeFromWorld)   {
+                this.entities[i].update();
             }
         }
 
@@ -53,19 +51,24 @@ Scene.prototype.draw = function(ctx)    {
     var clockTick = 0;
     // If the scene is playing, change clockTick
     // to the clock tick on the game engine.
-    if (this.isPlaying) {
-        clockTick = this.game.clockTick;
-    }
-    var entityCount = entities.length;
+    // if (this.isPlaying) {
+    //     clockTick = this.game.clockTick;
+    // }
+    var entityCount = this.entities.length;
     for (var i = 0; i < entityCount; i++)   {
-        entities[i].draw(clockTick);
+        this.entities[i].draw(ctx);
     }
 }
 
+Scene.prototype.addEntity = function (entity) {
+    console.log('added entity');
+    return this.entities.push(entity);
+}
+
 Scene.prototype.close = function()  {
-    var entityCount = entities.length;
+    var entityCount = this.entities.length;
     for (var i = 0; i < entityCount; i++)   {
-        entities[i].deleteFromWorld = true;
+        this.entities[i].deleteFromWorld = true;
     }
     this.remove = true;
 }

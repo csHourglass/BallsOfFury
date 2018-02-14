@@ -12,6 +12,8 @@ function Entity(game, x, y, canCollide, id) {
     this.game = game;
     this.x = x;
     this.y = y;
+    this.xv = 0;
+    this.yv = 0;
 	this.canCollide = canCollide;
 	this.id = id;
     this.removeFromWorld = false;

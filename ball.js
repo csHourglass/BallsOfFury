@@ -1,5 +1,5 @@
 
-function Ball(game, player, x, y, chargingTime, id) {
+function Ball(game, player, x, y, chargingTime, id, scene) {
 
     this.idleAnimation = new Animation(ASSET_MANAGER.getAsset("./img/ball.png"), 0, 0, 20, 20, .5, 1, true, false);  // this might be dumb cause it isnt moving
     this.flyingAnimation = new Animation(ASSET_MANAGER.getAsset("./img/ball.png"), 0, 0, 20, 20, .3, 4, true, false);
@@ -17,6 +17,7 @@ function Ball(game, player, x, y, chargingTime, id) {
     this.team = player.team;
     this.speed = 1500;
     this.state = 0;
+    this.scene = scene;
     if (this.player.triggerUp) {
         this.targetx = (x + this.player.stickx*100) - x;
         this.targety = (y + this.player.sticky*100) - y;
@@ -41,9 +42,9 @@ function Ball(game, player, x, y, chargingTime, id) {
 	this.ySpeed += (this.ySpeed * (chargingTime/2));
     this.xSpeed = this.targetx / (Math.sqrt(Math.pow(this.targetx, 2) + Math.pow(this.targety, 2)));
 	//arbitrary calculation for how much charging affects xspeed
-	this.xSpeed += (this.xSpeed * (chargingTime/2));
+    this.xSpeed += (this.xSpeed * (chargingTime/2));
 
-    Entity.call(this, game, this.x, this.y, 0, 0, true, id);
+    Entity.call(this, game, this.x, this.y, true, id);
 }
 
 Ball.prototype = new Entity();
@@ -86,13 +87,12 @@ Ball.prototype.update = function() {
 
     //// COLLISION ////
     this.boundingBox = new BoundingBox (this.x, this.y, this.width, this.height);
-    for (var i = 0; i < this.game.entities.length; i++) {
-        var ent = this.game.entities[i];
+    for (var i = 0; i < this.scene.entities.length; i++) {
+        var ent = this.scene.entities[i];
 
         if (ent !== this && ent.canCollide && this.boundingBox.hasCollided(ent.boundingBox)) {
-            console.log("BOUNCE!!!!");
             if (ent.id === 1)   {
-                console.log("IM HERE");
+                console.log("BOUNCE!!!!");
                 if (this.prevY < this.y && (this.y + this.height) > ent.y && this.prevY + this.height <= ent.y)  {
                     this.y = ent.y - this.height;
                     this.speed -= 100;
