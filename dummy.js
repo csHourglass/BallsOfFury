@@ -38,12 +38,12 @@ Dummy.prototype.update = function() {
     Entity.prototype.update.call(this);
 };
 
-Dummy.prototype.draw = function(ctx){
+Dummy.prototype.draw = function(ctx, tick){
     if (this.showBox) this.boundingBox.draw(ctx);
     if (this.isHit) {
-        this.explosion.drawFrame(this.game.clockTick, ctx, this.x - (this.width/2), this.y - (this.height/2));
+        this.explosion.drawFrame(tick, ctx, this.x - (this.width/2), this.y - (this.height/2));
     } else {
-        this.animation.drawFrame(this.game.clockTick, ctx, this.x , this.y);
+        this.animation.drawFrame(tick, ctx, this.x , this.y);
     }
     Entity.prototype.draw.call(this);
 };

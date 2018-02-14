@@ -129,15 +129,15 @@ Ball.prototype.update = function() {
     Entity.prototype.update.call(this);
 }
 
-Ball.prototype.draw = function(ctx) {
+Ball.prototype.draw = function(ctx, tick) {
     if (this.box) {
         this.boundingBox.draw(ctx);
     }
     if (this.state === 2)   {
-        this.idleAnimation.drawFrame(this.game.clockTick, this.ctx, this.x, this.y);
+        this.idleAnimation.drawFrame(tick, this.ctx, this.x, this.y);
     }
     else {
-        this.flyingAnimation.drawFrame(this.game.clockTick, this.ctx, this.x, this.y);
+        this.flyingAnimation.drawFrame(tick, this.ctx, this.x, this.y);
     }
     Entity.prototype.draw.call(this);
 }

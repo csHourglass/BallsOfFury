@@ -39,12 +39,12 @@ Wall.prototype.update = function ()   {
  * draw() draws the wall animation at its current location.
  * @param {*} ctx : The context.
  */
-Wall.prototype.draw = function(ctx)   {
+Wall.prototype.draw = function(ctx, tick)   {
     ////////// bounding box ////////////
     if (this.showBoxes) {
         this.boundingBox.draw(ctx);
     }
 
-    this.idleAnim.drawFrame(this.game.clockTick, ctx, this.getX(), this.getY(), this.game.drawScale);
+    this.idleAnim.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
     Entity.prototype.draw.call(this);
 }

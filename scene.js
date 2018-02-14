@@ -40,6 +40,14 @@ Scene.prototype.update = function()    {
             }
         }
     }
+    if (this.game.pauseGame && this.canPause)   {
+        this.canPause = false;
+        if (this.isPlaying) this.isPlaying = false;
+        else this.isPlaying = true;
+    }
+    if (!this.game.pauseGame && !this.canPause) {
+        this.canPause = true;
+    }
 }
 
 /**
@@ -51,12 +59,12 @@ Scene.prototype.draw = function(ctx)    {
     var clockTick = 0;
     // If the scene is playing, change clockTick
     // to the clock tick on the game engine.
-    // if (this.isPlaying) {
-    //     clockTick = this.game.clockTick;
-    // }
+    if (this.isPlaying) {
+        clockTick = this.game.clockTick;
+    }
     var entityCount = this.entities.length;
     for (var i = 0; i < entityCount; i++)   {
-        this.entities[i].draw(ctx);
+        this.entities[i].draw(ctx, clockTick);
     }
 }
 

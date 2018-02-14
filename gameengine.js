@@ -37,6 +37,7 @@ function Controller()	{
 	this.up = false;
 	this.down = false;
 	this.throw = false;
+	this.pause = false;
 	this.aimX = 0;
 	this.aimY = 0;
 }
@@ -70,6 +71,7 @@ function GameEngine() {
 	//we should only be creating one gamepad object.
 
 	this.gamepad = gamepad;
+	this.canPause = true;
 }
 
 GameEngine.prototype.init = function (ctx, sceneManager) {
@@ -317,6 +319,9 @@ GameEngine.prototype.startInput = function () {
 	//start - Start (XBOX/PS3/PS4)
 	this.gamepad.on('press', 'start', e => {
 		console.log(`player ${e.player} pressed ${e.button}!`);
+		var index = this.getID(e);
+		that.controllers[index].pause = true;
+		that.pauseGame = true;
 	});
 
 	//stick_button_left - Left Analog Stick (XBOX/PS3/PS4)
@@ -416,6 +421,9 @@ GameEngine.prototype.startInput = function () {
 	//start - Start (XBOX/PS3/PS4)
 	this.gamepad.on('hold', 'start', e => {
 		console.log(`player ${e.player} holding ${e.button}!`);
+		var index = this.getID(e);
+		that.controllers[index].pause = true;
+		that.pauseGame = true;
 	});
 
 	//stick_button_left - Left Analog Stick (XBOX/PS3/PS4)
@@ -517,6 +525,9 @@ GameEngine.prototype.startInput = function () {
 		console.log(`player ${e.player} released ${e.button}!`);
 		// that.sceneManager.clickedWhereX = -50;
 		// that.sceneManager.clickedWhereY = -50;
+		var index = this.getID(e);
+		that.controllers[index].pause = false;
+		that.pauseGame = false;
 	});
 
 	//stick_button_left - Left Analog Stick (XBOX/PS3/PS4)
