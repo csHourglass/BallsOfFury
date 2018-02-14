@@ -117,6 +117,27 @@ Ball.prototype.update = function() {
                     this.speed -= 100;
                 }
             }
+            if (ent.id === 4 && ent.team !== this.team)   {
+                console.log("HIT!!!!");
+                if (this.prevY < this.y && (this.y + this.height) > ent.y && this.prevY + this.height <= ent.y)  {
+                    this.speed -= 100;
+                    this.ySpeed = -(this.ySpeed/1.5); //Reverse ySpeed on bounce and reduce magnitude.
+                }
+                else if (this.prevY > this.y && this.boundingBox.y < (ent.boundingBox.y + ent.boundingBox.height) && this.prevY >= (ent.boundingBox.y + ent.boundingBox.height))  {
+                    this.ySpeed = -this.ySpeed;
+                    this.speed -= 100;
+
+
+                }
+                else if (this.prevX > this.x && (this.x < (ent.x + ent.width)))  {
+                    this.xSpeed = -this.xSpeed;
+                    this.speed -= 100;
+                }
+                else if (this.prevX < this.x && (this.boundingBox.x + this.boundingBox.width) > ent.boundingBox.x)  {
+                    this.xSpeed = -this.xSpeed;
+                    this.speed -= 100;
+                }
+            }
         }
     }
     

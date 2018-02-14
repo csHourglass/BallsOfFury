@@ -224,11 +224,18 @@ Player.prototype.update = function ()   {
     // }
 
     // if player has no ball, we down want mouse clicks
-    if (this.ballState === 0) {
-        this.mouseDown = false;
-        this.mouseUp = false;
-        this.triggerDown = false;
-        this.triggerUp = false;
+    if (this.ballState === 0 && this.controller.throw) {
+        this.isCatching = true;
+        this.canCatch = false;
+    }
+    if (this.isCatching)    {
+        this.catchTimer += this.game.clockTick;
+    }
+    if (this.catchTimer > .5)   {
+        this.isCatching = false;
+    }
+    if (!this.isCatching && !this.controller.throw) {
+        this.canCatch = true;
     }
 	//if we press mouse down, begin charging stopwatch.
 	if (this.ballState === 1 && this.controller.throw) {
@@ -317,15 +324,28 @@ Player.prototype.update = function ()   {
                     }
                 }
             }
-            if (ent.team !== this.team && ent.speed > 1) {
-                this.isHit = true;
-            }
+            // if (ent.team !== this.team && ent.speed > 1) {
+            //     this.isHit = true;
+            // }
             console.log(ent.id);
-            if (ent.id === 5 && this.ballState === 0 && ent.state !== 0) {
-                console.log("MINE");
-                ent.removeFromWorld = true;
-                this.ballState = 1;  // pickup ball
+            if (ent.id === 5)   {
+                if (ent.state !== 0)    {
+                    if (this.ballState === 0)   {
+                        ent.removeFromWorld = true;
+                        this.ballState = 1;  // pickup ball
+                    }
+                } else if (this.isCatching) {
+                    ent.removeFromWorld = true;
+                    this.ballState = 1;  // pickup ball
+                } else if (ent.team !== this.team) {
+                    this.isHit = true;
+                }
             }
+            // if (ent.id === 5 && this.ballState === 0 && ent.state !== 0) {
+            //     console.log("MINE");
+            //     ent.removeFromWorld = true;
+            //     this.ballState = 1;  // pickup ball
+            // }
         }
     }
     if (this.explosion.isDone()) {
