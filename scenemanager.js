@@ -29,6 +29,8 @@ SceneManager.prototype.loadLevel = function(scene) {
     this.scenes.push(scene);
 }
 
+
+
 /**
  * play() calls each scene's update() functions, then
  * their draw() functions.
@@ -39,6 +41,12 @@ SceneManager.prototype.play = function (ctx)	{
 	for (var i = 0; i < this.scenes.length; i++)	{
 		this.scenes[i].update();
 	}
+
+    for (var i = this.scenes.length - 1; i >= 0; --i) {
+        if (this.scenes[i].remove) {
+            this.scenes.splice(i, 1);
+        }
+    }
 
 	ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 	ctx.save();

@@ -263,7 +263,7 @@ Player.prototype.update = function ()   {
     }
 
 	if (this.ballState === 3) {
-        console.log(this.chargingTime);	
+        console.log(this.chargingTime);
         //increment the total charging time by the game's clock tick.
 		this.chargingTime += this.game.clockTick;
 		if (!this.controller.throw) {
@@ -298,7 +298,7 @@ Player.prototype.update = function ()   {
         var ent = this.scene.entities[i];
 
         if (ent !== this && ent.canCollide && this.boundingBox.hasCollided(ent.boundingBox)) {
-            console.log("derp, collision with ", ent.id);
+            //console.log("derp, collision with ", ent.id);
             if (ent.id === 1)   {
                 if (this.prevY < this.y && (this.y + this.height - 5) > ent.y && this.prevY + 30 + this.boundingBox.height <= ent.y)  {
                     if (this.y > ent.y - this.height + 5)   {
@@ -334,7 +334,7 @@ Player.prototype.update = function ()   {
             // if (ent.team !== this.team && ent.speed > 1) {
             //     this.isHit = true;
             // }
-            console.log(ent.id);
+        //    console.log(ent.id);
             if (ent.id === 5)   {
                 if (ent.state !== 0)    {
                     if (this.ballState === 0)   {

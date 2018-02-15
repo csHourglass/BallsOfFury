@@ -21,7 +21,7 @@ function LevelZero(sceneManager, game)    {
 
     this.players = 0;
     for (; this.players < this.game.controllers.length; this.players++)   {
-        var player = new Player(game, (1136 * Math.random()) + 100, 795, this.players, game.controllers[this.players], this);
+        var player = new Player(game, (1920 * Math.random()) + 100, 795, this.players, game.controllers[this.players], this);
         this.entities.push(player);
     }
 
@@ -53,7 +53,7 @@ LevelZero.prototype.constructor = LevelZero;
 
 LevelZero.prototype.update = function() {
     if (this.game.controllers.length > this.players) {
-        var player = new Player(this.game, (1136 * Math.random())+100, 795, this.players, this.game.controllers[this.players], this);
+        var player = new Player(this.game, (1920 * Math.random())+100, 795, this.players, this.game.controllers[this.players], this);
         this.entities.push(player);
         this.players++;
     }

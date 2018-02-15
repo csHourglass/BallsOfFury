@@ -33,6 +33,7 @@ TitleScreen.prototype.update = function() {
     // decouple this
     for (var i = 0; i < this.game.controllers.length; i++) {
         if (this.game.controllers[i].pause === true) {
+            this.isPlaying = false;
             // i = the controller that pressed start
             // pass controller as player1 to next scene
             var nextScene = new LevelZero(this.sceneManager, this.game);

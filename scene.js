@@ -74,9 +74,10 @@ Scene.prototype.addEntity = function (entity) {
 }
 
 Scene.prototype.close = function()  {
+    console.log("Closing Scene");
     var entityCount = this.entities.length;
     for (var i = 0; i < entityCount; i++)   {
-        this.entities[i].deleteFromWorld = true;
+        this.entities[i].removeFromWorld = true;
     }
     this.remove = true;
 }
