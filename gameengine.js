@@ -43,7 +43,7 @@ function Controller()	{
 	this.aimY = 0;
 	this.targetX = 0;
 	this.targetY = 0;
-    this.mouse = false;  // hack solution to identify if controller or mouse
+    this.mouse = false;  //hack solution for keyboard/controller problems (on davids computer)
 }
 
 Controller.prototype.constructor = Controller;
@@ -73,7 +73,6 @@ function GameEngine() {
 	this.yOffset = 0;
 	this.drawScale = 1;
 	//we should only be creating one gamepad object.
-
 	this.gamepad = gamepad;
 	this.canPause = true;
 }
@@ -122,8 +121,8 @@ GameEngine.prototype.startInput = function () {
 		that.mousey = e.clientY;
 		that.controllers[0].targetX = e.clientX;
 		that.controllers[0].targetY = e.clientY;
-        this.mouse = true;  // this controller is a keyboard and mouse
-        
+        that.controllers[0].mouse = true; // using mouse
+
 		//console.log("mousex=" + that.mousex + " ,mousey=" + that.mousey);
     })
     this.ctx.canvas.addEventListener("mouseup", function (e)    {
@@ -220,6 +219,7 @@ GameEngine.prototype.startInput = function () {
 
 	this.gamepad.on('press', 'stick_axis_right', e => {
 		console.log(`player ${e.player} pressed ${e.button}!`);
+        var index = this.getID(e);
 	});
 
 	//Analog stick hold
