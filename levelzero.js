@@ -2,6 +2,13 @@
  * ELEVATOR STAGE!!
  *
  */
+
+ // height and width of frame
+ var width = 1920;
+ var height = 1080;
+
+
+
 function LevelZero(game)    {
     this.game = game;
     this.isPlaying = true;

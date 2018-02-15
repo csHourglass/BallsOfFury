@@ -18,7 +18,9 @@ SceneManager.prototype.constructor = SceneManager;
  */
 SceneManager.prototype.init = function (gameEngine) {
 	this.gameEngine = gameEngine;
-	this.scenes.push(new LevelZero(gameEngine));
+    this.scenes.push(new TitleScreen(gameEngine));
+//	this.scenes.push(new LevelZero(gameEngine));
+
 	console.log('Scene Manager Initialized!');
 }
 
