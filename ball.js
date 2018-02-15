@@ -30,12 +30,14 @@ function Ball(game, player, x, y, chargingTime, id, scene) {
 	}
     this.chargingTime = chargingTime;
     this.speed += chargingTime*500;
-    if (this.player.triggerUp) {
-        this.targetx = (x + this.player.stickx*100) - x;
-        this.targety = (y + this.player.sticky*100) - y;
-        this.player.triggerUp = false;
+
+    //targetx is for mouse and aimx is for controller
+    if (!this.player.controller.mouse) {  // not mouse
+        this.targetx = (x + this.player.controller.aimX*100) - x;
+        this.targety = (y + this.player.controller.aimY*100) - y;
+        console.log("throwing stuff ", this.targetx, this.targety);
     }
-    else    {
+    else    {  //mouse
         this.targetx = this.player.controller.targetX - x - 50;
         this.targety = this.player.controller.targetY - y - 50;
     }
@@ -145,7 +147,7 @@ Ball.prototype.update = function() {
             }
         }
     }
-    
+
     if (this.speed < 1) {
         this.state = 2;
     }
