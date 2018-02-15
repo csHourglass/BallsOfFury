@@ -18,15 +18,7 @@ function Ball(game, player, x, y, chargingTime, id, scene) {
     this.speed = 1500;
     this.state = 0;
     this.scene = scene;
-    if (this.player.triggerUp) {
-        this.targetx = (x + this.player.stickx*100) - x;
-        this.targety = (y + this.player.sticky*100) - y;
-        this.player.triggerUp = false;
-    }
-    else    {
-        this.targetx = this.player.controller.targetX - x - 50;
-        this.targety = this.player.controller.targetY - y - 50;
-    }
+
 
 	//minimum charge time required for a boost to xspeed and yspeed is 1.
 	if (chargingTime < 1) {
@@ -36,13 +28,24 @@ function Ball(game, player, x, y, chargingTime, id, scene) {
 	else if (chargingTime > 3) {
 		chargingTime = 3;
 	}
-	this.chargingTime = chargingTime;
+    this.chargingTime = chargingTime;
+    this.speed += chargingTime*500;
+    if (this.player.triggerUp) {
+        this.targetx = (x + this.player.stickx*100) - x;
+        this.targety = (y + this.player.sticky*100) - y;
+        this.player.triggerUp = false;
+    }
+    else    {
+        this.targetx = this.player.controller.targetX - x - 50;
+        this.targety = this.player.controller.targetY - y - 50;
+    }
     this.ySpeed = this.targety / (Math.sqrt(Math.pow(this.targetx, 2) + Math.pow(this.targety, 2)));
 	//arbitrary calculation for how much charging affects yspeed
-	this.ySpeed += (this.ySpeed * (chargingTime/2));
+	// this.ySpeed += (this.ySpeed * (chargingTime/2));
     this.xSpeed = this.targetx / (Math.sqrt(Math.pow(this.targetx, 2) + Math.pow(this.targety, 2)));
 	//arbitrary calculation for how much charging affects xspeed
-    this.xSpeed += (this.xSpeed * (chargingTime/2));
+    // this.xSpeed += (this.xSpeed * (chargingTime/2));
+
 
     Entity.call(this, game, this.x, this.y, true, id);
 }
@@ -117,25 +120,27 @@ Ball.prototype.update = function() {
                     this.speed -= 100;
                 }
             }
-            if (ent.id === 4 && ent.team !== this.team)   {
-                console.log("HIT!!!!");
-                if (this.prevY < this.y && (this.y + this.height) > ent.y && this.prevY + this.height <= ent.y)  {
-                    this.speed -= 100;
-                    this.ySpeed = -(this.ySpeed/1.5); //Reverse ySpeed on bounce and reduce magnitude.
-                }
-                else if (this.prevY > this.y && this.boundingBox.y < (ent.boundingBox.y + ent.boundingBox.height) && this.prevY >= (ent.boundingBox.y + ent.boundingBox.height))  {
-                    this.ySpeed = -this.ySpeed;
-                    this.speed -= 100;
+            if (ent.id === 4)   {
+                if (ent.isCatching || ent.team !== this.team)   {
+                    console.log("HIT!!!!");
+                    if (this.prevY < this.y && (this.y + this.height) > ent.y && this.prevY + this.height <= ent.y)  {
+                        this.speed -= 100;
+                        this.ySpeed = -(this.ySpeed/1.5); //Reverse ySpeed on bounce and reduce magnitude.
+                    }
+                    else if (this.prevY > this.y && this.boundingBox.y < (ent.boundingBox.y + ent.boundingBox.height) && this.prevY >= (ent.boundingBox.y + ent.boundingBox.height))  {
+                        this.ySpeed = -this.ySpeed;
+                        this.speed -= 100;
 
 
-                }
-                else if (this.prevX > this.x && (this.x < (ent.x + ent.width)))  {
-                    this.xSpeed = -this.xSpeed;
-                    this.speed -= 100;
-                }
-                else if (this.prevX < this.x && (this.boundingBox.x + this.boundingBox.width) > ent.boundingBox.x)  {
-                    this.xSpeed = -this.xSpeed;
-                    this.speed -= 100;
+                    }
+                    else if (this.prevX > this.x && (this.x < (ent.x + ent.width)))  {
+                        this.xSpeed = -this.xSpeed;
+                        this.speed -= 100;
+                    }
+                    else if (this.prevX < this.x && (this.boundingBox.x + this.boundingBox.width) > ent.boundingBox.x)  {
+                        this.xSpeed = -this.xSpeed;
+                        this.speed -= 100;
+                    }
                 }
             }
         }
@@ -153,6 +158,16 @@ Ball.prototype.update = function() {
 Ball.prototype.draw = function(ctx, tick) {
     if (this.box) {
         this.boundingBox.draw(ctx);
+    }
+    if (this.state === 0)   {
+        ctx.beginPath();
+        if ((this.team%2)===0)
+            ctx.fillStyle = "green";
+        else
+            ctx.fillStyle = "red";
+        ctx.arc(this.x+10, this.y+10, 15, 0, Math.PI * 2, false);
+        ctx.fill();
+        ctx.closePath();
     }
     if (this.state === 2)   {
         this.idleAnimation.drawFrame(tick, this.ctx, this.x, this.y);

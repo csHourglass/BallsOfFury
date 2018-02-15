@@ -37,6 +37,7 @@ function Controller()	{
 	this.up = false;
 	this.down = false;
 	this.throw = false;
+	this.parry = false;
 	this.pause = false;
 	this.aimX = 0;
 	this.aimY = 0;
@@ -156,6 +157,7 @@ GameEngine.prototype.startInput = function () {
 
 	//keyboard's custom input
 	this.gamepad.setCustomMapping('keyboard', {
+		'shoulder_bottom_left': 69,
 		'button_1': 32,
 		'start': 27,
 		'd_pad_up': [38, 87],
@@ -305,6 +307,8 @@ GameEngine.prototype.startInput = function () {
 	//shoulder_bottom_left - LT (XBOX) / L2 (PS3/PS4)
 	this.gamepad.on('press', 'shoulder_bottom_left', e => {
 		console.log(`player ${e.player} pressed ${e.button}!`);
+		var index = this.getID(e);
+		that.controllers[index].parry = true;
 	});
 
 	//shoulder_bottom_right - RT (XBOX) / R2 (PS3/PS4)
@@ -412,6 +416,8 @@ GameEngine.prototype.startInput = function () {
 	//shoulder_bottom_left - LT (XBOX) / L2 (PS3/PS4)
 	this.gamepad.on('hold', 'shoulder_bottom_left', e => {
 		console.log(`player ${e.player} holding ${e.button}!`);
+		var index = this.getID(e);
+		that.controllers[index].parry = true;
 	});
 
 	//shoulder_bottom_right - RT (XBOX) / R2 (PS3/PS4)
@@ -509,6 +515,8 @@ GameEngine.prototype.startInput = function () {
 	//shoulder_bottom_left - LT (XBOX) / L2 (PS3/PS4)
 	this.gamepad.on('release', 'shoulder_bottom_left', e => {
 		console.log(`player ${e.player} released ${e.button}!`);
+		var index = this.getID(e);
+		that.controllers[index].parry = false;
 	});
 
 	//shoulder_bottom_right - RT (XBOX) / R2 (PS3/PS4)
