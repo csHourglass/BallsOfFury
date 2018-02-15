@@ -35,7 +35,6 @@ function Ball(game, player, x, y, chargingTime, id, scene) {
     if (!this.player.controller.mouse) {  // not mouse
         this.targetx = (x + this.player.controller.aimX*100) - x;
         this.targety = (y + this.player.controller.aimY*100) - y;
-        console.log("throwing stuff ", this.targetx, this.targety);
     }
     else    {  //mouse
         this.targetx = this.player.controller.targetX - x - 50;

@@ -43,7 +43,7 @@ function Controller()	{
 	this.aimY = 0;
 	this.targetX = 0;
 	this.targetY = 0;
-    this.mouse = false;  // hack solution to controllers always throwing at mouse
+    this.mouse = false;  // hack solution to identify if controller or mouse
 }
 
 Controller.prototype.constructor = Controller;
@@ -122,7 +122,8 @@ GameEngine.prototype.startInput = function () {
 		that.mousey = e.clientY;
 		that.controllers[0].targetX = e.clientX;
 		that.controllers[0].targetY = e.clientY;
-        this.mouse = true;
+        this.mouse = true;  // this controller is a keyboard and mouse
+        
 		//console.log("mousex=" + that.mousex + " ,mousey=" + that.mousey);
     })
     this.ctx.canvas.addEventListener("mouseup", function (e)    {
