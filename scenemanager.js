@@ -18,13 +18,16 @@ SceneManager.prototype.constructor = SceneManager;
  */
 SceneManager.prototype.init = function (gameEngine) {
 	this.gameEngine = gameEngine;
-    this.scenes.push(new TitleScreen(gameEngine));
+    this.scenes.push(new TitleScreen(this, gameEngine));
 //	this.scenes.push(new LevelZero(gameEngine));
 
 	console.log('Scene Manager Initialized!');
 }
 
-
+// adds a new scene to scene manager's scenes array
+SceneManager.prototype.loadLevel = function(scene) {
+    this.scenes.push(scene);
+}
 
 /**
  * play() calls each scene's update() functions, then

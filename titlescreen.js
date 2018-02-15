@@ -7,7 +7,8 @@
  var width = 1920;
  var height = 1080;
 
- function TitleScreen(game) {
+ function TitleScreen(sceneManager, game) {
+     this.sceneManager = sceneManager;
      this.game = game;
      this.isPlaying = true;
      this.entities = [];
@@ -29,13 +30,15 @@ update:
 
 */
 TitleScreen.prototype.update = function() {
-    // find a way to decouple this
+    // decouple this
     for (var i = 0; i < this.game.controllers.length; i++) {
-        if (this.game.controllers[i].pause == true) {
+        if (this.game.controllers[i].pause === true) {
             // i = the controller that pressed start
             // pass controller as player1 to next scene
-            var nextScene = new LevelZero(this.game);
+            var nextScene = new LevelZero(this.sceneManager, this.game);
+            this.sceneManager.loadLevel(nextScene);
             // remove this scene now
+            this.close();
 
         }
     }

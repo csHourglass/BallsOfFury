@@ -9,8 +9,9 @@
 
 
 
-function LevelZero(game)    {
+function LevelZero(sceneManager, game)    {
     this.game = game;
+    this.sceneManager = sceneManager;
     this.isPlaying = true;
     this.entities = [];
     this.bgAnimation = new Animation(ASSET_MANAGER.getAsset("./img/Stage1Background.png"), 0, 0, width, height, 1, 1, true, false);
@@ -19,7 +20,7 @@ function LevelZero(game)    {
     this.entities.push(bg);
 
     this.players = 0;
-    for (; this.players < game.controllers.length; this.players++)   {
+    for (; this.players < this.game.controllers.length; this.players++)   {
         var player = new Player(game, (1136 * Math.random()) + 100, 795, this.players, game.controllers[this.players], this);
         this.entities.push(player);
     }
