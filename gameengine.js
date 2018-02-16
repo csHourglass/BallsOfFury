@@ -39,9 +39,9 @@ function Controller()	{
 	this.throw = false;
 	this.parry = false;
 	this.pause = false;
-	this.aimX = 0;
+	this.aimX = 1;
 	this.aimY = 0;
-	this.targetX = 0;
+	this.targetX = 1;
 	this.targetY = 0;
     this.mouse = false;  //hack solution for keyboard/controller problems (on davids computer)
 }
@@ -81,6 +81,7 @@ GameEngine.prototype.init = function (ctx, sceneManager) {
     this.ctx = ctx;
     this.surfaceWidth = this.ctx.canvas.width;
 	this.surfaceHeight = this.ctx.canvas.height;
+
 	this.controllers.push(new Controller());  //Adding keyboard controller
     this.startInput();
     this.timer = new Timer();
@@ -234,7 +235,9 @@ GameEngine.prototype.startInput = function () {
 		// 	that.players[index].dKey = false;
 		// }
 		console.log(`player ${e.player} holding x=${e.x}, y=${e.y}!`);
+
 		var index = this.getID(e);
+        that.controllers[index].mouse = false;
 		if (e.x < 0) {
             that.controllers[index].left = true;
             that.controllers[index].right = false;
@@ -251,6 +254,7 @@ GameEngine.prototype.startInput = function () {
 		// this.players[index].stickx = e.x;
 		// this.players[index].sticky = e.y;
 		var index = this.getID(e);
+        that.controllers[index].mouse = false;
 		that.controllers[index].aimX = e.x;
 		that.controllers[index].aimY = e.y;
 	});

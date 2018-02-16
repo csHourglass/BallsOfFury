@@ -3,7 +3,7 @@
  * controller to press start will be player1 on character screen
  */
 
- //height and widht of drawFrame
+ //height and widht of the Frame
  var width = 1920;
  var height = 1080;
 
@@ -33,9 +33,11 @@ TitleScreen.prototype.update = function() {
     // decouple this
     for (var i = 0; i < this.game.controllers.length; i++) {
         if (this.game.controllers[i].pause === true) {
+            this.game.controllers[i].pause = false;
             this.isPlaying = false;
             // i = the controller that pressed start
             // pass controller as player1 to next scene
+            //var nextScene = new PlayerSelectScene(this.sceneManager, this.game);
             var nextScene = new LevelZero(this.sceneManager, this.game);
             this.sceneManager.loadLevel(nextScene);
             // remove this scene now

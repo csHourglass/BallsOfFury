@@ -11,6 +11,7 @@ ASSET_MANAGER.queueDownload("./img/load.png");
 ASSET_MANAGER.queueDownload("./img/text.png");
 ASSET_MANAGER.queueDownload("./img/Stage1Background.png");
 ASSET_MANAGER.queueDownload("./img/titlebg.png");
+ASSET_MANAGER.queueDownload("./img/playerselect.png");
 ASSET_MANAGER.queueDownload("./img/TestPlatform.png");
 ASSET_MANAGER.queueDownload("./img/TestWall.png");
 ASSET_MANAGER.queueDownload("./img/TestCeiling.png");

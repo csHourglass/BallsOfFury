@@ -39,11 +39,11 @@ function LevelZero(sceneManager, game)    {
     this.entities.push(new Wall(game, 0, 0, 1920, 72, ceiling));
     this.entities.push(dummy);
     this.entities.push(new Camera(game, 0, 0, 1920, 1080));
-    var fakeplayer = new Player(game, 100, 795, 99, new Controller(), this);
-    fakeplayer.armorlock = true;
-    this.entities.push(fakeplayer);
-    this.entities.push(new Ball(fakeplayer.game, fakeplayer, fakeplayer.boundingBox.x - 20,
-        fakeplayer.boundingBox.y, fakeplayer.chargingTime, 5, this));
+    //var fakeplayer = new Player(game, 100, 795, 99, new Controller(), this);
+    // fakeplayer.armorlock = true;
+    // this.entities.push(fakeplayer);
+    // this.entities.push(new Ball(fakeplayer.game, fakeplayer, fakeplayer.boundingBox.x - 20,
+    //     fakeplayer.boundingBox.y, fakeplayer.chargingTime, 5, this));
 
     Scene.call(this, game, this.entities);
 }
