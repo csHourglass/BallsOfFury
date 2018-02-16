@@ -37,8 +37,8 @@ TitleScreen.prototype.update = function() {
             this.isPlaying = false;
             // i = the controller that pressed start
             // pass controller as player1 to next scene
-            //var nextScene = new PlayerSelectScene(this.sceneManager, this.game);
-            var nextScene = new LevelZero(this.sceneManager, this.game);
+            var nextScene = new PlayerSelectScene(this.sceneManager, this.game);
+            //var nextScene = new LevelZero(this.sceneManager, this.game);
             this.sceneManager.loadLevel(nextScene);
             // remove this scene now
             this.close();

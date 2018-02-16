@@ -82,7 +82,7 @@ GameEngine.prototype.init = function (ctx, sceneManager) {
     this.surfaceWidth = this.ctx.canvas.width;
 	this.surfaceHeight = this.ctx.canvas.height;
 
-	this.controllers.push(new Controller());  //Adding keyboard controller
+//	this.controllers.push(new Controller());  //Adding keyboard controller
     this.startInput();
     this.timer = new Timer();
 	this.sceneManager = sceneManager;
@@ -100,15 +100,15 @@ GameEngine.prototype.start = function () {
 }
 
 GameEngine.prototype.getID = function (e) {
-	var index;
-	if (e.player === 'keyboard') {
-			index = 0;
-	}
-	else {
-		index = e.player;
-	}
+	// var index;
+	// if (e.player === 'keyboard') {
+	// 		index = 0;
+	// }
+	// else {
+	// 	index = e.player;
+	// }
 
-	return index;
+	return e.player;
 }
 GameEngine.prototype.startInput = function () {
     console.log('Starting input');
@@ -172,11 +172,11 @@ GameEngine.prototype.startInput = function () {
 	//connect event handler
 	this.gamepad.on('connect', e => {
 		console.log(`controller ${e.index} connected!`);
-		if (e.index >= that.controllers.length)	{
+		// if (e.index >= that.controllers.length)	{
 			console.log("++");
-			that.controllers.push(new Controller());
+			//that.controllers.push(new Controller());
 
-		}
+		 //}
         // var player = new Player(that, (1136 * Math.random()), 400, that.teams++, ASSET_MANAGER.getAsset("./img/player.png"));
 
         // that.players.push(player);
