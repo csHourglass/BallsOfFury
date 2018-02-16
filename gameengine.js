@@ -107,7 +107,7 @@ GameEngine.prototype.getID = function (e) {
 	// else {
 	// 	index = e.player;
 	// }
-
+	console.log("e.player=" + e.player);
 	return e.player;
 }
 GameEngine.prototype.startInput = function () {
@@ -174,7 +174,7 @@ GameEngine.prototype.startInput = function () {
 		console.log(`controller ${e.index} connected!`);
 		// if (e.index >= that.controllers.length)	{
 			console.log("++");
-			//that.controllers.push(new Controller());
+			that.controllers.push(new Controller());
 
 		 //}
         // var player = new Player(that, (1136 * Math.random()), 400, that.teams++, ASSET_MANAGER.getAsset("./img/player.png"));

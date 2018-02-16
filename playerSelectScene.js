@@ -85,7 +85,7 @@ Button.prototype.update = function() {
     //         console.log("ACTIVATE!");
     //     }
     // }
-    if (this.game.controllers.length >= this.ID) {
+    if (this.game.controllers.length > this.ID) {
         if (this.game.controllers[this.ID].pause === true) {
             this.activate();
             console.log("ACTIVATE");
