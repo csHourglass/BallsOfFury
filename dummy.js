@@ -14,7 +14,7 @@ function Dummy(game, x, y, team, scene) {
     this.isHit = false;
     this.scene = scene;
 
-    Entity.call(this, game, this.x, this.y, false, 4);
+    Entity.call(this, game, this.x, this.y, false, 3);
 }
 
 Dummy.prototype = new Entity();

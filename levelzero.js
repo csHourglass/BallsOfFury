@@ -59,3 +59,10 @@ LevelZero.prototype.update = function() {
     }
     Scene.prototype.update.call(this);
 }
+
+LevelZero.prototype.spawn = function()  {
+    var coord = new Coords();
+    coord.x = 100 + Math.random()*1700;
+    coord.y = 795;
+    return coord;
+}

@@ -100,6 +100,8 @@ Button.prototype.update = function() {
             this.game.controllers[this.ID].pause = false;
             var nextScene =  new LevelZero(this.sceneManager, this.game);
             this.scene.sceneManager.loadLevel(nextScene);
+            var hud = new GameHUD(nextScene, this.game);
+			this.scene.sceneManager.loadLevel(hud);
             this.scene.close();
         }
     }

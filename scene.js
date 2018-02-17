@@ -1,3 +1,8 @@
+function Coords() {
+    this.x = 0;
+    this.y = 0;
+}
+
 /**
  * The Scene object handles a set of entities that will
  * appear on the canvas.
@@ -80,4 +85,11 @@ Scene.prototype.close = function()  {
         this.entities[i].removeFromWorld = true;
     }
     this.remove = true;
+}
+
+Scene.prototype.spawn = function()  {
+    var coord = new Coords();
+    coord.x = Math.random()*1920;
+    coord.y = Math.random()*1080;
+    return coord;
 }
