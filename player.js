@@ -460,8 +460,8 @@ Player.prototype.draw = function(ctx, tick)   {
     }
 	ctx.beginPath();
 	ctx.strokeStyle = "blue";
-	ctx.moveTo(this.x, this.y);
-	ctx.lineTo(this.x + (this.controller.aimX * 25) + 500, this.y + (this.controller.aimY * 25) + 500);
+	ctx.moveTo(this.x + 64, this.y + 64);
+	ctx.lineTo(this.x + (this.controller.aimX * 100) + 64, this.y + (this.controller.aimY * 100) + 64);
 	ctx.closePath();
 	ctx.stroke();
 		
