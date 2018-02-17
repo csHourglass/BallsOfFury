@@ -29,7 +29,7 @@ function Ball(game, player, x, y, chargingTime, id, scene) {
 		chargingTime = 3;
 	}
     this.chargingTime = chargingTime;
-    this.speed += chargingTime*500;
+    this.speed += chargingTime*150;
 
     //targetx is for mouse and aimx is for controller
     if (!this.player.controller.mouse) {  // not mouse
@@ -66,7 +66,7 @@ Ball.prototype.update = function() {
         }
         if (this.y > height - 64 || this.y < 0)  {
             this.ySpeed = -this.ySpeed;
-            this.speed -= 100;
+            this.speed -= 500;
         }
         if (this.speed < 1500)   {
             this.state++;

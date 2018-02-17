@@ -63,10 +63,6 @@ ASSET_MANAGER.downloadAll(function () {
     gameEngine.start();
 });
 
-var fight = new Audio("./fight.mp3");
-fight.play();
-fight.volume = .1;
-
 var bgmusic = new Audio("./bgmusic.mp3");
 
 bgmusic.play();

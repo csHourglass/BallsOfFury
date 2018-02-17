@@ -39,6 +39,9 @@ function LevelZero(sceneManager, game)    {
     this.entities.push(new Wall(game, 0, 0, 1920, 72, ceiling));
     this.entities.push(dummy);
     this.entities.push(new Camera(game, 0, 0, 1920, 1080));
+	var fight = new Audio("./fight.mp3");
+	fight.play();
+	fight.volume = .1;
     //var fakeplayer = new Player(game, 100, 795, 99, new Controller(), this);
     // fakeplayer.armorlock = true;
     // this.entities.push(fakeplayer);
