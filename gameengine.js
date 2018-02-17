@@ -43,6 +43,7 @@ function Controller()	{
 	this.aimY = 0;
 	this.targetX = 1;
 	this.targetY = 0;
+    this.ready = false;
     this.mouse = false;  //hack solution for keyboard/controller problems (on davids computer)
 }
 
