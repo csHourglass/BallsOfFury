@@ -209,13 +209,15 @@ GameEngine.prototype.startInput = function () {
 		// }
 		console.log(`player ${e.player} pressed ${e.button}!`);
 		var index = this.getID(e);
-		if (e.x < 0) {
-            that.controllers[index].left = true;
-            that.controllers[index].right = false;
-		}
-		if (e.x > 0) {
-            that.controllers[index].right = true;
-            that.controllers[index].left = false;
+		if (e.player !== 'keyboard') {
+			if (e.x < 0) {
+				that.controllers[index].left = true;
+				that.controllers[index].right = false;
+			}
+			if (e.x > 0) {
+				that.controllers[index].right = true;
+				that.controllers[index].left = false;
+			}
 		}
 	});
 
@@ -239,13 +241,15 @@ GameEngine.prototype.startInput = function () {
 
 		var index = this.getID(e);
         that.controllers[index].mouse = false;
-		if (e.x < 0) {
-            that.controllers[index].left = true;
-            that.controllers[index].right = false;
-		}
-		if (e.x > 0) {
-            that.controllers[index].right = true;
-            that.controllers[index].left = false;
+		if (e.player !== 'keyboard') {
+			if (e.x < 0) {
+				that.controllers[index].left = true;
+				that.controllers[index].right = false;
+			}
+			if (e.x > 0) {
+				that.controllers[index].right = true;
+				that.controllers[index].left = false;
+			}
 		}
 	});
 
@@ -255,11 +259,13 @@ GameEngine.prototype.startInput = function () {
 		//this.players[index].stickx = e.x;
 		//this.players[index].sticky = e.y;
 		var index = this.getID(e);
-        that.controllers[index].mouse = false;
-		that.controllers[index].aimX = e.x;
-		console.log("that.controllers[index].aimx = " + e.x);
-		that.controllers[index].aimY = e.y;
-		console.log("that.controllers[index].aimy = " + e.y);
+		if (e.player !== 'keyboard') {
+			that.controllers[index].mouse = false;
+			that.controllers[index].aimX = e.x;
+			console.log("that.controllers[index].aimx = " + e.x);
+			that.controllers[index].aimY = e.y;
+			console.log("that.controllers[index].aimy = " + e.y);
+		}
 	});
 
 	//Analog stick release
@@ -268,9 +274,11 @@ GameEngine.prototype.startInput = function () {
 		// that.players[index].aKey = false;
 		// that.players[index].dKey = false;
 		console.log(`player ${e.player} released ${e.value}!`);
-		var index = this.getID(e);
-		that.controllers[index].left = false;
-		that.controllers[index].right = false;
+		if (e.player !== 'keyboard') {
+			var index = this.getID(e);
+			that.controllers[index].left = false;
+			that.controllers[index].right = false;
+		}
 	});
 
 	this.gamepad.on('release', 'stick_axis_right', e => {
@@ -285,8 +293,10 @@ GameEngine.prototype.startInput = function () {
 		// that.players[index].space = true;
 		// that.players[index].spaceReleased = false;
 		console.log(`player ${e.player} pressed ${e.button}!`);
-		var index = this.getID(e);
-		that.controllers[index].jump = true;
+		if (e.player !== 'keyboard') {
+			var index = this.getID(e);
+			that.controllers[index].jump = true;
+		}
 	});
 
 	//button_2 - B (XBOX) / Circle (PS3/PS4)
@@ -317,8 +327,10 @@ GameEngine.prototype.startInput = function () {
 	//shoulder_bottom_left - LT (XBOX) / L2 (PS3/PS4)
 	this.gamepad.on('press', 'shoulder_bottom_left', e => {
 		console.log(`player ${e.player} pressed ${e.button}!`);
-		var index = this.getID(e);
-		that.controllers[index].parry = true;
+		if (e.player !== 'keyboard') {
+			var index = this.getID(e);
+			that.controllers[index].parry = true;
+		}
 	});
 
 	//shoulder_bottom_right - RT (XBOX) / R2 (PS3/PS4)
@@ -327,8 +339,10 @@ GameEngine.prototype.startInput = function () {
 		// that.players[index].triggerDown = true;
 		// console.log("triggerDown = " + that.players[index].triggerDown);
 		console.log(`player ${e.player} pressed ${e.button}!`);
-		var index = this.getID(e);
-		that.controllers[index].throw = true;
+		if (e.player !== 'keyboard') {
+			var index = this.getID(e);
+			that.controllers[index].throw = true;
+		}
 	});
 
 	//select - Back (XBOX) / Select (PS3/PS4)
@@ -339,9 +353,11 @@ GameEngine.prototype.startInput = function () {
 	//start - Start (XBOX/PS3/PS4)
 	this.gamepad.on('press', 'start', e => {
 		console.log(`player ${e.player} pressed ${e.button}!`);
-		var index = this.getID(e);
-		that.controllers[index].pause = true;
-		that.pauseGame = true;
+		if (e.player !== 'keyboard') {
+			var index = this.getID(e);
+			that.controllers[index].pause = true;
+			that.pauseGame = true;
+		}
 	});
 
 	//stick_button_left - Left Analog Stick (XBOX/PS3/PS4)
@@ -371,8 +387,10 @@ GameEngine.prototype.startInput = function () {
 		// var index = this.getID(e);
 		// that.players[index].aKey = true;
 		console.log(`player ${e.player} pressed ${e.button}!`);
-		var index = this.getID(e);
-		that.controllers[index].left = true;
+		if (e.player !== 'keyboard') {
+			var index = this.getID(e);
+			that.controllers[index].left = true;
+		}
 	});
 
 	//d_pad_right - Right on the D-Pad (XBOX/PS3/PS4)
@@ -381,7 +399,8 @@ GameEngine.prototype.startInput = function () {
 		// that.players[index].dKey = true;
 		console.log(`player ${e.player} pressed ${e.button}!`);
 		var index = this.getID(e);
-		that.controllers[index].right = true;
+		if (e.player !== 'keyboard')
+			that.controllers[index].right = true;
 	});
 
 	//vendor - XBOX Button (XBOX) / Playstation Button (PS3/PS4)
@@ -426,8 +445,10 @@ GameEngine.prototype.startInput = function () {
 	//shoulder_bottom_left - LT (XBOX) / L2 (PS3/PS4)
 	this.gamepad.on('hold', 'shoulder_bottom_left', e => {
 		console.log(`player ${e.player} holding ${e.button}!`);
-		var index = this.getID(e);
-		that.controllers[index].parry = true;
+		if (e.player !== 'keyboard') {
+			var index = this.getID(e);
+			that.controllers[index].parry = true;
+		}
 	});
 
 	//shoulder_bottom_right - RT (XBOX) / R2 (PS3/PS4)
@@ -443,9 +464,11 @@ GameEngine.prototype.startInput = function () {
 	//start - Start (XBOX/PS3/PS4)
 	this.gamepad.on('hold', 'start', e => {
 		console.log(`player ${e.player} holding ${e.button}!`);
-		var index = this.getID(e);
-		that.controllers[index].pause = true;
-		that.pauseGame = true;
+		if (e.player !== 'keyboard') {
+			var index = this.getID(e);
+			that.controllers[index].pause = true;
+			that.pauseGame = true;
+		}
 	});
 
 	//stick_button_left - Left Analog Stick (XBOX/PS3/PS4)
@@ -493,8 +516,10 @@ GameEngine.prototype.startInput = function () {
 		// that.players[index].space = false;
 		// that.players[index].spaceReleased = true;
 		console.log(`player ${e.player} released ${e.button}!`);
-		var index = this.getID(e);
-		that.controllers[index].jump = false;
+		if (e.player !== 'keyboard') {
+			var index = this.getID(e);
+			that.controllers[index].jump = false;
+		}
 	});
 
 	//button_2 - B (XBOX) / Circle (PS3/PS4)
@@ -525,8 +550,10 @@ GameEngine.prototype.startInput = function () {
 	//shoulder_bottom_left - LT (XBOX) / L2 (PS3/PS4)
 	this.gamepad.on('release', 'shoulder_bottom_left', e => {
 		console.log(`player ${e.player} released ${e.button}!`);
-		var index = this.getID(e);
-		that.controllers[index].parry = false;
+		if (e.player !== 'keyboard') {
+			var index = this.getID(e);
+			that.controllers[index].parry = false;
+		}
 	});
 
 	//shoulder_bottom_right - RT (XBOX) / R2 (PS3/PS4)
@@ -535,8 +562,10 @@ GameEngine.prototype.startInput = function () {
 		// that.players[index].triggerUp = true;
 		// console.log("triggerUp = " + that.triggerUp);
 		console.log(`player ${e.player} released ${e.button}!`);
-		var index = this.getID(e);
-		that.controllers[index].throw = false;
+		if (e.player !== 'keyboard') {
+			var index = this.getID(e);
+			that.controllers[index].throw = false;
+		}
 	});
 
 	//select - Back (XBOX) / Select (PS3/PS4)
@@ -549,9 +578,11 @@ GameEngine.prototype.startInput = function () {
 		console.log(`player ${e.player} released ${e.button}!`);
 		// that.sceneManager.clickedWhereX = -50;
 		// that.sceneManager.clickedWhereY = -50;
-		var index = this.getID(e);
-		that.controllers[index].pause = false;
-		that.pauseGame = false;
+		if (e.player !== 'keyboard') {
+			var index = this.getID(e);
+			that.controllers[index].pause = false;
+			that.pauseGame = false;
+		}
 	});
 
 	//stick_button_left - Left Analog Stick (XBOX/PS3/PS4)
@@ -579,8 +610,10 @@ GameEngine.prototype.startInput = function () {
 		// var index = this.getID(e);
 		// that.players[index].aKey = false;
 		console.log(`player ${e.player} released ${e.button}!`);
-		var index = this.getID(e);
-		that.controllers[index].left = false;
+		if (e.player !== 'keyboard') {
+			var index = this.getID(e);
+			that.controllers[index].left = false;
+		}
 	});
 
 	//d_pad_right - Right on the D-Pad (XBOX/PS3/PS4)
@@ -589,7 +622,8 @@ GameEngine.prototype.startInput = function () {
 		// that.players[index].dKey = false;
 		console.log(`player ${e.player} released ${e.button}!`);
 		var index = this.getID(e);
-		that.controllers[index].right = false;
+		if (e.player !== 'keyboard')
+			that.controllers[index].right = false;
 	});
 
 	//vendor - XBOX Button (XBOX) / Playstation Button (PS3/PS4)
