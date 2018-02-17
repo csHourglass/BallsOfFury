@@ -80,8 +80,10 @@ function Player(game, x, y, team, controller, scene)   {
     this.showBoxes = true;  // show Bounding boxes for testing
     this.team = team;
     this.isHit = false;
+    this.lives = 2;
     this.isCatching = false;
     this.catchTimer = 0;
+    this.deathTimer = 0;
 
     //// Controls ////
     this.controller = controller;
@@ -351,8 +353,10 @@ Player.prototype.update = function ()   {
                 } else if (this.isCatching || this.armorlock) {
                     ent.speed += 1000;
                     ent.team = this.team;
-                } else if (ent.team !== this.team) {
+                } else if (ent.team !== this.team && this.isHit === false) {
                     this.isHit = true;
+                    this.canCollide = false;
+                    this.lives--;
                 }
             }
             // if (ent.id === 5 && this.ballState === 0 && ent.state !== 0) {
@@ -363,7 +367,23 @@ Player.prototype.update = function ()   {
         }
     }
     if (this.explosion.isDone()) {
-        this.removeFromWorld = true;
+        if (this.lives < 1) {
+            console.log("DEAD.");
+            this.removeFromWorld = true;
+        } else {
+        this.deathTimer += this.game.clockTick;
+            if (this.deathTimer > 3)  {
+                console.log("IM ALIIIIVE!");
+                this.canCollide = true;
+                this.deathTimer = 0;
+                this.explosion.elapsedTime = 0;
+                var spawnCoords = this.scene.spawn();
+                this.x = spawnCoords.x;
+                this.y = spawnCoords.y;
+                this.ballState = 1;
+                this.isHit = false;
+            }
+        }
     }
     this.prevX = this.x;
     this.prevY = this.y;

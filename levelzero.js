@@ -14,6 +14,7 @@ function LevelZero(sceneManager, game)    {
     this.sceneManager = sceneManager;
     this.isPlaying = true;
     this.entities = [];
+    this.players = 0;
     this.bgAnimation = new Animation(ASSET_MANAGER.getAsset("./img/Stage1Background.png"), 0, 0, width, height, 1, 1, true, false);
 
     var bg = new Background(game, this.bgAnimation);
@@ -42,6 +43,7 @@ function LevelZero(sceneManager, game)    {
     var fakeplayer = new Player(game, 100, 795, 99, new Controller(), this);
     fakeplayer.armorlock = true;
     this.entities.push(fakeplayer);
+    this.players++;
     this.entities.push(new Ball(fakeplayer.game, fakeplayer, fakeplayer.boundingBox.x - 20,
         fakeplayer.boundingBox.y, fakeplayer.chargingTime, 5, this));
 
@@ -58,4 +60,11 @@ LevelZero.prototype.update = function() {
         this.players++;
     }
     Scene.prototype.update.call(this);
+}
+
+LevelZero.prototype.spawn = function()  {
+    var coord = new Coords();
+    coord.x = 100 + Math.random()*1700;
+    coord.y = 795;
+    return coord;
 }
