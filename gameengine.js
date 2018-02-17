@@ -121,9 +121,9 @@ GameEngine.prototype.startInput = function () {
 		// }
 		that.mousex = e.clientX;
 		that.mousey = e.clientY;
-		that.controllers[0].targetX = e.clientX;
-		that.controllers[0].targetY = e.clientY;
-        that.controllers[0].mouse = true; // using mouse
+		//that.controllers[0].targetX = e.clientX;
+		//that.controllers[0].targetY = e.clientY;
+        //that.controllers[0].mouse = true; // using mouse
 
 		//console.log("mousex=" + that.mousex + " ,mousey=" + that.mousey);
     })
@@ -133,13 +133,13 @@ GameEngine.prototype.startInput = function () {
 		// }
 		that.sceneManager.clickedWhereX = that.mousex;
 		that.sceneManager.clickedWhereY = that.mousey;
-		that.controllers[0].throw = false;
+		//that.controllers[0].throw = false;
     }, false);
 	this.ctx.canvas.addEventListener("mousedown", function (e)    {
 		// if (that.players.length > 0) {
 		// 	that.players[0].mouseDown = true;
 		// }
-		that.controllers[0].throw = true;
+		//that.controllers[0].throw = true;
     }, false);
 
 	/*
@@ -160,7 +160,7 @@ GameEngine.prototype.startInput = function () {
 	// GAMEPAD START
 
 	//keyboard's custom input
-	this.gamepad.setCustomMapping('keyboard', {
+	/*this.gamepad.setCustomMapping('keyboard', {
 		'shoulder_bottom_left': 69,
 		'button_1': 32,
 		'start': 27,
@@ -168,7 +168,7 @@ GameEngine.prototype.startInput = function () {
 		'd_pad_down': [40, 83],
 		'd_pad_left': [37, 65],
 		'd_pad_right': [39, 68]
-	});
+	});*/
 
 	//connect event handler
 	this.gamepad.on('connect', e => {
@@ -251,13 +251,15 @@ GameEngine.prototype.startInput = function () {
 
 	this.gamepad.on('hold', 'stick_axis_right', e => {
 		// var index = this.getID(e);
-		console.log(`player ${e.player} holding ${e.value}!`);
-		// this.players[index].stickx = e.x;
-		// this.players[index].sticky = e.y;
+		//console.log(`player ${e.player} holding ${e.value}!`);
+		//this.players[index].stickx = e.x;
+		//this.players[index].sticky = e.y;
 		var index = this.getID(e);
         that.controllers[index].mouse = false;
 		that.controllers[index].aimX = e.x;
+		console.log("that.controllers[index].aimx = " + e.x);
 		that.controllers[index].aimY = e.y;
+		console.log("that.controllers[index].aimy = " + e.y);
 	});
 
 	//Analog stick release
@@ -643,7 +645,6 @@ GameEngine.prototype.draw = function () {
     }
 	for (var i = 0; i < this.players.length; i++) {
         this.players[i].draw(this.ctx);
-		console.log(this.players.length);
     }
     this.ctx.restore();
 }

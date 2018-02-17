@@ -129,6 +129,7 @@ Player.prototype.throwBall = function(boundingBox) {
  * we want in the game.
  */
 Player.prototype.update = function ()   {
+
 /////***** Jumping *****/////
     if (this.controller.jump && this.canJump)    {
         this.jumpingState = 1;
@@ -373,6 +374,7 @@ Player.prototype.update = function ()   {
 }
 
 Player.prototype.draw = function(ctx, tick)   {
+	
     ////////// bounding box ////////////
     if (this.showBoxes) {
         this.boundingBox.draw(ctx);
@@ -456,6 +458,15 @@ Player.prototype.draw = function(ctx, tick)   {
             this.RIdleAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
     }
-
+		if (this.controller.aimx > -100 & this.controller.aimy > -100) {
+		ctx.beginPath();
+		ctx.strokeStyle = "blue";
+		ctx.moveTo(this.x, this.y);
+		ctx.lineTo(this.x + (this.controller.aimx * 25) + 500, this.y + (this.controller.aimy * 25) + 500);
+		console.log("x = " + (this.controller.aimx * 25));
+		console.log("y = " + (this.controller.aimy * 25));
+		ctx.closePath();
+		ctx.stroke();
+		}
     Entity.prototype.draw.call(this);
 }
