@@ -18,7 +18,9 @@ ASSET_MANAGER.queueDownload("./img/player.png");
 ASSET_MANAGER.queueDownload("./img/ball.png");
 ASSET_MANAGER.queueDownload("./img/Training_dummy.png");
 ASSET_MANAGER.queueDownload("./img/explosion.png");
-ASSET_MANAGER.queueDownload("./img/heart.png");
+ASSET_MANAGER.queueDownload("./img/fulllive.png");
+ASSET_MANAGER.queueDownload("./img/halflive.png");
+ASSET_MANAGER.queueDownload("./img/nolive.png");
 //ASSET_MANAGER.queueDownload("./bgmusic.mp3");
 //ASSET_MANAGER.queueDownload("./fight.mp3");
 

@@ -30,6 +30,7 @@ SceneManager.prototype.loadLevel = function(scene) {
 }
 
 
+
 /**
  * play() calls each scene's update() functions, then
  * their draw() functions.

@@ -1,16 +1,11 @@
-function LiveMeter(game, x, y, team, controller, scene, otherScene) {
-	this.FirstLiveAnimation = new Animation(ASSET_MANAGER.getAsset("./img/heart.png"), 0, 0, 300, 300, 1, 1, true, false);
-	this.SecondLiveAnimation = new Animation(ASSET_MANAGER.getAsset("./img/heart.png"), 0, 0, 300, 300, 1, 1, true, false);
-	this.ThirdLiveAnimation = new Animation(ASSET_MANAGER.getAsset("./img/heart.png"), 0, 0, 300, 300, 1, 1, true, false);
+function LiveMeter(game, x, y, team, controller, scene, otherScene, currentstatus) {
+	this.FullLiveAnimation = new Animation(ASSET_MANAGER.getAsset("./img/fulllive.png"), 0, 0, 300, 300, 1, 1, true, false);
+	this.HalfLiveAnimation = new Animation(ASSET_MANAGER.getAsset("./img/halflive.png"), 0, 0, 300, 300, 1, 1, true, false);
+	this.NoLiveAnimation = new Animation(ASSET_MANAGER.getAsset("./img/nolive.png"), 0, 0, 300, 300, 10, 1, true, false);
 	
-	//this.TwoLivesAnimation = new Animation(ASSET_MANAGER.getAsset("./img/heart.png"), 300, 0, 300, 300, 1, 1, true, false);
-	
-	this.isFull = true;
-	this.isHalf = false;
-	this.isDead = false;
-	
-	this.x = 100;
-	this.y = 100;
+	this.currentstatus = currentstatus;
+	this.x = x;
+	this.y = y;
 	this.width = 300;
 	this.height = 300;
 	
@@ -37,22 +32,13 @@ LiveMeter.prototype.update = function() {
 }
 
 LiveMeter.prototype.draw = function(ctx, tick) {
-	if (!(this.isHit) && this.isFull) {
-		this.FirstLiveAnimation.drawFrame(tick, ctx, this.x, this.y, 0.5);
-		this.SecondLiveAnimation.drawFrame(tick, ctx, this.x + 150, this.y, 0.5);
-		this.ThirdLiveAnimation.drawFrame(tick, ctx, this.x + 300, this.y, 0.5);
-	} else if (this.isHit && this.isFull) {
-		this.ThirdLiveAnimation.drawFrame(tick, ctx, this.x + 600, this.y, 0.5);
-		//this.ThirdLiveAnimation.frames = 60;
-		this.isHit = false;
-		this.isFull = false;
-		this.isHalf = true;
-	} else if (this.isHit && this.isHalf) {
-		this.ThirdLiveAnimation.drawFrame(tick, ctx, this.x, this.y, 0.5);
-		this.isHit = false;
-		this.isDead = true;
-		this.isHalf = false;
-		this.isFull = false;
+	if (this.currentstatus === 1) {
+		this.FullLiveAnimation.drawFrame(tick, ctx, this.x, this.y, 0.5);
+	} else if (this.currentstatus === 2) {
+		this.HalfLiveAnimation.drawFrame(tick, ctx, this.x, this.y, 0.5);
+	} else if (this.currentstatus === 3) {
+		this.NoLiveAnimation.drawFrame(tick, ctx, this.x, this.y, 0.5);
 	}
+
 	Entity.prototype.draw.call(this);
 }
