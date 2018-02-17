@@ -30,10 +30,29 @@ Timer.prototype.tick = function () {
     return gameDelta;
 }
 
+function Controller()	{
+	this.jump = false;
+	this.left = false;
+	this.right = false;
+	this.up = false;
+	this.down = false;
+	this.throw = false;
+	this.parry = false;
+	this.pause = false;
+	this.aimX = 0;
+	this.aimY = 0;
+	this.targetX = 0;
+	this.targetY = 0;
+    this.mouse = false;  //hack solution for keyboard/controller problems (on davids computer)
+}
+
+Controller.prototype.constructor = Controller;
+
 function GameEngine() {
 	const gamepad = new Gamepad();
     this.entities = [];
-    this.players = [];
+	this.players = [];
+	this.controllers = [];
     //team 0 is keyboard
     this.teams = 1;
     this.showOutlines = false;
@@ -54,14 +73,15 @@ function GameEngine() {
 	this.yOffset = 0;
 	this.drawScale = 1;
 	//we should only be creating one gamepad object.
-
 	this.gamepad = gamepad;
+	this.canPause = true;
 }
 
 GameEngine.prototype.init = function (ctx, sceneManager) {
     this.ctx = ctx;
     this.surfaceWidth = this.ctx.canvas.width;
-    this.surfaceHeight = this.ctx.canvas.height;
+	this.surfaceHeight = this.ctx.canvas.height;
+	this.controllers.push(new Controller());  //Adding keyboard controller
     this.startInput();
     this.timer = new Timer();
 	this.sceneManager = sceneManager;
@@ -70,8 +90,8 @@ GameEngine.prototype.init = function (ctx, sceneManager) {
 
 GameEngine.prototype.start = function () {
     console.log("starting game");
-
-    var that = this;
+	var that = this;
+	this.sceneManager.init(that);
     (function gameLoop() {
         that.loop();
         requestAnimFrame(gameLoop, that.ctx.canvas);
@@ -84,7 +104,7 @@ GameEngine.prototype.getID = function (e) {
 			index = 0;
 	}
 	else {
-		index = e.player + 1;
+		index = e.player;
 	}
 
 	return index;
@@ -93,25 +113,31 @@ GameEngine.prototype.startInput = function () {
     console.log('Starting input');
     var that = this;
     this.ctx.canvas.addEventListener("mousemove", function (e)  {
-		if (that.players.length > 0) {
-			that.players[0].mousex = e.clientX;
-			that.players[0].mousey = e.clientY;
-		}
+		// if (that.players.length > 0) {
+		// 	that.players[0].mousex = e.clientX;
+		// 	that.players[0].mousey = e.clientY;
+		// }
 		that.mousex = e.clientX;
-        that.mousey = e.clientY;
+		that.mousey = e.clientY;
+		that.controllers[0].targetX = e.clientX;
+		that.controllers[0].targetY = e.clientY;
+        that.controllers[0].mouse = true; // using mouse
+
 		//console.log("mousex=" + that.mousex + " ,mousey=" + that.mousey);
     })
     this.ctx.canvas.addEventListener("mouseup", function (e)    {
-		if (that.players.length > 0) {
-			that.players[0].mouseUp = true;
-		}
+		// if (that.players.length > 0) {
+		// 	that.players[0].mouseUp = true;
+		// }
 		that.sceneManager.clickedWhereX = that.mousex;
 		that.sceneManager.clickedWhereY = that.mousey;
+		that.controllers[0].throw = false;
     }, false);
 	this.ctx.canvas.addEventListener("mousedown", function (e)    {
-		if (that.players.length > 0) {
-			that.players[0].mouseDown = true;
-		}
+		// if (that.players.length > 0) {
+		// 	that.players[0].mouseDown = true;
+		// }
+		that.controllers[0].throw = true;
     }, false);
 
 	/*
@@ -133,22 +159,29 @@ GameEngine.prototype.startInput = function () {
 
 	//keyboard's custom input
 	this.gamepad.setCustomMapping('keyboard', {
-    'button_1': 32,
-    'start': 27,
-    'd_pad_up': [38, 87],
-    'd_pad_down': [40, 83],
-    'd_pad_left': [37, 65],
-	'd_pad_right': [39, 68]
-});
+		'shoulder_bottom_left': 69,
+		'button_1': 32,
+		'start': 27,
+		'd_pad_up': [38, 87],
+		'd_pad_down': [40, 83],
+		'd_pad_left': [37, 65],
+		'd_pad_right': [39, 68]
+	});
 
 	//connect event handler
 	this.gamepad.on('connect', e => {
 		console.log(`controller ${e.index} connected!`);
-        var player = new Player(that, (1136 * Math.random()), 400, that.teams++, ASSET_MANAGER.getAsset("./img/player.png"));
+		if (e.index >= that.controllers.length)	{
+			console.log("++");
+			that.controllers.push(new Controller());
 
-        that.players.push(player);
-        that.addEntity(player);
-        //"that.players[0].team);
+		}
+        // var player = new Player(that, (1136 * Math.random()), 400, that.teams++, ASSET_MANAGER.getAsset("./img/player.png"));
+
+        // that.players.push(player);
+        // that.addEntity(player);
+		//"that.players[0].team);
+
 	});
 
 	//disconnect event handler
@@ -161,51 +194,76 @@ GameEngine.prototype.startInput = function () {
 	//Analog stick Press
 	//METHOD 1 of handling analog stick press
 	this.gamepad.on('press', 'stick_axis_left', e => {
+		// var index = this.getID(e);
+		// console.log("e.index = "+ index);
+		// console.log("that.players[index].aKey = " + that.players[index].aKey);
+		// if (e.x < 0) {
+        //     that.players[index].aKey = true;
+		// 	that.players[index].dKey = false;
+		// }
+		// if (e.x > 0) {
+		// 	that.players[index].dKey = true;
+		// 	that.players[index].aKey = false;
+		// }
+		console.log(`player ${e.player} pressed ${e.button}!`);
 		var index = this.getID(e);
-		console.log("e.index = "+ index);
-		console.log("that.players[index].aKey = " + that.players[index].aKey);
 		if (e.x < 0) {
-            that.players[index].aKey = true;
-			that.players[index].dKey = false;
+            that.controllers[index].left = true;
+            that.controllers[index].right = false;
 		}
 		if (e.x > 0) {
-			that.players[index].dKey = true;
-			that.players[index].aKey = false;
+            that.controllers[index].right = true;
+            that.controllers[index].left = false;
 		}
-		console.log(`player ${e.player} pressed ${e.button}!`);
 	});
 
 	this.gamepad.on('press', 'stick_axis_right', e => {
 		console.log(`player ${e.player} pressed ${e.button}!`);
+        var index = this.getID(e);
 	});
 
 	//Analog stick hold
 	this.gamepad.on('hold', 'stick_axis_left', e => {
-		var index = this.getID(e);
-		if (e.x > 0) {
-			that.players[index].dKey = true;
-			that.players[index].aKey = false;
-		}
-		if (e.x < 0) {
-			that.players[index].aKey = true;
-			that.players[index].dKey = false;
-		}
+		// var index = this.getID(e);
+		// if (e.x > 0) {
+		// 	that.players[index].dKey = true;
+		// 	that.players[index].aKey = false;
+		// }
+		// if (e.x < 0) {
+		// 	that.players[index].aKey = true;
+		// 	that.players[index].dKey = false;
+		// }
 		console.log(`player ${e.player} holding x=${e.x}, y=${e.y}!`);
+		var index = this.getID(e);
+		if (e.x < 0) {
+            that.controllers[index].left = true;
+            that.controllers[index].right = false;
+		}
+		if (e.x > 0) {
+            that.controllers[index].right = true;
+            that.controllers[index].left = false;
+		}
 	});
 
 	this.gamepad.on('hold', 'stick_axis_right', e => {
-		var index = this.getID(e);
+		// var index = this.getID(e);
 		console.log(`player ${e.player} holding ${e.value}!`);
-		this.players[index].stickx = e.x;
-		this.players[index].sticky = e.y;
+		// this.players[index].stickx = e.x;
+		// this.players[index].sticky = e.y;
+		var index = this.getID(e);
+		that.controllers[index].aimX = e.x;
+		that.controllers[index].aimY = e.y;
 	});
 
 	//Analog stick release
 	this.gamepad.on('release', 'stick_axis_left', e => {
-		var index = this.getID(e);
-		that.players[index].aKey = false;
-		that.players[index].dKey = false;
+		// var index = this.getID(e);
+		// that.players[index].aKey = false;
+		// that.players[index].dKey = false;
 		console.log(`player ${e.player} released ${e.value}!`);
+		var index = this.getID(e);
+		that.controllers[index].left = false;
+		that.controllers[index].right = false;
 	});
 
 	this.gamepad.on('release', 'stick_axis_right', e => {
@@ -216,10 +274,12 @@ GameEngine.prototype.startInput = function () {
 
 	//button_1 - A (XBOX) / X (PS3/PS4)
 	this.gamepad.on('press', 'button_1', e => {
+		// var index = this.getID(e);
+		// that.players[index].space = true;
+		// that.players[index].spaceReleased = false;
+		console.log(`player ${e.player} pressed ${e.button}!`);
 		var index = this.getID(e);
-		that.players[index].space = true;
-		that.players[index].spaceReleased = false;
-    console.log(`player ${e.player} pressed ${e.button}!`);
+		that.controllers[index].jump = true;
 	});
 
 	//button_2 - B (XBOX) / Circle (PS3/PS4)
@@ -250,14 +310,18 @@ GameEngine.prototype.startInput = function () {
 	//shoulder_bottom_left - LT (XBOX) / L2 (PS3/PS4)
 	this.gamepad.on('press', 'shoulder_bottom_left', e => {
 		console.log(`player ${e.player} pressed ${e.button}!`);
+		var index = this.getID(e);
+		that.controllers[index].parry = true;
 	});
 
 	//shoulder_bottom_right - RT (XBOX) / R2 (PS3/PS4)
 	this.gamepad.on('press', 'shoulder_bottom_right', e => {
-		var index = this.getID(e);
-		that.players[index].triggerDown = true;
-		console.log("triggerDown = " + that.players[index].triggerDown);
+		// var index = this.getID(e);
+		// that.players[index].triggerDown = true;
+		// console.log("triggerDown = " + that.players[index].triggerDown);
 		console.log(`player ${e.player} pressed ${e.button}!`);
+		var index = this.getID(e);
+		that.controllers[index].throw = true;
 	});
 
 	//select - Back (XBOX) / Select (PS3/PS4)
@@ -268,6 +332,9 @@ GameEngine.prototype.startInput = function () {
 	//start - Start (XBOX/PS3/PS4)
 	this.gamepad.on('press', 'start', e => {
 		console.log(`player ${e.player} pressed ${e.button}!`);
+		var index = this.getID(e);
+		that.controllers[index].pause = true;
+		that.pauseGame = true;
 	});
 
 	//stick_button_left - Left Analog Stick (XBOX/PS3/PS4)
@@ -294,16 +361,20 @@ GameEngine.prototype.startInput = function () {
 
 	//d_pad_left - Left on the D-Pad (XBOX/PS3/PS4)
 	this.gamepad.on('press', 'd_pad_left', e => {
-		var index = this.getID(e);
-		that.players[index].aKey = true;
+		// var index = this.getID(e);
+		// that.players[index].aKey = true;
 		console.log(`player ${e.player} pressed ${e.button}!`);
+		var index = this.getID(e);
+		that.controllers[index].left = true;
 	});
 
 	//d_pad_right - Right on the D-Pad (XBOX/PS3/PS4)
 	this.gamepad.on('press', 'd_pad_right', e => {
-		var index = this.getID(e);
-		that.players[index].dKey = true;
+		// var index = this.getID(e);
+		// that.players[index].dKey = true;
 		console.log(`player ${e.player} pressed ${e.button}!`);
+		var index = this.getID(e);
+		that.controllers[index].right = true;
 	});
 
 	//vendor - XBOX Button (XBOX) / Playstation Button (PS3/PS4)
@@ -348,6 +419,8 @@ GameEngine.prototype.startInput = function () {
 	//shoulder_bottom_left - LT (XBOX) / L2 (PS3/PS4)
 	this.gamepad.on('hold', 'shoulder_bottom_left', e => {
 		console.log(`player ${e.player} holding ${e.button}!`);
+		var index = this.getID(e);
+		that.controllers[index].parry = true;
 	});
 
 	//shoulder_bottom_right - RT (XBOX) / R2 (PS3/PS4)
@@ -363,6 +436,9 @@ GameEngine.prototype.startInput = function () {
 	//start - Start (XBOX/PS3/PS4)
 	this.gamepad.on('hold', 'start', e => {
 		console.log(`player ${e.player} holding ${e.button}!`);
+		var index = this.getID(e);
+		that.controllers[index].pause = true;
+		that.pauseGame = true;
 	});
 
 	//stick_button_left - Left Analog Stick (XBOX/PS3/PS4)
@@ -406,10 +482,12 @@ GameEngine.prototype.startInput = function () {
 
 	//button_1 - A (XBOX) / X (PS3/PS4)
 	this.gamepad.on('release', 'button_1', e => {
+		// var index = this.getID(e);
+		// that.players[index].space = false;
+		// that.players[index].spaceReleased = true;
+		console.log(`player ${e.player} released ${e.button}!`);
 		var index = this.getID(e);
-		that.players[index].space = false;
-		that.players[index].spaceReleased = true;
-    console.log(`player ${e.player} released ${e.button}!`);
+		that.controllers[index].jump = false;
 	});
 
 	//button_2 - B (XBOX) / Circle (PS3/PS4)
@@ -440,14 +518,18 @@ GameEngine.prototype.startInput = function () {
 	//shoulder_bottom_left - LT (XBOX) / L2 (PS3/PS4)
 	this.gamepad.on('release', 'shoulder_bottom_left', e => {
 		console.log(`player ${e.player} released ${e.button}!`);
+		var index = this.getID(e);
+		that.controllers[index].parry = false;
 	});
 
 	//shoulder_bottom_right - RT (XBOX) / R2 (PS3/PS4)
 	this.gamepad.on('release', 'shoulder_bottom_right', e => {
-		var index = this.getID(e);
-		that.players[index].triggerUp = true;
-		console.log("triggerUp = " + that.triggerUp);
+		// var index = this.getID(e);
+		// that.players[index].triggerUp = true;
+		// console.log("triggerUp = " + that.triggerUp);
 		console.log(`player ${e.player} released ${e.button}!`);
+		var index = this.getID(e);
+		that.controllers[index].throw = false;
 	});
 
 	//select - Back (XBOX) / Select (PS3/PS4)
@@ -458,8 +540,11 @@ GameEngine.prototype.startInput = function () {
 	//start - Start (XBOX/PS3/PS4)
 	this.gamepad.on('release', 'start', e => {
 		console.log(`player ${e.player} released ${e.button}!`);
-		that.sceneManager.clickedWhereX = -50;
-		that.sceneManager.clickedWhereY = -50;
+		// that.sceneManager.clickedWhereX = -50;
+		// that.sceneManager.clickedWhereY = -50;
+		var index = this.getID(e);
+		that.controllers[index].pause = false;
+		that.pauseGame = false;
 	});
 
 	//stick_button_left - Left Analog Stick (XBOX/PS3/PS4)
@@ -484,16 +569,20 @@ GameEngine.prototype.startInput = function () {
 
 	//d_pad_left - Left on the D-Pad (XBOX/PS3/PS4)
 	this.gamepad.on('release', 'd_pad_left', e => {
-		var index = this.getID(e);
-		that.players[index].aKey = false;
+		// var index = this.getID(e);
+		// that.players[index].aKey = false;
 		console.log(`player ${e.player} released ${e.button}!`);
+		var index = this.getID(e);
+		that.controllers[index].left = false;
 	});
 
 	//d_pad_right - Right on the D-Pad (XBOX/PS3/PS4)
 	this.gamepad.on('release', 'd_pad_right', e => {
-		var index = this.getID(e);
-		that.players[index].dKey = false;
+		// var index = this.getID(e);
+		// that.players[index].dKey = false;
 		console.log(`player ${e.player} released ${e.button}!`);
+		var index = this.getID(e);
+		that.controllers[index].right = false;
 	});
 
 	//vendor - XBOX Button (XBOX) / Playstation Button (PS3/PS4)
@@ -534,8 +623,6 @@ GameEngine.prototype.startInput = function () {
     console.log('Input started');
 }
 
-// isPlayer 0 - not a player
-// isPlayer 1 - is a player
 GameEngine.prototype.addEntity = function (entity) {
 		console.log('added entity');
 		return this.entities.push(entity);
@@ -555,11 +642,16 @@ GameEngine.prototype.draw = function () {
     }
     this.ctx.restore();
 }
-
+/**
+ * When update() is called, every entity in the
+ * entities array will have their update() function
+ * called. Any entity that has been flagged for
+ * removal will be deleted as well.
+ */
 GameEngine.prototype.update = function () {
 
     var entitiesCount = this.entities.length;
-
+	// Calling all update() functions
     for (var j = 0; j < entitiesCount; j++) {
         var entity = this.entities[j];
 
@@ -567,7 +659,7 @@ GameEngine.prototype.update = function () {
             entity.update();
         }
     }
-
+	// Checking for removal
     for (var j = this.entities.length - 1; j >= 0; --j) {
         if (this.entities[j].removeFromWorld) {
             this.entities.splice(j, 1);
@@ -575,77 +667,19 @@ GameEngine.prototype.update = function () {
     }
 
 	var playersCount = this.players.length;
-
-    // for (var j = 0; j < playersCount; j++) {
-    //     var player = this.players[j];
-    //
-    //     if (!player.removeFromWorld) {
-    //         player.update();
-    //     }
-    // }
-
+	// Also removing the Players from the players array if necessary.
     for (var j = this.players.length - 1; j >= 0; --j) {
         if (this.players[j].removeFromWorld) {
             this.players.splice(j, 1);
         }
     }
 }
-
+/**
+ * The main game loop.  Constantly calls the update()
+ * and draw() functions.
+ */
 GameEngine.prototype.loop = function () {
     this.clockTick = this.timer.tick();
-    this.update();
-	this.sceneManager.update();
-    this.draw();
+    this.sceneManager.play(this.ctx);
     this.direction = 0;
-}
-
-function Entity(game, x, y, xv, yv, canCollide, id) {
-    this.game = game;
-    this.x = x;
-    this.y = y;
-    this.xv = xv;
-    this.yv = yv;
-	this.canCollide = canCollide;
-	this.id = id;
-    this.removeFromWorld = false;
-}
-
-Entity.prototype.update = function () {
-}
-
-Entity.prototype.draw = function (ctx) {
-    if (this.game.showOutlines && this.radius) {
-        this.game.ctx.beginPath();
-        this.game.ctx.strokeStyle = "green";
-        var tempX = this.x + this.xv;
-        var tempY = this.y + this.yv;
-        this.game.ctx.arc(tempX, tempY, this.radius, 0, Math.PI * 2, false);
-        this.game.ctx.stroke();
-        this.game.ctx.closePath();
-    }
-}
-
-Entity.prototype.rotateAndCache = function (image, angle) {
-    var offscreenCanvas = document.createElement('canvas');
-    var size = Math.max(image.width, image.height);
-    offscreenCanvas.width = size;
-    offscreenCanvas.height = size;
-    var offscreenCtx = offscreenCanvas.getContext('2d');
-    offscreenCtx.save();
-    offscreenCtx.translate(size / 2, size / 2);
-    offscreenCtx.rotate(angle);
-    offscreenCtx.translate(0, 0);
-    offscreenCtx.drawImage(image, -(image.width / 2), -(image.height / 2));
-    offscreenCtx.restore();
-    //offscreenCtx.strokeStyle = "red";
-    //offscreenCtx.strokeRect(0,0,size,size);
-    return offscreenCanvas;
-}
-
-Entity.prototype.getX = function()	{
-	return (this.x-this.game.xOffset)*this.game.drawScale;
-}
-
-Entity.prototype.getY = function()	{
-	return (this.y-this.game.yOffset)*this.game.drawScale;
 }

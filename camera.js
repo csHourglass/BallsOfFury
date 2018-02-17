@@ -66,6 +66,6 @@ Camera.prototype.update = function ()   {
     Entity.prototype.update.call(this);
 }
 
-Camera.prototype.draw = function(ctx) {
+Camera.prototype.draw = function(ctx, tick) {
     //hurp.
 }
