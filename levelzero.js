@@ -22,7 +22,7 @@ function LevelZero(sceneManager, game)    {
     this.players = 0;
     for (var i = 0; i < this.game.controllers.length; i++)   {
         if (this.game.controllers[i].ready) {
-            var player = new Player(game, (1620 * Math.random()) + 150, 795, this.players, game.controllers[this.players], this);
+            var player = new Player(game, (1620 * Math.random()) + 150, 795, i, this.game.controllers[i], this);
             this.entities.push(player);
             this.players++;
         }
