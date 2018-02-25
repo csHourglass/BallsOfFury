@@ -20,9 +20,12 @@ function LevelZero(sceneManager, game)    {
     this.entities.push(bg);
 
     this.players = 0;
-    for (; this.players < this.game.controllers.length; this.players++)   {
-        var player = new Player(game, (1620 * Math.random()) + 150, 795, this.players, game.controllers[this.players], this);
-        this.entities.push(player);
+    for (var i = 0; i < this.game.controllers.length; i++)   {
+        if (this.game.controllers[i].ready) {
+            var player = new Player(game, (1620 * Math.random()) + 150, 795, this.players, game.controllers[this.players], this);
+            this.entities.push(player);
+            this.players++;
+        }
     }
 
 	var dummy = new Dummy(game, 1500, 772, 2, this);
@@ -55,11 +58,11 @@ LevelZero.prototype = new Scene();
 LevelZero.prototype.constructor = LevelZero;
 
 LevelZero.prototype.update = function() {
-    if (this.game.controllers.length > this.players) {
-        var player = new Player(this.game, (1620 * Math.random())+150, 795, this.players, this.game.controllers[this.players], this);
-        this.entities.push(player);
-        this.players++;
-    }
+    // if (this.game.controllers.length > this.players) {
+    //     var player = new Player(this.game, (1620 * Math.random())+150, 795, this.players, this.game.controllers[this.players], this);
+    //     this.entities.push(player);
+    //     this.players++;
+    // }
     Scene.prototype.update.call(this);
 }
 
