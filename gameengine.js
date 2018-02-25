@@ -30,7 +30,7 @@ Timer.prototype.tick = function () {
     return gameDelta;
 }
 
-function Controller()	{
+function Controller(gamepad)	{
 	this.jump = false;
 	this.left = false;
 	this.right = false;
@@ -44,7 +44,7 @@ function Controller()	{
 	this.targetX = 1;
 	this.targetY = 0;
     this.ready = false;
-    this.mouse = false;  //hack solution for keyboard/controller problems (on davids computer)
+	this.gamepad = gamepad;
 }
 
 Controller.prototype.constructor = Controller;
@@ -83,7 +83,7 @@ GameEngine.prototype.init = function (ctx, sceneManager) {
     this.surfaceWidth = this.ctx.canvas.width;
 	this.surfaceHeight = this.ctx.canvas.height;
 
-//	this.controllers.push(new Controller());  //Adding keyboard controller
+	this.controllers.push(new Controller(null));  //Adding keyboard controller
     this.startInput();
     this.timer = new Timer();
 	this.sceneManager = sceneManager;
@@ -100,46 +100,36 @@ GameEngine.prototype.start = function () {
     })();
 }
 
-GameEngine.prototype.getID = function (e) {
-	// var index;
-	// if (e.player === 'keyboard') {
-	// 		index = 0;
-	// }
-	// else {
-	// 	index = e.player;
-	// }
-	console.log("e.player=" + e.player);
-	return e.player;
-}
 GameEngine.prototype.startInput = function () {
     console.log('Starting input');
     var that = this;
     this.ctx.canvas.addEventListener("mousemove", function (e)  {
-		// if (that.players.length > 0) {
-		// 	that.players[0].mousex = e.clientX;
-		// 	that.players[0].mousey = e.clientY;
-		// }
+
 		that.mousex = e.clientX;
 		that.mousey = e.clientY;
-		//that.controllers[0].targetX = e.clientX;
-		//that.controllers[0].targetY = e.clientY;
-        //that.controllers[0].mouse = true; // using mouse
+		var c = getController(null);
+		if (c !== null)	{
+			c.targetX = e.clientX;
+			c.targetY = e.clientY;
+		}
 
-		//console.log("mousex=" + that.mousex + " ,mousey=" + that.mousey);
     })
     this.ctx.canvas.addEventListener("mouseup", function (e)    {
-		// if (that.players.length > 0) {
-		// 	that.players[0].mouseUp = true;
-		// }
+
 		that.sceneManager.clickedWhereX = that.mousex;
 		that.sceneManager.clickedWhereY = that.mousey;
-		//that.controllers[0].throw = false;
+		var c = getController(null);
+		if (c !== null)	{
+			c.throw = false;
+		}
+		e.preventDefault();
     }, false);
 	this.ctx.canvas.addEventListener("mousedown", function (e)    {
-		// if (that.players.length > 0) {
-		// 	that.players[0].mouseDown = true;
-		// }
-		//that.controllers[0].throw = true;
+		var c = getController(null);
+		if (c !== null)	{
+			c.throw = true;
+		}
+		e.preventDefault();
     }, false);
 
 	/*
@@ -158,32 +148,28 @@ GameEngine.prototype.startInput = function () {
 	*/
 
 	// GAMEPAD START
-
-	//keyboard's custom input
-	/*this.gamepad.setCustomMapping('keyboard', {
-		'shoulder_bottom_left': 69,
-		'button_1': 32,
-		'start': 27,
-		'd_pad_up': [38, 87],
-		'd_pad_down': [40, 83],
-		'd_pad_left': [37, 65],
-		'd_pad_right': [39, 68]
-	});*/
+	function getController(index)	{
+		var controller;
+		that.controllers.forEach(function(element)	{
+			if (index === element.gamepad) 
+				controller = element;
+		});
+		return controller;
+	}
 
 	//connect event handler
 	this.gamepad.on('connect', e => {
 		console.log(`controller ${e.index} connected!`);
-		// if (e.index >= that.controllers.length)	{
-			console.log("++");
-			that.controllers.push(new Controller());
-
-		 //}
-        // var player = new Player(that, (1136 * Math.random()), 400, that.teams++, ASSET_MANAGER.getAsset("./img/player.png"));
-
-        // that.players.push(player);
-        // that.addEntity(player);
-		//"that.players[0].team);
-
+		var controllerFound = false;
+		that.controllers.forEach(function(element)	{ 
+			if (element.gamepad === e.index)
+				controllerFound = true;
+		})
+		if (!controllerFound)	{
+			console.log(`First time controller ${e.index} has been connected.`);
+			console.log("Adding the controller to the game engine!");
+			that.controllers.push(new Controller(e.index));
+		}
 	});
 
 	//disconnect event handler
@@ -196,61 +182,41 @@ GameEngine.prototype.startInput = function () {
 	//Analog stick Press
 	//METHOD 1 of handling analog stick press
 	this.gamepad.on('press', 'stick_axis_left', e => {
-		// var index = this.getID(e);
-		// console.log("e.index = "+ index);
-		// console.log("that.players[index].aKey = " + that.players[index].aKey);
-		// if (e.x < 0) {
-        //     that.players[index].aKey = true;
-		// 	that.players[index].dKey = false;
-		// }
-		// if (e.x > 0) {
-		// 	that.players[index].dKey = true;
-		// 	that.players[index].aKey = false;
-		// }
 		console.log(`player ${e.player} pressed ${e.button}!`);
-		var index = this.getID(e);
-		if (e.player !== 'keyboard') {
+		var c = getController(e.player);
+
+		if (c !== null)	{
 			if (e.x < 0) {
-				that.controllers[index].left = true;
-				that.controllers[index].right = false;
+				c.left = true;
+				c.right = false;
 			}
 			if (e.x > 0) {
-				that.controllers[index].right = true;
-				that.controllers[index].left = false;
+				c.right = true;
+				c.left = false;
 			}
 		}
+
 	});
 
 	this.gamepad.on('press', 'stick_axis_right', e => {
 		console.log(`player ${e.player} pressed ${e.button}!`);
-        var index = this.getID(e);
 	});
 
 	//Analog stick hold
 	this.gamepad.on('hold', 'stick_axis_left', e => {
-		// var index = this.getID(e);
-		// if (e.x > 0) {
-		// 	that.players[index].dKey = true;
-		// 	that.players[index].aKey = false;
-		// }
-		// if (e.x < 0) {
-		// 	that.players[index].aKey = true;
-		// 	that.players[index].dKey = false;
-		// }
 		console.log(`player ${e.player} holding x=${e.x}, y=${e.y}!`);
-
-		var index = this.getID(e);
-        that.controllers[index].mouse = false;
-		if (e.player !== 'keyboard') {
+		var c = getController(e.player);
+		if (c !== null)	{
 			if (e.x < 0) {
-				that.controllers[index].left = true;
-				that.controllers[index].right = false;
+				c.left = true;
+				c.right = false;
 			}
 			if (e.x > 0) {
-				that.controllers[index].right = true;
-				that.controllers[index].left = false;
+				c.right = true;
+				c.left = false;
 			}
 		}
+
 	});
 
 	this.gamepad.on('hold', 'stick_axis_right', e => {
@@ -258,14 +224,12 @@ GameEngine.prototype.startInput = function () {
 		//console.log(`player ${e.player} holding ${e.value}!`);
 		//this.players[index].stickx = e.x;
 		//this.players[index].sticky = e.y;
-		var index = this.getID(e);
-		if (e.player !== 'keyboard') {
-			that.controllers[index].mouse = false;
-			that.controllers[index].aimX = e.x;
-			console.log("that.controllers[index].aimx = " + e.x);
-			that.controllers[index].aimY = e.y;
-			console.log("that.controllers[index].aimy = " + e.y);
+		var c = getController(e.player);
+		if (c !== null)	{
+			c.aimX = e.x;
+			c.aimY = e.y;
 		}
+
 	});
 
 	//Analog stick release
@@ -274,11 +238,13 @@ GameEngine.prototype.startInput = function () {
 		// that.players[index].aKey = false;
 		// that.players[index].dKey = false;
 		console.log(`player ${e.player} released ${e.value}!`);
-		if (e.player !== 'keyboard') {
-			var index = this.getID(e);
-			that.controllers[index].left = false;
-			that.controllers[index].right = false;
+
+		var c = getController(e.player);
+		if (c !== null)	{
+			c.left = false;
+			c.right = false;
 		}
+
 	});
 
 	this.gamepad.on('release', 'stick_axis_right', e => {
@@ -293,9 +259,9 @@ GameEngine.prototype.startInput = function () {
 		// that.players[index].space = true;
 		// that.players[index].spaceReleased = false;
 		console.log(`player ${e.player} pressed ${e.button}!`);
-		if (e.player !== 'keyboard') {
-			var index = this.getID(e);
-			that.controllers[index].jump = true;
+		var c = getController(e.player);
+		if (c !== null)	{
+			c.jump = true;
 		}
 	});
 
@@ -327,9 +293,9 @@ GameEngine.prototype.startInput = function () {
 	//shoulder_bottom_left - LT (XBOX) / L2 (PS3/PS4)
 	this.gamepad.on('press', 'shoulder_bottom_left', e => {
 		console.log(`player ${e.player} pressed ${e.button}!`);
-		if (e.player !== 'keyboard') {
-			var index = this.getID(e);
-			that.controllers[index].parry = true;
+		var c = getController(e.player);
+		if (c !== null)	{
+			c.parry = true;
 		}
 	});
 
@@ -339,9 +305,9 @@ GameEngine.prototype.startInput = function () {
 		// that.players[index].triggerDown = true;
 		// console.log("triggerDown = " + that.players[index].triggerDown);
 		console.log(`player ${e.player} pressed ${e.button}!`);
-		if (e.player !== 'keyboard') {
-			var index = this.getID(e);
-			that.controllers[index].throw = true;
+		var c = getController(e.player);
+		if (c !== null)	{
+			c.throw = true;
 		}
 	});
 
@@ -353,9 +319,9 @@ GameEngine.prototype.startInput = function () {
 	//start - Start (XBOX/PS3/PS4)
 	this.gamepad.on('press', 'start', e => {
 		console.log(`player ${e.player} pressed ${e.button}!`);
-		if (e.player !== 'keyboard') {
-			var index = this.getID(e);
-			that.controllers[index].pause = true;
+		var c = getController(e.player);
+		if (c !== null)	{
+			c.pause = true;
 			that.pauseGame = true;
 		}
 	});
@@ -387,9 +353,9 @@ GameEngine.prototype.startInput = function () {
 		// var index = this.getID(e);
 		// that.players[index].aKey = true;
 		console.log(`player ${e.player} pressed ${e.button}!`);
-		if (e.player !== 'keyboard') {
-			var index = this.getID(e);
-			that.controllers[index].left = true;
+		var c = getController(e.player);
+		if (c !== null)	{
+			c.left = true;
 		}
 	});
 
@@ -398,9 +364,10 @@ GameEngine.prototype.startInput = function () {
 		// var index = this.getID(e);
 		// that.players[index].dKey = true;
 		console.log(`player ${e.player} pressed ${e.button}!`);
-		var index = this.getID(e);
-		if (e.player !== 'keyboard')
-			that.controllers[index].right = true;
+		var c = getController(e.player);
+		if (c !== null)	{
+			c.right = true;
+		}
 	});
 
 	//vendor - XBOX Button (XBOX) / Playstation Button (PS3/PS4)
@@ -445,9 +412,9 @@ GameEngine.prototype.startInput = function () {
 	//shoulder_bottom_left - LT (XBOX) / L2 (PS3/PS4)
 	this.gamepad.on('hold', 'shoulder_bottom_left', e => {
 		console.log(`player ${e.player} holding ${e.button}!`);
-		if (e.player !== 'keyboard') {
-			var index = this.getID(e);
-			that.controllers[index].parry = true;
+		var c = getController(e.player);
+		if (c !== null)	{
+			c.parry = true;
 		}
 	});
 
@@ -464,9 +431,9 @@ GameEngine.prototype.startInput = function () {
 	//start - Start (XBOX/PS3/PS4)
 	this.gamepad.on('hold', 'start', e => {
 		console.log(`player ${e.player} holding ${e.button}!`);
-		if (e.player !== 'keyboard') {
-			var index = this.getID(e);
-			that.controllers[index].pause = true;
+		var c = getController(e.player);
+		if (c !== null)	{
+			c.pause = true;
 			that.pauseGame = true;
 		}
 	});
@@ -516,9 +483,9 @@ GameEngine.prototype.startInput = function () {
 		// that.players[index].space = false;
 		// that.players[index].spaceReleased = true;
 		console.log(`player ${e.player} released ${e.button}!`);
-		if (e.player !== 'keyboard') {
-			var index = this.getID(e);
-			that.controllers[index].jump = false;
+		var c = getController(e.player);
+		if (c !== null)	{
+			c.jump = false;
 		}
 	});
 
@@ -550,9 +517,9 @@ GameEngine.prototype.startInput = function () {
 	//shoulder_bottom_left - LT (XBOX) / L2 (PS3/PS4)
 	this.gamepad.on('release', 'shoulder_bottom_left', e => {
 		console.log(`player ${e.player} released ${e.button}!`);
-		if (e.player !== 'keyboard') {
-			var index = this.getID(e);
-			that.controllers[index].parry = false;
+		var c = getController(e.player);
+		if (c !== null)	{
+			c.parry = false;
 		}
 	});
 
@@ -562,9 +529,9 @@ GameEngine.prototype.startInput = function () {
 		// that.players[index].triggerUp = true;
 		// console.log("triggerUp = " + that.triggerUp);
 		console.log(`player ${e.player} released ${e.button}!`);
-		if (e.player !== 'keyboard') {
-			var index = this.getID(e);
-			that.controllers[index].throw = false;
+		var c = getController(e.player);
+		if (c !== null)	{
+			c.throw = false;
 		}
 	});
 
@@ -578,9 +545,9 @@ GameEngine.prototype.startInput = function () {
 		console.log(`player ${e.player} released ${e.button}!`);
 		// that.sceneManager.clickedWhereX = -50;
 		// that.sceneManager.clickedWhereY = -50;
-		if (e.player !== 'keyboard') {
-			var index = this.getID(e);
-			that.controllers[index].pause = false;
+		var c = getController(e.player);
+		if (c !== null)	{
+			c.pause = false;
 			that.pauseGame = false;
 		}
 	});
@@ -610,9 +577,9 @@ GameEngine.prototype.startInput = function () {
 		// var index = this.getID(e);
 		// that.players[index].aKey = false;
 		console.log(`player ${e.player} released ${e.button}!`);
-		if (e.player !== 'keyboard') {
-			var index = this.getID(e);
-			that.controllers[index].left = false;
+		var c = getController(e.player);
+		if (c !== null)	{
+			c.left = false;
 		}
 	});
 
@@ -621,9 +588,10 @@ GameEngine.prototype.startInput = function () {
 		// var index = this.getID(e);
 		// that.players[index].dKey = false;
 		console.log(`player ${e.player} released ${e.button}!`);
-		var index = this.getID(e);
-		if (e.player !== 'keyboard')
-			that.controllers[index].right = false;
+		var c = getController(e.player);
+		if (c !== null)	{
+			c.right = false;
+		}
 	});
 
 	//vendor - XBOX Button (XBOX) / Playstation Button (PS3/PS4)
@@ -635,31 +603,39 @@ GameEngine.prototype.startInput = function () {
 
 	// GAMEPAD END
 
-	//don't need some of the event handlers here, commented out for now.
-    /*this.ctx.canvas.addEventListener("keydown", function (e) {
-        if (String.fromCharCode(e.which) === ' ')   {
-            that.space = true;
-            that.spaceReleased = false;
-        }
-        if (String.fromCharCode(e.which) === 'A') that.aKey = true;
-        if (String.fromCharCode(e.which) === 'D') that.dKey = true;
-        if (String.fromCharCode(e.which) === 'W') that.wKey = true;
-        if (String.fromCharCode(e.which) === 'R') that.rKey = true;
-//        console.log(e);
+    this.ctx.canvas.addEventListener("keydown", function (e) {
+		var c = getController(null);
+		if (c !== null)	{
+			if (e.code === "Space") c.jump = true;
+			if (e.code === "KeyA") c.left = true;
+			if (e.code === "KeyD") c.right = true;
+			if (e.code === "KeyW") c.up = true;
+			if (e.code === "keyS") c.down = true;
+			if (e.code === "KeyF") c.parry = true;
+			if (e.code === "Escape")	{
+				c.pause = true;  //This is the Esc key.
+				that.pauseGame = true;
+			}
+		}
+        e.preventDefault();
+	}, false);
+	
+    this.ctx.canvas.addEventListener("keyup", function (e) {
+		var c = getController(null);
+		if (c !== null)	{
+			if (e.code === "Space") c.jump = false;
+			if (e.code === "KeyA") c.left = false;
+			if (e.code === "KeyD") c.right = false;
+			if (e.code === "KeyW") c.up = false;
+			if (e.code === "keyS") c.down = false;
+			if (e.code === "KeyF") c.parry = false;
+			if (e.code === "Escape")	{
+				c.pause = false;  //This is the Esc key.
+				that.pauseGame = false;
+			}
+		}
         e.preventDefault();
     }, false);
-    this.ctx.canvas.addEventListener("keyup", function (e) {
-        if (String.fromCharCode(e.which) === ' ') {
-            that.space = false;
-            that.spaceReleased = true;
-        }
-        if (String.fromCharCode(e.which) === 'A') that.aKey = false;
-        if (String.fromCharCode(e.which) === 'D') that.dKey = false;
-        if (String.fromCharCode(e.which) === 'W') that.wKey = false;
-        if (String.fromCharCode(e.which) === 'R') that.rKey = false;
-//        console.log(e);
-        e.preventDefault();
-    }, false);*/
 
     console.log('Input started');
 }

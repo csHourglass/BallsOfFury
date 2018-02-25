@@ -50,7 +50,7 @@
         this._events = {
             gamepad: [],
             axes: [],
-            keyboard: {}
+            // keyboard: {}
         };
 
         this._handlers = {
@@ -84,21 +84,21 @@
                 'stick_axis_left': [0, 2],
                 'stick_axis_right': [2, 4]
             },
-            keyboard: {
-                'button_1': 32,
-                'start': 27,
-                'd_pad_up': [ 38, 87 ],
-                'd_pad_down': [ 40, 83 ],
-                'd_pad_left': [ 37, 65 ],
-                'd_pad_right': [ 39, 68 ]
-            }
+            // keyboard: {
+            //     'button_1': 32,
+            //     'start': 27,
+            //     'd_pad_up': [ 38, 87 ],
+            //     'd_pad_down': [ 40, 83 ],
+            //     'd_pad_left': [ 37, 65 ],
+            //     'd_pad_right': [ 39, 68 ]
+            // }
         };
 
         this._threshold = 0.3;
 
         this._listeners = [];
 
-        this._handleKeyboardEventListener = this._handleKeyboardEventListener.bind(this);
+        // this._handleKeyboardEventListener = this._handleKeyboardEventListener.bind(this);
 
         this.resume();
 
@@ -212,35 +212,35 @@
 
     };
 
-    Gamepad.prototype._handleKeyboardEventListener = function (e) {
+    // Gamepad.prototype._handleKeyboardEventListener = function (e) {
 
-        var self = this,
-            keys = findKeyMapping(e.keyCode, self._keyMapping.keyboard);
+    //     var self = this,
+    //         keys = findKeyMapping(e.keyCode, self._keyMapping.keyboard);
 
-        if (keys) {
+    //     if (keys) {
 
-            keys.forEach(function (key) {
+    //         keys.forEach(function (key) {
 
-                if (e.type === 'keydown' && !self._events.keyboard[key]) {
+    //             if (e.type === 'keydown' && !self._events.keyboard[key]) {
 
-                    self._events.keyboard[key] = {
-                        pressed: true,
-                        hold: false,
-                        released: false
-                    };
+    //                 self._events.keyboard[key] = {
+    //                     pressed: true,
+    //                     hold: false,
+    //                     released: false
+    //                 };
 
-                } else if (e.type === 'keyup' && self._events.keyboard[key]) {
+    //             } else if (e.type === 'keyup' && self._events.keyboard[key]) {
 
-                    self._events.keyboard[key].released = true;
-                    self._events.keyboard[key].hold = false;
+    //                 self._events.keyboard[key].released = true;
+    //                 self._events.keyboard[key].hold = false;
 
-                }
+    //             }
 
-            });
+    //         });
 
-        }
+    //     }
 
-    };
+    // };
 
     Gamepad.prototype._handleEvent = function (key, events, player) {
 
@@ -331,11 +331,11 @@
 
         }
 
-        Object.keys(self._events.keyboard).forEach(function (key) {
+        // Object.keys(self._events.keyboard).forEach(function (key) {
 
-            self._handleEvent(key, self._events.keyboard, 'keyboard');
+        //     self._handleEvent(key, self._events.keyboard, 'keyboard');
 
-        });
+        // });
 
         if (self._requestAnimation) {
 
@@ -497,8 +497,8 @@
 
         this._requestAnimation = null;
 
-        document.removeEventListener('keydown', this._handleKeyboardEventListener);
-        document.removeEventListener('keyup', this._handleKeyboardEventListener);
+        // document.removeEventListener('keydown', this._handleKeyboardEventListener);
+        // document.removeEventListener('keyup', this._handleKeyboardEventListener);
 
     };
 
@@ -506,8 +506,8 @@
 
         this._requestAnimation = _requestAnimationFrame(this._loop.bind(this));
 
-        document.addEventListener('keydown', this._handleKeyboardEventListener);
-        document.addEventListener('keyup', this._handleKeyboardEventListener);
+        // document.addEventListener('keydown', this._handleKeyboardEventListener);
+        // document.addEventListener('keyup', this._handleKeyboardEventListener);
 
     };
 

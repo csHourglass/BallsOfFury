@@ -32,14 +32,14 @@ function Ball(game, player, x, y, chargingTime, id, scene) {
     this.speed += chargingTime*150;
 
     //targetx is for mouse and aimx is for controller
-    if (!this.player.controller.mouse) {  // not mouse
-        this.targetx = (x + this.player.controller.aimX*100) - x;
-        this.targety = (y + this.player.controller.aimY*100) - y;
-    }
-    else    {  //mouse
-        this.targetx = this.player.controller.targetX - x - 50;
-        this.targety = this.player.controller.targetY - y - 50;
-    }
+    // if (this.player.controller.gamepad === null) {  // mouse
+    //     this.targetx = this.player.controller.targetX - x - 64;
+    //     this.targety = this.player.controller.targetY - y - 50;
+    // }
+    // else    {  //gamepad
+        this.targetx = this.player.controller.aimX*100;
+        this.targety = this.player.controller.aimY*100;
+    // }
     this.ySpeed = this.targety / (Math.sqrt(Math.pow(this.targetx, 2) + Math.pow(this.targety, 2)));
 	//arbitrary calculation for how much charging affects yspeed
 	// this.ySpeed += (this.ySpeed * (chargingTime/2));

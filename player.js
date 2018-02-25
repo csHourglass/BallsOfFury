@@ -111,14 +111,16 @@ Player.prototype.constructor = Player;
 // throws ball based on the location of mouse click
 Player.prototype.throwBall = function(boundingBox) {
     // throw left
-    if (this.controller.aimX < 0) {
-        this.scene.addEntity(new Ball(this.game, this, this.boundingBox.x - 20,
-                            this.boundingBox.y, this.chargingTime, 5, this.scene));
-    // throw right
-    } else {
-        this.scene.addEntity(new Ball(this.game, this, this.boundingBox.x + this.boundingBox.width + 1,
-            this.boundingBox.y, this.chargingTime, 5, this.scene));
-    }
+    // if (this.controller.aimX < 0) {
+    //     this.scene.addEntity(new Ball(this.game, this, this.boundingBox.x - 20,
+    //                         this.boundingBox.y, this.chargingTime, 5, this.scene));
+    // // throw right
+    // } else {
+    //     this.scene.addEntity(new Ball(this.game, this, this.boundingBox.x + this.boundingBox.width + 1,
+    //         this.boundingBox.y, this.chargingTime, 5, this.scene));
+    // }
+    this.scene.addEntity(new Ball(this.game, this, this.x + 64,
+                 this.y + 40, this.chargingTime, 5, this.scene));
     //reset the ball's current state
     this.ballState = 0; // change to 0 to remove ball from player
     //play the sound of the throw animation
@@ -479,8 +481,14 @@ Player.prototype.draw = function(ctx, tick)   {
     }
 	ctx.beginPath();
 	ctx.strokeStyle = "blue";
-	ctx.moveTo(this.x + 64, this.y + 64);
-	ctx.lineTo(this.x + (this.controller.aimX * 100) + 64, this.y + (this.controller.aimY * 100) + 64);
+    ctx.moveTo(this.x + 64, this.y + 40);
+    if (this.controller.gamepad === null)   {
+        var lineX = this.controller.targetX - (this.x+64);
+        var lineY = this.controller.targetY - (this.y+40);
+        this.controller.aimX = lineX/(Math.abs(lineX) + Math.abs(lineY));
+        this.controller.aimY = lineY/(Math.abs(lineX) + Math.abs(lineY));
+    }
+	ctx.lineTo(this.x + (this.controller.aimX * 100) + 64, this.y + (this.controller.aimY * 100) + 40);
 	ctx.closePath();
 	ctx.stroke();
 		
