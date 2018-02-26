@@ -22,6 +22,9 @@ ASSET_MANAGER.queueDownload("./img/explosion.png");
 ASSET_MANAGER.queueDownload("./img/fulllive.png");
 ASSET_MANAGER.queueDownload("./img/halflive.png");
 ASSET_MANAGER.queueDownload("./img/nolive.png");
+ASSET_MANAGER.queueDownload("./img/multiplayer.png");
+ASSET_MANAGER.queueDownload("./img/singleplayer.png");
+ASSET_MANAGER.queueDownload("./img/options.png");
 //ASSET_MANAGER.queueDownload("./bgmusic.mp3");
 //ASSET_MANAGER.queueDownload("./fight.mp3");
 

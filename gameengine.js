@@ -45,6 +45,7 @@ function Controller(gamepad)	{
 	this.targetY = 0;
     this.ready = false;
 	this.gamepad = gamepad;
+	this.menulocked = false;
 }
 
 Controller.prototype.constructor = Controller;
@@ -76,6 +77,7 @@ function GameEngine() {
 	//we should only be creating one gamepad object.
 	this.gamepad = gamepad;
 	this.canPause = true;
+	this.pauseGame = false;
 }
 
 GameEngine.prototype.init = function (ctx, sceneManager) {
@@ -341,11 +343,19 @@ GameEngine.prototype.startInput = function () {
 	//d_pad_up - Up on the D-Pad (XBOX/PS3/PS4)
 	this.gamepad.on('press', 'd_pad_up', e => {
 		console.log(`player ${e.player} pressed ${e.button}!`);
+		var c = getController(e.player);
+		if (c !== null)	{
+			c.up = true;
+		}
 	});
 
 	//d_pad_down - Down on the D-Pad (XBOX/PS3/PS4)
 	this.gamepad.on('press', 'd_pad_down', e => {
 		console.log(`player ${e.player} pressed ${e.button}!`);
+		var c = getController(e.player);
+		if (c !== null)	{
+			c.down = true;
+		}
 	});
 
 	//d_pad_left - Left on the D-Pad (XBOX/PS3/PS4)
@@ -451,11 +461,19 @@ GameEngine.prototype.startInput = function () {
 	//d_pad_up - Up on the D-Pad (XBOX/PS3/PS4)
 	this.gamepad.on('hold', 'd_pad_up', e => {
 		console.log(`player ${e.player} holding ${e.button}!`);
+		var c = getController(e.player);
+		if (c !== null)	{
+			c.up = true;
+		}
 	});
 
 	//d_pad_down - Down on the D-Pad (XBOX/PS3/PS4)
 	this.gamepad.on('hold', 'd_pad_down', e => {
 		console.log(`player ${e.player} holding ${e.button}!`);
+		var c = getController(e.player);
+		if (c !== null)	{
+			c.down = true;
+		}
 	});
 
 	//d_pad_left - Left on the D-Pad (XBOX/PS3/PS4)
@@ -565,11 +583,19 @@ GameEngine.prototype.startInput = function () {
 	//d_pad_up - Up on the D-Pad (XBOX/PS3/PS4)
 	this.gamepad.on('release', 'd_pad_up', e => {
 		console.log(`player ${e.player} released ${e.button}!`);
+		var c = getController(e.player);
+		if (c !== null)	{
+			c.up = false;
+		}
 	});
 
 	//d_pad_down - Down on the D-Pad (XBOX/PS3/PS4)
 	this.gamepad.on('release', 'd_pad_down', e => {
 		console.log(`player ${e.player} released ${e.button}!`);
+		var c = getController(e.player);
+		if (c !== null)	{
+			c.down = false;
+		}
 	});
 
 	//d_pad_left - Left on the D-Pad (XBOX/PS3/PS4)
@@ -610,7 +636,7 @@ GameEngine.prototype.startInput = function () {
 			if (e.code === "KeyA") c.left = true;
 			if (e.code === "KeyD") c.right = true;
 			if (e.code === "KeyW") c.up = true;
-			if (e.code === "keyS") c.down = true;
+			if (e.code === "KeyS") c.down = true;
 			if (e.code === "KeyF") c.parry = true;
 			if (e.code === "Escape")	{
 				c.pause = true;  //This is the Esc key.
@@ -627,7 +653,7 @@ GameEngine.prototype.startInput = function () {
 			if (e.code === "KeyA") c.left = false;
 			if (e.code === "KeyD") c.right = false;
 			if (e.code === "KeyW") c.up = false;
-			if (e.code === "keyS") c.down = false;
+			if (e.code === "KeyS") c.down = false;
 			if (e.code === "KeyF") c.parry = false;
 			if (e.code === "Escape")	{
 				c.pause = false;  //This is the Esc key.
