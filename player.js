@@ -101,6 +101,7 @@ function Player(game, x, y, team, controller, scene)   {
     this.sticky = 0;
     this.scene = scene;
     this.armorlock = false; //This makes the player invincible to enemy balls, parrying nonstop.
+    this.canMove = true;
 
     Entity.call(this, game, this.x, this.y, true, this.id);
 }
@@ -121,10 +122,23 @@ Player.prototype.throwBall = function(boundingBox) {
     // }
     this.scene.addEntity(new Ball(this.game, this, this.x + 64,
                  this.y + 40, this.chargingTime, 5, this.scene));
-    //reset the ball's current state
-    this.ballState = 0; // change to 0 to remove ball from player
+
     //play the sound of the throw animation
     throwsound.play();
+}
+Player.prototype.resetBallState = function()    {
+    //reset throw animation's elapsed time because we've finished the throw animation.
+    this.LThrowAnimation.elapsedTime = 0;
+    this.RThrowAnimation.elapsedTime = 0;
+
+    //reset the charging time to 0 since we've thrown the ball.
+    this.chargingTime = 0;
+    this.mouseUp = false;
+    this.mouseDown = false;
+    this.triggerUp = false;
+    this.triggerDown = false;
+    //reset the ball's current state
+    this.ballState = 0; // change to 0 to remove ball from player
 }
 
 /**
@@ -188,25 +202,27 @@ Player.prototype.update = function ()   {
     }
 
     /////***** Running *****/////
-    if (this.controller.left) {
-        this.facingLeft = true;
-        this.moving = true;  //All this does is help with the runningState logic.
-        this.xv = -10;
-    } else if (!this.controller.left && !this.controller.right) {
-        if (this.xv < 0) {
-            this.xv += 1;
-            this.moving = false;
+    if (this.canMove)   {
+        if (this.controller.left) {
+            this.facingLeft = true;
+            this.moving = true;  //All this does is help with the runningState logic.
+            this.xv = -10;
+        } else if (!this.controller.left && !this.controller.right) {
+            if (this.xv < 0) {
+                this.xv += 1;
+                this.moving = false;
+            }
         }
-    }
 
-    if (this.controller.right) {
-        this.facingLeft = false;
-        this.xv = 10;
-        this.moving = true;
-    } else if (!this.controller.right && !this.controller.left) {
-        if (this.xv > 0) {
-            this.xv -= 1;
-            this.moving = false;
+        if (this.controller.right) {
+            this.facingLeft = false;
+            this.xv = 10;
+            this.moving = true;
+        } else if (!this.controller.right && !this.controller.left) {
+            if (this.xv > 0) {
+                this.xv -= 1;
+                this.moving = false;
+            }
         }
     }
 
@@ -274,17 +290,7 @@ Player.prototype.update = function ()   {
 		if (!this.controller.throw) {
 			//spawn a ball entity
             this.throwBall(this.boundingBox);
-
-            //reset throw animation's elapsed time because we've finished the throw animation.
-            this.LThrowAnimation.elapsedTime = 0;
-			this.RThrowAnimation.elapsedTime = 0;
-
-			//reset the charging time to 0 since we've thrown the ball.
-			this.chargingTime = 0;
-			this.mouseUp = false;
-			this.mouseDown = false;
-			this.triggerUp = false;
-			this.triggerDown = false;
+            this.resetBallState();
 		}
 	}
 	// console.log("Ball state = " + this.ballState);
@@ -359,6 +365,8 @@ Player.prototype.update = function ()   {
                 } else if (ent.team !== this.team && this.isHit === false) {
                     this.isHit = true;
                     this.canCollide = false;
+                    this.resetBallState();
+                    this.canMove = false;
                     this.lives--;
                 }
             }
@@ -385,6 +393,7 @@ Player.prototype.update = function ()   {
                 this.y = spawnCoords.y;
                 this.ballState = 1;
                 this.isHit = false;
+                this.canMove = true;
             }
         }
     }

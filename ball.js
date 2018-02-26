@@ -162,10 +162,17 @@ Ball.prototype.draw = function(ctx, tick) {
     }
     if (this.state === 0)   {
         ctx.beginPath();
-        if ((this.team%2)===0)
-            ctx.fillStyle = "green";
-        else
+        if (this.team === 0)
             ctx.fillStyle = "red";
+        else if (this.team === 1)
+            ctx.fillStyle = "blue";
+        else if (this.team === 2)
+            ctx.fillStyle = "green";
+        else if (this.team === 3)
+            ctx.fillStyle = "yellow";
+        else
+            ctx.fillStyle = "white";
+
         ctx.arc(this.x+10, this.y+10, 15, 0, Math.PI * 2, false);
         ctx.fill();
         ctx.closePath();
