@@ -12,6 +12,9 @@ function Coords() {
 function Scene(game, entities)    {
     this.game = game;
     this.entities = entities;
+    if (this.pausable === undefined)    {
+        this.pausable = true;
+    }
 
     // isPlaying determines if the entities in this scene
     // will update and animate.
@@ -45,13 +48,15 @@ Scene.prototype.update = function()    {
             }
         }
     }
-    if (this.game.pauseGame && this.canPause)   {
-        this.canPause = false;
-        if (this.isPlaying) this.isPlaying = false;
-        else this.isPlaying = true;
-    }
-    if (!this.game.pauseGame && !this.canPause) {
-        this.canPause = true;
+    if (this.pausable)  {
+        if (this.game.pauseGame && this.canPause)   {
+            this.canPause = false;
+            if (this.isPlaying) this.isPlaying = false;
+            else this.isPlaying = true;
+        }
+        if (!this.game.pauseGame && !this.canPause) {
+            this.canPause = true;
+        }
     }
 }
 

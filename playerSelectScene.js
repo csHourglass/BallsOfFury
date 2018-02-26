@@ -13,6 +13,7 @@ function PlayerSelectScene(sceneManager, game) {
     this.entities = [];
     this.buttons = [];
     this.playersReady = 0;
+    this.pausable = false;
     this.bgAnimation = new Animation(ASSET_MANAGER.getAsset("./img/playerselect.png"), 0, 0, width, height, 1, 1, true, false);
     this.entities.push(new Background(game, this.bgAnimation));
 
