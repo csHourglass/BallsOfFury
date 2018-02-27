@@ -509,7 +509,18 @@ Player.prototype.draw = function(ctx, tick)   {
     }
     if (this.controller.isAiming || this.ballState >= 3) {
     	ctx.beginPath();
-    	ctx.strokeStyle = "blue";
+
+        if (this.team === 0)
+            ctx.strokeStyle = "red";
+        else if (this.team === 1)
+            ctx.strokeStyle = "blue";
+        else if (this.team === 2)
+            ctx.strokeStyle = "green";
+        else if (this.team === 3)
+            ctx.strokeStyle = "yellow";
+        else
+            ctx.fillStyle = "white";
+            
         ctx.moveTo(this.x + 64, this.y + 40);
     	ctx.lineTo(this.x + (this.controller.aimX * 100) + 64, this.y + (this.controller.aimY * 100) + 40);
     	ctx.closePath();
