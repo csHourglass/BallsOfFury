@@ -77,7 +77,7 @@ function Player(game, x, y, team, controller, scene)   {
     this.width = 128;
     this.height = 128;
     this.boundingBox = new BoundingBox(this.x + 40, this.y + 30, this.width - 80, this.height - 35);
-    this.showBoxes = true;  // show Bounding boxes for testing
+    this.showBoxes = false;  // show Bounding boxes for testing
     this.team = team;
     this.isHit = false;
     this.lives = 2;
@@ -232,6 +232,14 @@ Player.prototype.calculateRun = function() {
  * includes catch, parry, charge and throw.
  */
  Player.prototype.handleBallInteraction = function() {
+     // aim with mouse
+     if (this.controller.gamepad === null)   {
+         var lineX = this.controller.targetX - (this.x+64);
+         var lineY = this.controller.targetY - (this.y+40);
+         this.controller.aimX = lineX/(Math.abs(lineX) + Math.abs(lineY));
+         this.controller.aimY = lineY/(Math.abs(lineX) + Math.abs(lineY));
+     }
+
      if (this.canCatch && this.controller.parry) {
          this.isCatching = true;
          this.canCatch = false;
@@ -375,8 +383,8 @@ Player.prototype.update = function ()   {
 
     this.calculateJump();
     this.calculateRun();
-
     this.handleBallInteraction();
+
     // reload (for testing)
     // if (this.game.rKey) {
     //     this.ballState = 1;
@@ -499,18 +507,14 @@ Player.prototype.draw = function(ctx, tick)   {
             this.RIdleAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
     }
-	ctx.beginPath();
-	ctx.strokeStyle = "blue";
-    ctx.moveTo(this.x + 64, this.y + 40);
-    if (this.controller.gamepad === null)   {
-        var lineX = this.controller.targetX - (this.x+64);
-        var lineY = this.controller.targetY - (this.y+40);
-        this.controller.aimX = lineX/(Math.abs(lineX) + Math.abs(lineY));
-        this.controller.aimY = lineY/(Math.abs(lineX) + Math.abs(lineY));
+    if (this.controller.isAiming || this.ballState >= 3) {
+    	ctx.beginPath();
+    	ctx.strokeStyle = "blue";
+        ctx.moveTo(this.x + 64, this.y + 40);
+    	ctx.lineTo(this.x + (this.controller.aimX * 100) + 64, this.y + (this.controller.aimY * 100) + 40);
+    	ctx.closePath();
+    	ctx.stroke();
     }
-	ctx.lineTo(this.x + (this.controller.aimX * 100) + 64, this.y + (this.controller.aimY * 100) + 40);
-	ctx.closePath();
-	ctx.stroke();
 
     Entity.prototype.draw.call(this);
 }
