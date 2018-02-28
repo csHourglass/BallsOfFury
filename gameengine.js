@@ -46,6 +46,7 @@ function Controller(gamepad)	{
     this.ready = false;
 	this.gamepad = gamepad;
 	this.menulocked = false;
+    this.isAiming = false;
 }
 
 Controller.prototype.constructor = Controller;
@@ -153,7 +154,7 @@ GameEngine.prototype.startInput = function () {
 	function getController(index)	{
 		var controller;
 		that.controllers.forEach(function(element)	{
-			if (index === element.gamepad) 
+			if (index === element.gamepad)
 				controller = element;
 		});
 		return controller;
@@ -163,7 +164,7 @@ GameEngine.prototype.startInput = function () {
 	this.gamepad.on('connect', e => {
 		console.log(`controller ${e.index} connected!`);
 		var controllerFound = false;
-		that.controllers.forEach(function(element)	{ 
+		that.controllers.forEach(function(element)	{
 			if (element.gamepad === e.index)
 				controllerFound = true;
 		})
@@ -222,14 +223,15 @@ GameEngine.prototype.startInput = function () {
 	});
 
 	this.gamepad.on('hold', 'stick_axis_right', e => {
-		// var index = this.getID(e);
-		//console.log(`player ${e.player} holding ${e.value}!`);
+		console.log(`player ${e.player} holding ${e.value}!`);
 		//this.players[index].stickx = e.x;
 		//this.players[index].sticky = e.y;
+        console.log(e.player);
 		var c = getController(e.player);
 		if (c !== null)	{
 			c.aimX = e.x;
 			c.aimY = e.y;
+            c.isAiming = true;
 		}
 
 	});
@@ -251,6 +253,9 @@ GameEngine.prototype.startInput = function () {
 
 	this.gamepad.on('release', 'stick_axis_right', e => {
 		console.log(`player ${e.player} released ${e.value}!`);
+        var c = getController(e.player);
+        console.log(e.Player);
+        c.isAiming = false;
 	});
 
 	// PRESS START
@@ -645,7 +650,7 @@ GameEngine.prototype.startInput = function () {
 		}
         e.preventDefault();
 	}, false);
-	
+
     this.ctx.canvas.addEventListener("keyup", function (e) {
 		var c = getController(null);
 		if (c !== null)	{

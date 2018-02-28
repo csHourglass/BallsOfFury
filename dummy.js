@@ -10,7 +10,7 @@ function Dummy(game, x, y, team, scene) {
     this.team = team;
     this.counter = 0;
     this.boundingBox = new BoundingBox(this.x, this.y, 122, 146);
-    this.showBox = true;
+    this.showBox = false;
     this.isHit = false;
     this.scene = scene;
 
