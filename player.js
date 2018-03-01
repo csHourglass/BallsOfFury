@@ -384,7 +384,6 @@ Player.prototype.update = function ()   {
         } else {
         this.deathTimer += this.game.clockTick;
             if (this.deathTimer > 3)  {
-                console.log("IM ALIIIIVE!");
                 this.canCollide = true;
                 this.deathTimer = 0;
                 this.explosion.elapsedTime = 0;
@@ -488,8 +487,17 @@ Player.prototype.draw = function(ctx, tick)   {
             this.RIdleAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
     }
-	ctx.beginPath();
-	ctx.strokeStyle = "blue";
+    ctx.beginPath();
+    if (this.team === 0)
+        ctx.strokeStyle = "red";
+    else if (this.team === 1)
+        ctx.strokeStyle = "blue";
+    else if (this.team === 2)
+        ctx.strokeStyle = "green";
+    else if (this.team === 3)
+        ctx.strokeStyle = "yellow";
+    else
+        ctx.strokeStyle = "black";
     ctx.moveTo(this.x + 64, this.y + 40);
     if (this.controller.gamepad === null)   {
         var lineX = this.controller.targetX - (this.x+64);

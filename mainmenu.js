@@ -61,7 +61,7 @@ MainMenu.prototype.update = function()  {
             if (this.selectedEntry === 0)
                 this.nextScene = undefined;
             if (this.selectedEntry === 1)
-                this.nextScene = new PlayerSelectScene(this.manager, this.game);
+                this.nextScene = new CharacterSelect(this.manager, this.game);
             if (this.selectedEntry === 2)
                 this.nextScene = undefined;
             i = this.game.controllers.length;

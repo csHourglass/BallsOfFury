@@ -9,7 +9,7 @@
 
 
 
-function LevelZero(sceneManager, game)    {
+function LevelZero(sceneManager, game, players)    {
     this.game = game;
     this.sceneManager = sceneManager;
     this.isPlaying = true;
@@ -20,13 +20,19 @@ function LevelZero(sceneManager, game)    {
     this.entities.push(bg);
 
     this.players = 0;
-    for (var i = 0; i < this.game.controllers.length; i++)   {
-        if (this.game.controllers[i].ready) {
-            var player = new Player(game, (1620 * Math.random()) + 150, 795, this.players, this.game.controllers[i], this);
-            this.entities.push(player);
-            this.players++;
-        }
-    }
+    // for (var i = 0; i < this.game.controllers.length; i++)   {
+    //     if (this.game.controllers[i].ready) {
+    //         var player = new Player(game, (1620 * Math.random()) + 150, 795, this.players, this.game.controllers[i], this);
+    //         this.entities.push(player);
+    //         this.players++;
+    //     }
+    // }
+    var that = this;
+    players.forEach(function(element)   {
+        var player = new Player(game, (1620 * Math.random()) + 150, 795, element.team, element.controller, that);
+        that.entities.push(player);
+        that.players++;
+    });
 
 	var dummy = new Dummy(game, 1500, 772, 2, this);
 

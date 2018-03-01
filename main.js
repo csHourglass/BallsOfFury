@@ -25,6 +25,10 @@ ASSET_MANAGER.queueDownload("./img/nolive.png");
 ASSET_MANAGER.queueDownload("./img/multiplayer.png");
 ASSET_MANAGER.queueDownload("./img/singleplayer.png");
 ASSET_MANAGER.queueDownload("./img/options.png");
+ASSET_MANAGER.queueDownload("./img/playerportrait.png");
+ASSET_MANAGER.queueDownload("./img/unavailable.png");
+ASSET_MANAGER.queueDownload("./img/random.png");
+ASSET_MANAGER.queueDownload("./img/selectors.png");
 //ASSET_MANAGER.queueDownload("./bgmusic.mp3");
 //ASSET_MANAGER.queueDownload("./fight.mp3");
 
