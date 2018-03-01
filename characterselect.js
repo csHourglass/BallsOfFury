@@ -70,10 +70,14 @@ function Selector(game, img, scene, player, corner, selection)    {
     this.player = player;
     var x = 0;
     var y = 0;
-    if (this.corner%2 === 1) {
+    if (this.corner === 1) {
         x = 20;
     }
-    if (this.corner > 1)    {
+    else if (this.corner === 2)    {
+        y = 20;
+    }
+    else if (this.corner === 3)     {
+        x = 20;
         y = 20;
     }
     this.anim = new Animation(ASSET_MANAGER.getAsset(img), x, y, 20, 20, 1, 1, true, false);

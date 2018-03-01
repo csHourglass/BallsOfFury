@@ -179,7 +179,12 @@ Button.prototype.activate = function(team, controller) {
     this.text = "Select your fighter!";
     // this.scene.playersReady++;
     this.activated = true;
-    this.selector = new Selector(this.game, "./img/selectors.png", this.scene, this.controller, this.team, 0);
+    var corner = this.team;
+    if (corner > 3) {
+        corner = 0;
+    }
+    this.selector = new Selector(this.game, "./img/selectors.png", this.scene, this.controller, corner, 0);
+    console.log(this.selector);
     this.scene.addEntity(this.selector);
 }
 
@@ -264,10 +269,14 @@ function Selector(game, img, scene, controller, corner, selection)    {
     this.movelock = true;
     var x = 0;
     var y = 0;
-    if (this.corner%2 === 1) {
+    if (this.corner === 1) {
+        y = 20;
+    }
+    else if (this.corner === 2)    {
         x = 20;
     }
-    if (this.corner > 1)    {
+    else if (this.corner === 3)     {
+        x = 20;
         y = 20;
     }
     this.anim = new Animation(ASSET_MANAGER.getAsset(img), x, y, 20, 20, 1, 1, true, false);
@@ -287,9 +296,10 @@ Selector.prototype.update = function()  {
     } else  {
         if (!this.pauselock && (this.controller.pause || this.controller.jump))    {
             this.pauselock = true;
-            if (this.scene.menu[this.selection].active)
+            if (this.scene.menu[this.selection].active) {
                 this.locked = true;
-            else    {
+                console.log("LOCKED!");
+            } else    {
                 //play obnoxious noise here
             }
         } else if (!this.movelock)  {
@@ -338,7 +348,7 @@ Selector.prototype.update = function()  {
 }
 
 Selector.prototype.draw = function(ctx) {
-    this.anim.drawFrame(0, ctx, this.x, this.y, 2);
+    this.anim.drawFrame(0, ctx, this.x, this.y, 2.5);
     Entity.prototype.draw.call(this, ctx);
 }
 
@@ -346,6 +356,8 @@ function Portrait(game, img, scene, x, y, width, height) {
     this.game = game;
     this.x = x;
     this.y = y;
+    this.width = width;
+    this.height = height;
     this.anim = new Animation(ASSET_MANAGER.getAsset(img), 0, 0, width, height, 1, 1, true, false);
     this.active = true;
 
