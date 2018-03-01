@@ -5,7 +5,7 @@
  * @param x : The starting x coordinate (left side)
  * @param y : The starting y coordinate (top side)
  * @param canCollide : Determines this entity will be checked for collision
- * @param id : An ID value to aid in determining collision 0=non-collidable , 1=rigid body , 2= , 3= , 4=player, 5=ball
+ * @param id : An ID value to aid in determining collision
  */
 
 function Entity(game, x, y, canCollide, id) {
@@ -17,7 +17,6 @@ function Entity(game, x, y, canCollide, id) {
 	this.canCollide = canCollide;
 	this.id = id;
     this.removeFromWorld = false;
-    this.showBoxes = false; // toggle display of boudning boxes
 }
 
 Entity.prototype.update = function () {

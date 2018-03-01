@@ -159,7 +159,7 @@ Button.prototype.ready = function()  {
     } else  {
         console.log("Cannot select that character!");
     }
-    
+
 }
 
 Button.prototype.activate = function(team, controller) {
@@ -179,12 +179,12 @@ Button.prototype.activate = function(team, controller) {
     this.text = "Select your fighter!";
     // this.scene.playersReady++;
     this.activated = true;
+    this.selector = new Selector(this.game, "./img/selectors.png", this.scene, this.controller, this.team, 0);
     var corner = this.team;
     if (corner > 3) {
         corner = 0;
     }
-    this.selector = new Selector(this.game, "./img/selectors.png", this.scene, this.controller, corner, 0);
-    console.log(this.selector);
+
     this.scene.addEntity(this.selector);
 }
 
@@ -269,6 +269,7 @@ function Selector(game, img, scene, controller, corner, selection)    {
     this.movelock = true;
     var x = 0;
     var y = 0;
+
     if (this.corner === 1) {
         y = 20;
     }
@@ -296,6 +297,7 @@ Selector.prototype.update = function()  {
     } else  {
         if (!this.pauselock && (this.controller.pause || this.controller.jump))    {
             this.pauselock = true;
+
             if (this.scene.menu[this.selection].active) {
                 this.locked = true;
                 console.log("LOCKED!");
@@ -348,6 +350,7 @@ Selector.prototype.update = function()  {
 }
 
 Selector.prototype.draw = function(ctx) {
+
     this.anim.drawFrame(0, ctx, this.x, this.y, 2.5);
     Entity.prototype.draw.call(this, ctx);
 }

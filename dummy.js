@@ -10,7 +10,6 @@ function Dummy(game, x, y, team, scene) {
     this.team = team;
     this.counter = 0;
     this.boundingBox = new BoundingBox(this.x, this.y, 122, 146);
-    this.showBox = false;
     this.isHit = false;
     this.scene = scene;
 
@@ -32,14 +31,14 @@ Dummy.prototype.update = function() {
 
     if (this.explosion.isDone()) {
         this.explosion.elapsedTime = 0;
-        this.isHit = false;
+        this.removeFromWorld = true;
     }
 
     Entity.prototype.update.call(this);
 };
 
 Dummy.prototype.draw = function(ctx, tick){
-    if (this.showBox) this.boundingBox.draw(ctx);
+    if (this.showBoxes) this.boundingBox.draw(ctx);
     if (this.isHit) {
         this.explosion.drawFrame(tick, ctx, this.x - (this.width/2), this.y - (this.height/2));
     } else {
