@@ -81,12 +81,18 @@ function GameEngine() {
 	this.pauseGame = false;
 
 	//audio here
-	this.menuMusic = new Audio("./menumusic.mp3");
-	this.bgMusic = new Audio("./bgmusic.mp3");
-	this.throwSound = new Audio("./throw.mp3");
-	this.fight = new Audio("./fight.mp3");
+	this.menuMusic = getRandomMenuMusic();
+	this.bgMusic = new Audio("./audio/bgmusic.mp3");
+	this.throwSound = new Audio("./audio/throw.mp3");
+	this.fight = new Audio("./audio/fight.mp3");
+	this.chooseYourCharacter = new Audio("./audio/chooseyourcharacter.mp3");
+	this.optionSelect = new Audio("./audio/optionselect.mp3");
+	this.characterSelect = new Audio("./audio/characterselect.mp3");
 }
 
+function getRandomMenuMusic() {
+	return new Audio("./audio/menumusic" + Math.floor(Math.random() * 7 + 1) + ".mp3");
+}
 GameEngine.prototype.init = function (ctx, sceneManager) {
     this.ctx = ctx;
     this.surfaceWidth = this.ctx.canvas.width;

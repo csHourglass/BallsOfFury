@@ -108,8 +108,10 @@ CharacterSelect.prototype.update = function() {
         // var nextScene = new CharacterSelect(this.scene.sceneManager, this.game);
         // this.scene.sceneManager.loadLevel(nextScene);
         var nextScene =  new LevelZero(this.sceneManager, this.game, this.players);
+        this.game.characterSelect.volume = 0.5;
+        this.game.characterSelect.play();
         this.game.menuMusic.pause();
-        this.game.bgMusic.volume = 0.05;
+        this.game.bgMusic.volume = 0.5;
         this.game.bgMusic.play();
         this.sceneManager.loadLevel(nextScene);
         var hud = new GameHUD(nextScene, this.game);
