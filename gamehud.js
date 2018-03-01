@@ -49,7 +49,7 @@ GameHUD.prototype.update = function() {
 		for (var i = 0; i < this.level.entities.length; i++)	{
 			var ent = this.level.entities[i];
 			if (ent.id === 4)	{
-				this.entities.push(new LiveMeter(this.game, ent, (this.players * 200) + 100, 100));
+				this.entities.push(new LiveMeter(this.game, ent, (this.players * 200) + 115, 985));
 				this.players++;
 			}
 		}
