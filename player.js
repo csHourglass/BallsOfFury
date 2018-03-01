@@ -77,7 +77,7 @@ function Player(game, x, y, team, controller, scene)   {
     this.width = 128;
     this.height = 128;
     this.boundingBox = new BoundingBox(this.x + 40, this.y + 30, this.width - 80, this.height - 35);
-    this.showBoxes = true;  // show Bounding boxes for testing
+    this.showBoxes = false;  // show Bounding boxes for testing
     this.team = team;
     this.isHit = false;
     this.lives = 2;
@@ -109,23 +109,7 @@ Player.prototype = new Entity();
 Player.prototype.constructor = Player;
 
 
-// throws ball based on the location of mouse click
-Player.prototype.throwBall = function(boundingBox) {
-    // throw left
-    // if (this.controller.aimX < 0) {
-    //     this.scene.addEntity(new Ball(this.game, this, this.boundingBox.x - 20,
-    //                         this.boundingBox.y, this.chargingTime, 5, this.scene));
-    // // throw right
-    // } else {
-    //     this.scene.addEntity(new Ball(this.game, this, this.boundingBox.x + this.boundingBox.width + 1,
-    //         this.boundingBox.y, this.chargingTime, 5, this.scene));
-    // }
-    this.scene.addEntity(new Ball(this.game, this, this.x + 64,
-                 this.y + 40, this.chargingTime, 5, this.scene));
 
-    //play the sound of the throw animation
-    throwsound.play();
-}
 Player.prototype.resetBallState = function()    {
     //reset throw animation's elapsed time because we've finished the throw animation.
     this.LThrowAnimation.elapsedTime = 0;
@@ -141,21 +125,19 @@ Player.prototype.resetBallState = function()    {
     this.ballState = 0; // change to 0 to remove ball from player
 }
 
-/**
- * update() handles the default behavior of a player class.  The Player
- * class handles all of its own logic to allow us to use any behavior
- * we want in the game.
- */
-Player.prototype.update = function ()   {
 
-/////***** Jumping *****/////
+
+
+/**
+ * This function handles all Jumping functionality.
+ */
+Player.prototype.calculateJump = function() {
     if (this.controller.jump && this.canJump)    {
         this.jumpingState = 1;
         this.canJump = false;
     }
 
     if (this.jumpingState === 0 && !this.controller.jump) this.canJump = true;
-
     if (this.jumpingState === 1) {
         // jumpingState 1 is for the initial jumping wind up animation.  The character is about to kick off the ground.
         if (this.LJumpStartAnimation.elapsedTime + this.game.clockTick >= this.LJumpStartAnimation.totalTime) {   //hard coded value of 0.2 from LJumpStartAnimation's animation time
@@ -200,29 +182,31 @@ Player.prototype.update = function ()   {
         //     this.yv = 0;
         // }
     }
+}
 
-    /////***** Running *****/////
-    if (this.canMove)   {
-        if (this.controller.left) {
-            this.facingLeft = true;
-            this.moving = true;  //All this does is help with the runningState logic.
-            this.xv = -10;
-        } else if (!this.controller.left && !this.controller.right) {
-            if (this.xv < 0) {
-                this.xv += 1;
-                this.moving = false;
-            }
+/**
+ * This function handles all running functionality.
+ */
+Player.prototype.calculateRun = function() {
+    if (this.controller.left) {
+        this.facingLeft = true;
+        this.moving = true;  //All this does is help with the runningState logic.
+        this.xv = -10;
+    } else if (!this.controller.left && !this.controller.right) {
+        if (this.xv < 0) {
+            this.xv += 1;
+            this.moving = false;
         }
+    }
 
-        if (this.controller.right) {
-            this.facingLeft = false;
-            this.xv = 10;
-            this.moving = true;
-        } else if (!this.controller.right && !this.controller.left) {
-            if (this.xv > 0) {
-                this.xv -= 1;
-                this.moving = false;
-            }
+    if (this.controller.right) {
+        this.facingLeft = false;
+        this.xv = 10;
+        this.moving = true;
+    } else if (!this.controller.right && !this.controller.left) {
+        if (this.xv > 0) {
+            this.xv -= 1;
+            this.moving = false;
         }
     }
 
@@ -241,70 +225,92 @@ Player.prototype.update = function ()   {
         this.LRunAnimation.elapsedTime = 0;
         this.runningState = 0;
     }
+}
 
-    // reload (for testing)
-    // if (this.game.rKey) {
-    //     this.ballState = 1;
-    // }
+/**
+ * This function hanles all interactin between player and ball.
+ * includes catch, parry, charge and throw.
+ */
+ Player.prototype.handleBallInteraction = function() {
+     // aim with mouse
+     if (this.controller.gamepad === null)   {
+         var lineX = this.controller.targetX - (this.x+64);
+         var lineY = this.controller.targetY - (this.y+40);
+         this.controller.aimX = lineX/(Math.abs(lineX) + Math.abs(lineY));
+         this.controller.aimY = lineY/(Math.abs(lineX) + Math.abs(lineY));
+     }
 
-    // if player has no ball, we down want mouse clicks
-    if (this.canCatch && this.controller.parry) {
-        this.isCatching = true;
-        this.canCatch = false;
-    }
-    if (this.isCatching)    {
-        this.catchTimer += this.game.clockTick;
-        console.log("CATCHING ", this.catchTimer);
+     if (this.canCatch && this.controller.parry) {
+         this.isCatching = true;
+         this.canCatch = false;
+     }
+     if (this.isCatching)    {
+         this.catchTimer += this.game.clockTick;
+         console.log("CATCHING ", this.catchTimer);
 
-    }
-    if (this.catchTimer > .5)   {
-        this.isCatching = false;
-        this.catchTimer = 0;
-    }
-    if (!this.isCatching && !this.controller.parry) {
-        this.canCatch = true;
-    }
+     }
+     if (this.catchTimer > .5)   {
+         this.isCatching = false;
+         this.catchTimer = 0;
+     }
+     if (!this.isCatching && !this.controller.parry) {
+         this.canCatch = true;
+     }
 
-	//if we press mouse down, begin charging stopwatch.
-	if (this.ballState === 1 && this.controller.throw) {
-        console.log("ball state is 1");
-        this.mouseUp = false;
-        this.triggerUp = false;
-        this.ballState = 2;
+ 	//if we press mouse down, begin charging stopwatch.
+ 	if (this.ballState === 1 && this.controller.throw) {
+         console.log("ball state is 1");
+         this.mouseUp = false;
+         this.triggerUp = false;
+         this.ballState = 2;
 
-	}
-	//if ball state is 2, then winding up our arm
-    if (this.ballState === 2) {
+ 	}
+ 	//if ball state is 2, then winding up our arm
+     if (this.ballState === 2) {
 
-        if (this.LThrowAnimation.elapsedTime + this.game.clockTick > this.LThrowAnimation.totalTime) {
-            this.ballState = 3;
-        } else if (this.RThrowAnimation.elapsedTime + this.game.clockTick > this.RThrowAnimation.totalTime) {
-			this.ballState = 3;
-        }
-    }
+         if (this.LThrowAnimation.elapsedTime + this.game.clockTick > this.LThrowAnimation.totalTime) {
+             this.ballState = 3;
+         } else if (this.RThrowAnimation.elapsedTime + this.game.clockTick > this.RThrowAnimation.totalTime) {
+ 			this.ballState = 3;
+         }
+     }
 
-	if (this.ballState === 3) {
-        console.log(this.chargingTime);
-        //increment the total charging time by the game's clock tick.
-		this.chargingTime += this.game.clockTick;
-		if (!this.controller.throw) {
-			//spawn a ball entity
-            this.throwBall(this.boundingBox);
-            this.resetBallState();
-		}
-	}
-	// console.log("Ball state = " + this.ballState);
-	// console.log("Mouse up = " + this.game.mouseUp);
-	// console.log("Mouse down = " + this.game.mouseDown);
-///////////////////////  End Throwing ///////////////////////////////////////////
+ 	if (this.ballState === 3) {
+         console.log(this.chargingTime);
+         //increment the total charging time by the game's clock tick.
+ 		this.chargingTime += this.game.clockTick;
+ 		if (!this.controller.throw) {
+ 			//spawn a ball entity
+             this.throwBall(this.boundingBox);
+ 		}
+ 	}
+ }
 
+ // throws ball based on the location of mouse click
+ Player.prototype.throwBall = function(boundingBox) {
+     this.scene.addEntity(new Ball(this.game, this, this.x + 64,
+                  this.y + 40, this.chargingTime, 5, this.scene));
+     //reset the ball's current state
+     this.ballState = 0; // change to 0 to remove ball from player
+     //play the sound of the throw animation
+     throwsound.play();
 
-    // ///////////////////////////// WALL COLLISION ////////////////////////////////
+     //reset throw animation's elapsed time because we've finished the throw animation.
+     this.LThrowAnimation.elapsedTime = 0;
+     this.RThrowAnimation.elapsedTime = 0;
 
-    this.x += 100 * this.xv * this.game.clockTick;
-    this.y -= this.yv * this.game.clockTick;
-    this.boundingBox = new BoundingBox(this.x + 40, this.y + 30, this.width - 80, this.height - 35);
+     //reset the charging time to 0 since we've thrown the ball.
+     this.chargingTime = 0;
+     this.mouseUp = false;
+     this.mouseDown = false;
+     this.triggerUp = false;
+     this.triggerDown = false;
+ }
 
+/**
+ * Handles all collision functionality.
+ */
+Player.prototype.handleCollision = function() {
     for (var i = 0; i < this.scene.entities.length; i++) {
         var ent = this.scene.entities[i];
 
@@ -342,10 +348,6 @@ Player.prototype.update = function ()   {
                     }
                 }
             }
-            // if (ent.team !== this.team && ent.speed > 1) {
-            //     this.isHit = true;
-            // }
-        //    console.log(ent.id);
             if (ent.id === 5)   {
                 if (ent.state !== 0)    {
                     if (this.ballState === 0)   {
@@ -365,18 +367,36 @@ Player.prototype.update = function ()   {
                 } else if (ent.team !== this.team && this.isHit === false) {
                     this.isHit = true;
                     this.canCollide = false;
-                    this.resetBallState();
-                    this.canMove = false;
                     this.lives--;
                 }
             }
-            // if (ent.id === 5 && this.ballState === 0 && ent.state !== 0) {
-            //     console.log("MINE");
-            //     ent.removeFromWorld = true;
-            //     this.ballState = 1;  // pickup ball
-            // }
         }
     }
+}
+
+/**
+ * update() handles the default behavior of a player class.  The Player
+ * class handles all of its own logic to allow us to use any behavior
+ * we want in the game.
+ */
+Player.prototype.update = function ()   {
+
+    this.calculateJump();
+    this.calculateRun();
+    this.handleBallInteraction();
+
+    // reload (for testing)
+    // if (this.game.rKey) {
+    //     this.ballState = 1;
+    // }
+
+    this.x += 100 * this.xv * this.game.clockTick;
+    this.y -= this.yv * this.game.clockTick;
+    this.boundingBox = new BoundingBox(this.x + 40, this.y + 30, this.width - 80, this.height - 35);
+
+    this.handleCollision();
+
+    // deathRoutine
     if (this.explosion.isDone()) {
         if (this.lives < 1) {
             console.log("DEAD.");
@@ -392,7 +412,6 @@ Player.prototype.update = function ()   {
                 this.y = spawnCoords.y;
                 this.ballState = 1;
                 this.isHit = false;
-                this.canMove = true;
             }
         }
     }
@@ -487,27 +506,29 @@ Player.prototype.draw = function(ctx, tick)   {
             this.RIdleAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
     }
-    ctx.beginPath();
-    if (this.team === 0)
-        ctx.strokeStyle = "red";
-    else if (this.team === 1)
-        ctx.strokeStyle = "blue";
-    else if (this.team === 2)
-        ctx.strokeStyle = "green";
-    else if (this.team === 3)
-        ctx.strokeStyle = "yellow";
-    else
-        ctx.strokeStyle = "black";
-    ctx.moveTo(this.x + 64, this.y + 40);
-    if (this.controller.gamepad === null)   {
-        var lineX = this.controller.targetX - (this.x+64);
-        var lineY = this.controller.targetY - (this.y+40);
-        this.controller.aimX = lineX/(Math.abs(lineX) + Math.abs(lineY));
-        this.controller.aimY = lineY/(Math.abs(lineX) + Math.abs(lineY));
+    if (this.controller.isAiming || this.ballState >= 3)    {
+        ctx.beginPath();
+        if (this.team === 0)
+            ctx.strokeStyle = "red";
+        else if (this.team === 1)
+            ctx.strokeStyle = "blue";
+        else if (this.team === 2)
+            ctx.strokeStyle = "green";
+        else if (this.team === 3)
+            ctx.strokeStyle = "yellow";
+        else
+            ctx.strokeStyle = "black";
+        ctx.moveTo(this.x + 64, this.y + 40);
+        if (this.controller.gamepad === null)   {
+            var lineX = this.controller.targetX - (this.x+64);
+            var lineY = this.controller.targetY - (this.y+40);
+            this.controller.aimX = lineX/(Math.abs(lineX) + Math.abs(lineY));
+            this.controller.aimY = lineY/(Math.abs(lineX) + Math.abs(lineY));
+        }
+        ctx.lineTo(this.x + (this.controller.aimX * 100) + 64, this.y + (this.controller.aimY * 100) + 40);
+        ctx.closePath();
+        ctx.stroke();
     }
-	ctx.lineTo(this.x + (this.controller.aimX * 100) + 64, this.y + (this.controller.aimY * 100) + 40);
-	ctx.closePath();
-	ctx.stroke();
-		
+
     Entity.prototype.draw.call(this);
 }
