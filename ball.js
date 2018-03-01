@@ -157,7 +157,7 @@ Ball.prototype.update = function() {
 }
 
 Ball.prototype.draw = function(ctx, tick) {
-    if (this.box) {
+    if (this.showBoxes) {
         this.boundingBox.draw(ctx);
     }
     if (this.state === 0)   {

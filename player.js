@@ -77,7 +77,6 @@ function Player(game, x, y, team, controller, scene)   {
     this.width = 128;
     this.height = 128;
     this.boundingBox = new BoundingBox(this.x + 40, this.y + 30, this.width - 80, this.height - 35);
-    this.showBoxes = false;  // show Bounding boxes for testing
     this.team = team;
     this.isHit = false;
     this.lives = 2;
