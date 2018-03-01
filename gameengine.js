@@ -83,7 +83,8 @@ function GameEngine() {
 	//audio here
 	this.menuMusic = new Audio("./menumusic.mp3");
 	this.bgMusic = new Audio("./bgmusic.mp3");
-	this.throwsound = new Audio("./throw.mp3");
+	this.throwSound = new Audio("./throw.mp3");
+	this.fight = new Audio("./fight.mp3");
 }
 
 GameEngine.prototype.init = function (ctx, sceneManager) {
