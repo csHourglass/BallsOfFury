@@ -58,11 +58,11 @@ MainMenu.prototype.update = function()  {
             c.menulocked = false;
         }
         if (c.jump || c.pause)  {
-            if (this.selectedEntry === 0)
-                this.nextScene = undefined;
-            if (this.selectedEntry === 1)
+            if (this.selectedEntry === 0) {
+                this.nextScene = new SinglePlayer(this.manager, this.game, c);
+            } else if (this.selectedEntry === 1)
                 this.nextScene = new CharacterSelect(this.manager, this.game);
-            if (this.selectedEntry === 2)
+            else if (this.selectedEntry === 2)
                 this.nextScene = undefined;
             i = this.game.controllers.length;
         }

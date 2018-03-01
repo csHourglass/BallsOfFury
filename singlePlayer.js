@@ -7,9 +7,9 @@
  var width = 1920;
  var height = 1080;
 
+// implement player for this sccene and spawn lots of dummies
 
-
-function LevelZero(sceneManager, game, players)    {
+function SinglePlayer(sceneManager, game, controller)    {
     this.game = game;
     this.sceneManager = sceneManager;
     this.isPlaying = true;
@@ -19,23 +19,18 @@ function LevelZero(sceneManager, game, players)    {
     var bg = new Background(game, this.bgAnimation);
     this.entities.push(bg);
 
-    this.players = 0;
-    // for (var i = 0; i < this.game.controllers.length; i++)   {
-    //     if (this.game.controllers[i].ready) {
-    //         var player = new Player(game, (1620 * Math.random()) + 150, 795, this.players, this.game.controllers[i], this);
-    //         this.entities.push(player);
-    //         this.players++;
-    //     }
-    // }
-    var that = this;
-    players.forEach(function(element)   {
-        var player = new Player(game, (1620 * Math.random()) + 150, 795, element.team, element.controller, that);
-        that.entities.push(player);
-        that.players++;
-    });
+    this.dummyCounter = 0;   // will spawn dummy when dummyCounter reaches dummyClock
+    this.dummyClock = 1000;  // will get faster as the game goes on
 
-//	var dummy = new Dummy(game, 1500, 772, 2, this);
-    //this.entities.push(dummy);  // for fun purposes
+    // var that = this;
+    // players.forEach(function(element)   {
+    var player = new Player(game, (1620 * Math.random()) + 150, 795, 1, controller, this);
+    this.entities.push(player);
+    //     that.players++;
+    // });
+
+	var dummy = new Dummy(game, (1620 * Math.random()) + 150, 200 + (650 * Math.random()), 2, this);
+    this.entities.push(dummy);  // for fun purposes
     var floor = [];
     floor.push(new Animation(ASSET_MANAGER.getAsset("./img/TestPlatform.png"), 0, 0, 1920, 162, 1, 1, true, false));
     floor.push(new Animation(ASSET_MANAGER.getAsset("./img/TestPlatform.png"), 0, 0, 192, 162, 1, 1, true, false));
@@ -61,19 +56,25 @@ function LevelZero(sceneManager, game, players)    {
     Scene.call(this, game, this.entities);
 }
 
-LevelZero.prototype = new Scene();
-LevelZero.prototype.constructor = LevelZero;
+SinglePlayer.prototype = new Scene();
+SinglePlayer.prototype.constructor = SinglePlayer;
 
-LevelZero.prototype.update = function() {
+SinglePlayer.prototype.update = function() {
     // if (this.game.controllers.length > this.players) {
-    //     var player = new Player(this.game, (1620 * Math.random())+150, 795, this.players, this.game.controllers[this.players], this);
+    this.dummyCounter++;
+    if (this.dummyCounter >= this.dummyClock) {
+        var newDummy = new Dummy(this.game, (1620 * Math.random())+150, 200 + (650 * Math.random()), 2, this);
+        this.entities.push(newDummy);
+        this.dummyCounter = 0
+        this.dummyClock /= 1.5;
+    }
     //     this.entities.push(player);
     //     this.players++;
     // }
     Scene.prototype.update.call(this);
 }
 
-LevelZero.prototype.spawn = function()  {
+SinglePlayer.prototype.spawn = function()  {
     var coord = new Coords();
     coord.x = 100 + Math.random()*1700;
     coord.y = 795;
