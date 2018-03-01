@@ -1,11 +1,11 @@
 /**
  * An Entity object.  Used primarily as a parent class.
- * 
+ *
  * @param game : The game engine
  * @param x : The starting x coordinate (left side)
  * @param y : The starting y coordinate (top side)
  * @param canCollide : Determines this entity will be checked for collision
- * @param id : An ID value to aid in determining collision
+ * @param id : An ID value to aid in determining collision 0=non-collidable , 1=rigid body , 2= , 3= , 4=player, 5=ball
  */
 
 function Entity(game, x, y, canCollide, id) {
@@ -17,6 +17,7 @@ function Entity(game, x, y, canCollide, id) {
 	this.canCollide = canCollide;
 	this.id = id;
     this.removeFromWorld = false;
+    this.showBoxes = false; // toggle display of bounding boxes
 }
 
 Entity.prototype.update = function () {
@@ -51,8 +52,8 @@ Entity.prototype.rotateAndCache = function (image, angle) {
 
 /*
     getX() and getY() check the offsets and scale stored in
-    the game engine to draw the character. 
-    (It might be better to move this into the Entity draw() 
+    the game engine to draw the character.
+    (It might be better to move this into the Entity draw()
     function so we do not need to call this method in our code.)
 */
 Entity.prototype.getX = function()	{

@@ -59,7 +59,7 @@ MainMenu.prototype.update = function()  {
         }
         if (c.jump || c.pause)  {
             if (this.selectedEntry === 0)
-                this.nextScene = undefined;
+                this.nextScene = new SinglePlayer(this.manager, this.game, c);
                 this.game.menuMusic.volume *= .5;
                 this.game.optionSelect.play();
                 this.game.menuMusic.volume /= .5;

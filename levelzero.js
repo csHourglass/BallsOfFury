@@ -36,10 +36,11 @@ function LevelZero(sceneManager, game, players)    {
         that.players++;
     });
 
-	var dummy = new Dummy(game, 1500, 772, 2, this);
-
+//	var dummy = new Dummy(game, 1500, 772, 2, this);
+    //this.entities.push(dummy);  // for fun purposes
     var floor = [];
     floor.push(new Animation(ASSET_MANAGER.getAsset("./img/TestPlatform.png"), 0, 0, 1920, 162, 1, 1, true, false));
+    floor.push(new Animation(ASSET_MANAGER.getAsset("./img/TestPlatform.png"), 0, 0, 192, 162, 1, 1, true, false));
     var wall = [];
     wall.push(new Animation(ASSET_MANAGER.getAsset("./img/TestWall.png"), 0, 0, 48, 846, 1, 1, true, false));
     var ceiling = [];
@@ -48,7 +49,7 @@ function LevelZero(sceneManager, game, players)    {
     this.entities.push(new Wall(game, 21, 72, 48, 846, wall));
 	this.entities.push(new Wall(game, 1851, 72, 48, 846, wall));
     this.entities.push(new Wall(game, 0, 0, 1920, 72, ceiling));
-    this.entities.push(dummy);
+
     this.entities.push(new Camera(game, 0, 0, 1920, 1080));
 	this.game.fight.play();
 	//this.game.fight.volume = .1;
