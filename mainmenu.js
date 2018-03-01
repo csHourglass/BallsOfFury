@@ -60,10 +60,21 @@ MainMenu.prototype.update = function()  {
         if (c.jump || c.pause)  {
             if (this.selectedEntry === 0)
                 this.nextScene = undefined;
-            if (this.selectedEntry === 1)
+                this.game.menuMusic.volume *= .5;
+                this.game.optionSelect.play();
+                this.game.menuMusic.volume /= .5;
+            if (this.selectedEntry === 1) {
                 this.nextScene = new CharacterSelect(this.manager, this.game);
+                this.game.menuMusic.volume *= .5;
+                this.game.optionSelect.play();
+                this.game.chooseYourCharacter.play();
+                this.game.menuMusic.volume /= .5;
+            }
             if (this.selectedEntry === 2)
                 this.nextScene = undefined;
+                this.game.menuMusic.volume *= .5;
+                this.game.optionSelect.play();
+                this.game.menuMusic.volume /= .5;
             i = this.game.controllers.length;
         }
     }

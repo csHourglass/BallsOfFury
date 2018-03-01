@@ -11,6 +11,8 @@
 
 function LevelZero(sceneManager, game, players)    {
     this.game = game;
+    this.game.characterSelect.volume = 0.5;
+    this.game.characterSelect.play();
     this.sceneManager = sceneManager;
     this.isPlaying = true;
     this.entities = [];
@@ -49,7 +51,7 @@ function LevelZero(sceneManager, game, players)    {
     this.entities.push(dummy);
     this.entities.push(new Camera(game, 0, 0, 1920, 1080));
 	this.game.fight.play();
-	this.game.fight.volume = .1;
+	//this.game.fight.volume = .1;
     //var fakeplayer = new Player(game, 100, 795, 99, new Controller(), this);
     // fakeplayer.armorlock = true;
     // this.entities.push(fakeplayer);
