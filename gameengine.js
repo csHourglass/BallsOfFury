@@ -79,6 +79,11 @@ function GameEngine() {
 	this.gamepad = gamepad;
 	this.canPause = true;
 	this.pauseGame = false;
+
+	//audio here
+	this.menuMusic = new Audio("./menumusic.mp3");
+	this.bgMusic = new Audio("./bgmusic.mp3");
+	this.throwsound = new Audio("./throw.mp3");
 }
 
 GameEngine.prototype.init = function (ctx, sceneManager) {

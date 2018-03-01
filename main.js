@@ -69,13 +69,5 @@ ASSET_MANAGER.downloadAll(function () {
 
     gameEngine.start();
 });
-
-var bgmusic = new Audio("./bgmusic.mp3");
-
-bgmusic.play();
-bgmusic.volume = 0.05;
-
-var throwsound = new Audio("./throw.mp3");
-throwsound.volume = .25;
 //var bgmusic = new Audio('bgmusic.mp3');
 //audio.currentTime = "50";
