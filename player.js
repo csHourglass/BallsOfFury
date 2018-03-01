@@ -316,7 +316,8 @@ Player.prototype.handleCollision = function() {
 
         if (ent !== this && ent.canCollide && this.boundingBox.hasCollided(ent.boundingBox)) {
             //console.log("derp, collision with ", ent.id);
-            if (ent.id === 1)   {
+            if (ent.id === 1)   { // rigid body collision
+                // floor
                 if (this.prevY < this.y && (this.y + this.height - 5) > ent.y && this.prevY + 30 + this.boundingBox.height <= ent.y)  {
                     if (this.y > ent.y - this.height + 5)   {
                         this.y = ent.y - this.height + 5;
@@ -324,6 +325,7 @@ Player.prototype.handleCollision = function() {
                         this.jumpingState = 0;
                     }
                 }
+                // ceiling
                 else if (this.prevY > this.y && this.boundingBox.y < (ent.boundingBox.y + ent.boundingBox.height) && this.prevY + 30 >= (ent.boundingBox.y + ent.boundingBox.height))  {
 
                         this.y = ent.boundingBox.y + ent.boundingBox.height - 30;
@@ -331,6 +333,7 @@ Player.prototype.handleCollision = function() {
                         this.jumpingState = 4;
 
                 }
+                // left wall
                 else if (this.prevX > this.x && (this.x < (ent.x + ent.width)))  {
                     if (this.x + 40 < ent.x + ent.width) {
                         this.x = ent.x + ent.width - 40;
@@ -339,6 +342,7 @@ Player.prototype.handleCollision = function() {
                         this.moving = false;
                     }
                 }
+                // right wall
                 else if (this.prevX < this.x && (this.boundingBox.x + this.boundingBox.width) > ent.boundingBox.x)  {
                     if ((this.boundingBox.x + this.boundingBox.width) > ent.boundingBox.x) {
                         this.x = ent.boundingBox.x - this.boundingBox.width -40;
@@ -348,6 +352,7 @@ Player.prototype.handleCollision = function() {
                     }
                 }
             }
+            // ball
             if (ent.id === 5)   {
                 if (ent.state !== 0)    {
                     if (this.ballState === 0)   {
