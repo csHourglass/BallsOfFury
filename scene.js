@@ -83,9 +83,9 @@ Scene.prototype.draw = function(ctx)    {
     // If the scene is playing,
     if (this.isPlaying) {
         //if the bgmusic is paused, then resume it.
-        if (this.game.bgmusic.paused)
-            this.game.bgmusic.paused = false;
-        //change clockTick to the clock tick on the game engine.
+        if (this.game.bgMusic.paused)
+            this.game.bgMusic.paused = false;
+        //change clockTick  to the clock tick on the game engine.
         clockTick = this.game.clockTick;
     }
     var entityCount = this.entities.length;
