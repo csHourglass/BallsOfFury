@@ -461,10 +461,12 @@ GameEngine.prototype.startInput = function () {
 	this.gamepad.on('hold', 'start', e => {
 		console.log(`player ${e.player} holding ${e.button}!`);
 		var c = getController(e.player);
-		if (c !== null)	{
-			c.pause = true;
-			that.pauseGame = true;
-		}
+
+    // commented the following code out due to problems navigating menues
+		// if (c !== null)	{
+		// 	c.pause = true;
+		// 	that.pauseGame = true;
+		// }
 	});
 
 	//stick_button_left - Left Analog Stick (XBOX/PS3/PS4)

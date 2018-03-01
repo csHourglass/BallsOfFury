@@ -17,6 +17,11 @@ function MainMenu(sceneManager, game) {
 
     this.entities.push(singleplayer, multiplayer, options);
 
+    for (var i = 0; i < this.game.controllers.length; i++) {
+        this.game.controllers[i].pause = false;
+        this.game.controllers[i].jump = false;
+    }
+
     Scene.call(this, this.game, this.entities);
 }
 

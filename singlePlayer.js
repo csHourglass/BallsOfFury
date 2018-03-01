@@ -1,8 +1,12 @@
-/**
- * ELEVATOR STAGE!!
- *
- */
+/**********************************
+_____Single Player Mode_____
 
+toDo:   fix ball spawing as if thrown
+        moving dummies
+        better sprite for dummies
+        go back to main menu
+
+****************************************/
  // height and width of frame
  var width = 1920;
  var height = 1080;
@@ -26,7 +30,6 @@ function SinglePlayer(sceneManager, game, controller)    {
     this.balls = 1;  // number of balls in the level.  will increase as enemies are killed.
     this.killCount = 00;
     this.scoreboard = new Scoreboard(this.game, 100 , height - 50); // to display killCount
-
     // var that = this;
     // players.forEach(function(element)   {
     this.player = new Player(game, (1620 * Math.random()) + 150, 795, 1, controller, this);
@@ -34,7 +37,7 @@ function SinglePlayer(sceneManager, game, controller)    {
     //     that.players++;
     // });
 
-	var dummy = new Dummy(game, (1620 * Math.random()) + 150, 200 + (650 * Math.random()), 2, this);
+	var dummy = new Dummy(game, (1620 * Math.random()) + 150, 795, 2, this);
     this.entities.push(dummy);
     this.dummies.push(dummy);
     var floor = [];
@@ -94,7 +97,7 @@ SinglePlayer.prototype.update = function() {
             this.player.isHit = true;
             this.player.canCollide = false;
             this.player.lives = 0;  // only one life in single player
-
+            this.scoreboard.gameOver = true;;
             /********************************
              should display game over here
             ********************************/
@@ -122,8 +125,9 @@ function Scoreboard(game, x, y) {
      this.score = 0;
      this.text = "Kills: " + this.score;
      this.color = "red";
+     this.gameOver = false;
      Entity.call(this, game, this.x, this.y);
-     console.log("SCOREBOARD STARTING UP")
+
  }
 
 Scoreboard.prototype = new Entity();
@@ -134,14 +138,28 @@ Scoreboard.prototype.constructor = Scoreboard;
      this.text = "Kills: " + this.score;
  }
 
- Scoreboard.prototype.draw = function(ctx) {
-     // display kill count
-     ctx.strokeStyle = "black";
-     ctx.fillRect(this.x - 10, this.y - 80, 400, 100);
 
-     ctx.font = "75pt blippo";
-     ctx.fillStyle = this.color;
-     ctx.fillText(this.text, this.x, this.y);
-     Entity.prototype.draw.call(this);
-     console.log("DRAWING SCOREBOARD");
+ Scoreboard.prototype.draw = function(ctx) {
+     if (this.gameOver) {
+         this.x = width/2;
+         this.y = height/2;
+         this.text = "GAME OVER";
+         ctx.strokeStyle = "black";
+         ctx.fillRect(this.x - 600, this.y - 300, 1200, 600);
+         ctx.font = "100pt Impact";
+         ctx.fillStyle = this.color;
+         ctx.fillText(this.text, this.x - 300, this.y -100);
+         ctx.font = "50pt Impact";
+         ctx.fillText(this.score + " kills", this.x - 115, this.y + 100);
+     } else {
+         // display kill count
+         ctx.strokeStyle = "black";
+         ctx.fillRect(this.x - 10, this.y - 80, 400, 100);
+
+         ctx.font = "75pt blippo";
+         ctx.fillStyle = this.color;
+         ctx.fillText(this.text, this.x, this.y);
+         Entity.prototype.draw.call(this);
+     }
+
  }
