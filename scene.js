@@ -66,7 +66,15 @@ Scene.prototype.update = function()    {
  */
 Scene.prototype.draw = function(ctx)    {
     // clockTick is initially 0. (time is frozen)
+    //draw the dark rectangle over CTX to darken the background
     var clockTick = 0;
+    if (!this.isPlaying) {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
+        ctx.fillRect(0, 0, 1920, 1080);
+    }
+    
+    //draw our paused screen here possibly
+
     // If the scene is playing, change clockTick
     // to the clock tick on the game engine.
     if (this.isPlaying) {
