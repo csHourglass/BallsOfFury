@@ -58,6 +58,7 @@ MainMenu.prototype.update = function()  {
             c.menulocked = false;
         }
         if (c.jump || c.pause)  {
+<<<<<<< HEAD
             if (this.selectedEntry === 0)
                 this.nextScene = new SinglePlayer(this.manager, this.game, c);
                 this.game.menuMusic.volume *= .5;
@@ -71,6 +72,13 @@ MainMenu.prototype.update = function()  {
                 this.game.menuMusic.volume /= .5;
             }
             if (this.selectedEntry === 2)
+=======
+            if (this.selectedEntry === 0) {
+                this.nextScene = new SinglePlayer(this.manager, this.game, c);
+            } else if (this.selectedEntry === 1)
+                this.nextScene = new CharacterSelect(this.manager, this.game);
+            else if (this.selectedEntry === 2)
+>>>>>>> 6a4946163a482945155ae394d797bb3a75810c0a
                 this.nextScene = undefined;
                 this.game.menuMusic.volume *= .5;
                 this.game.optionSelect.play();

@@ -10,7 +10,11 @@ function Dummy(game, x, y, team, scene) {
     this.team = team;
     this.counter = 0;
     this.boundingBox = new BoundingBox(this.x, this.y, 122, 146);
+<<<<<<< HEAD
     this.isKilled = false;
+=======
+    this.isHit = false;
+>>>>>>> 6a4946163a482945155ae394d797bb3a75810c0a
     this.scene = scene;
 
     Entity.call(this, game, this.x, this.y, false, 3);
@@ -39,7 +43,11 @@ Dummy.prototype.update = function() {
 
 Dummy.prototype.draw = function(ctx, tick){
     if (this.showBoxes) this.boundingBox.draw(ctx);
+<<<<<<< HEAD
     if (this.isKilled) {
+=======
+    if (this.isHit) {
+>>>>>>> 6a4946163a482945155ae394d797bb3a75810c0a
         this.explosion.drawFrame(tick, ctx, this.x - (this.width/2), this.y - (this.height/2));
     } else {
         this.animation.drawFrame(tick, ctx, this.x , this.y);
