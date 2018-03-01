@@ -2,8 +2,8 @@ function MainMenu(sceneManager, game) {
     this.manager = sceneManager;
     this.game = game;
     this.entities = [];
-    this.buttons = 3;
-    this.selectedlocation = 256;
+    //this.buttons = 4; ////////////
+    this.selectedlocation = 384; ////////////
     this.selectedEntry = 0;
     this.nextScene;
 
@@ -12,10 +12,13 @@ function MainMenu(sceneManager, game) {
     singleplayer.state = 1;
     var multiplayer = new mButton(game, "./img/multiplayer.png");
     multiplayer.y = this.selectedlocation + 128;
-    var options = new mButton(game, "./img/options.png");
-    options.y = this.selectedlocation + 256;
-
-    this.entities.push(singleplayer, multiplayer, options);
+	var control = new mButton(game, "./img/controls.png"); //+++++
+	control.y = this.selectedlocation + 256; //+++++
+	var options = new mButton(game, "./img/options.png");
+    options.y = this.selectedlocation + 384; ////////////
+	
+	
+    this.entities.push(singleplayer, multiplayer, control, options); ////////////
 
     Scene.call(this, this.game, this.entities);
 }
@@ -63,19 +66,27 @@ MainMenu.prototype.update = function()  {
                 this.game.menuMusic.volume *= .5;
                 this.game.optionSelect.play();
                 this.game.menuMusic.volume /= .5;
-            if (this.selectedEntry === 1) {
+			
+            if (this.selectedEntry === 1) 
                 this.nextScene = new CharacterSelect(this.manager, this.game);
                 this.game.menuMusic.volume *= .5;
                 this.game.optionSelect.play();
                 this.game.chooseYourCharacter.play();
                 this.game.menuMusic.volume /= .5;
-            }
-            if (this.selectedEntry === 2)
+            
+            if (this.selectedEntry === 2) 
+				this.nextScene = new ControlScreen(this.manager, this.game);
+                this.game.menuMusic.volume *= .5;
+                this.game.optionSelect.play();
+                this.game.menuMusic.volume /= .5;
+			
+			if (this.selectedEntry === 3) 
                 this.nextScene = undefined;
                 this.game.menuMusic.volume *= .5;
                 this.game.optionSelect.play();
                 this.game.menuMusic.volume /= .5;
-            i = this.game.controllers.length;
+            
+			i = this.game.controllers.length;
         }
     }
     this.updateButtons();

@@ -12,14 +12,16 @@
      this.game = game;
      this.isPlaying = true;
      this.entities = [];
+	 
      this.kbAnimation = new Animation(ASSET_MANAGER.getAsset("./img/keyboard-layout.png"), 0, 0, width, height, 1, 1, true, false);
 	 this.controlAnimation = new Animation(ASSET_MANAGER.getAsset("./img/ps4-controller-layout.png"), 0, 0, width, height, 1, 1, true, false);
-     this.entities.push(new Background(game, this.kbAnimation));
+     
+	 
 	 this.entities.push(new Background(game, this.controlAnimation));
-     this.entities.push(new Camera(game, 0, 0, width, height));
-     Scene.call(this, game, this.entities);
-
-
+	 
+     //this.entities.push(new Camera(game, 0, 0, width, height));
+     
+	 Scene.call(this, game, this.entities);
  }
 
 ControlScreen.prototype = new Scene();
@@ -28,7 +30,7 @@ ControlScreen.prototype.constructor = ControlScreen;
 /*
 update:
     check for start button from any controllers
-    send that controller as player 1 to next scenes
+    send to MainMenu scene
 
 */
 ControlScreen.prototype.update = function() {
@@ -47,13 +49,14 @@ ControlScreen.prototype.update = function() {
             this.sceneManager.loadLevel(nextScene);
             // remove this scene now
             this.close();
-
         } else if (this.game.controllers[i].right === true) {
-			this.game.controller[i].right = false;
-			this.entities.removeFromWorld = true;
+			//this.game.controller[i].right = false;
+			this.entities.pop();
+			this.entities.push(new Background(this.game, this.kbAnimation));
 		} else if (this.game.controllers[i].left === true) {
-			this.game.controller[i].left = false;
-			this.entities.push(new Background(game, this.controlAnimation));
+			//this.game.controller[i].left = false;
+			this.entities.pop();
+			this.entities.push(new Background(this.game, this.controlAnimation));
 		}
     }
     Scene.prototype.update.call(this);
