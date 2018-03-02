@@ -106,7 +106,7 @@ CharacterSelect.prototype.update = function() {
     }
     if (this.ready) {
         // var nextScene = new CharacterSelect(this.scene.sceneManager, this.game);
-        // this.scene.sceneManager.loadLevel(nextScene);
+        // this.scene.sceneManager.loadLevel(nextScene);		
         var nextScene =  new LevelZero(this.sceneManager, this.game, this.players);
         this.game.characterSelect.volume = 0.5;
         this.game.characterSelect.play();

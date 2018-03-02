@@ -71,6 +71,11 @@ LevelZero.prototype.update = function() {
     //     this.entities.push(player);
     //     this.players++;
     // }
+	/* if (!this.isPlaying) {
+		var nextScene = new ControlScreen(this.sceneManager, this.game, this);
+		this.sceneManager.loadLevel(nextScene);
+	} */
+		
     Scene.prototype.update.call(this);
 }
 
