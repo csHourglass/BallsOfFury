@@ -40,7 +40,7 @@ function CharacterSelect(sceneManager, game) {
     this.ReadyButton = new Button(4, this, this.game, width/2, height/2, "yellow");  // sends players into game
 
     this.buttons.push(this.ReadyButton);
-
+    this.game.chooseYourCharacter.play();
     for(var i = 0; i < this.buttons.length; i++){
         this.entities.push(this.buttons[i]);
     }
