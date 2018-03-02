@@ -4,7 +4,6 @@ _____Single Player Mode_____
 toDo:   fix ball spawing as if thrown
         moving dummies
         better sprite for dummies
-        go back to main menu
 
 ****************************************/
  // height and width of frame
@@ -18,7 +17,7 @@ function SinglePlayer(sceneManager, game, controller)    {
     this.sceneManager = sceneManager;
     this.isPlaying = true;
     this.entities = [];
-    this.dummies = [];
+    this.enemies = [];
     this.bgAnimation = new Animation(ASSET_MANAGER.getAsset("./img/Stage1Background.png"), 0, 0, width, height, 1, 1, true, false);
 
     var bg = new Background(game, this.bgAnimation);
@@ -39,7 +38,7 @@ function SinglePlayer(sceneManager, game, controller)    {
 
 	var dummy = new Dummy(game, (1620 * Math.random()) + 150, 775, 2, this);
     this.entities.push(dummy);
-    this.dummies.push(dummy);
+    this.enemies.push(dummy);
     var floor = [];
     floor.push(new Animation(ASSET_MANAGER.getAsset("./img/TestPlatform.png"), 0, 0, 1920, 162, 1, 1, true, false));
     floor.push(new Animation(ASSET_MANAGER.getAsset("./img/TestPlatform.png"), 0, 0, 192, 162, 1, 1, true, false));
@@ -53,9 +52,9 @@ function SinglePlayer(sceneManager, game, controller)    {
     this.entities.push(new Wall(game, 0, 0, 1920, 72, ceiling));
 
     this.entities.push(new Camera(game, 0, 0, 1920, 1080));
-	var fight = new Audio("./fight.mp3");
-	fight.play();
-	fight.volume = .1;
+	// var fight = new Audio("./fight.mp3");
+	// fight.play();
+	// fight.volume = .1;
     //var fakeplayer = new Player(game, 100, 795, 99, new Controller(), this);
     // fakeplayer.armorlock = true;
     // this.entities.push(fakeplayer);
@@ -75,7 +74,7 @@ SinglePlayer.prototype.update = function() {
     if (this.dummyClock >= this.spawnTime && this.player.lives > 0) {
         var newDummy = new Dummy(this.game, (1620 * Math.random())+150, 200 + (650 * Math.random()), 2, this);
         this.entities.push(newDummy);
-        this.dummies.push(newDummy);
+        this.enemies.push(newDummy);
         this.dummyCount++;
         this.dummyClock = 0
         this.spawnTime = 1 + (this.spawnTime / 1.5);  // spawn next one a little sooner
@@ -83,22 +82,21 @@ SinglePlayer.prototype.update = function() {
     }
 
     // check for killed dummies
-    for (var i = 0; i < this.dummies.length; i++) {
-        if (this.dummies[i].isKilled) {
+    for (var i = 0; i < this.enemies.length; i++) {
+        if (this.enemies[i].isKilled) {
             this.killCount++;
-            this.dummies.splice(i, 1);
+            this.enemies.splice(i, 1);
             //spawn a new for every 10 enemies killed, max of 5 balls
             if (this.killCount % 10 === 0 && this.killCount < 40) {
                 this.entities.push(new Ball (this.game, this.player, (1620 * Math.random()) + 150, 795, 0, 5, this));
             }
             console.log("KILL COUNT ", this.killCount)
             this.scoreboard.updateScore(this.killCount);
-        } else if (this.dummies[i].boundingBox.hasCollided(this.player.boundingBox)) {
+        } else if (this.enemies[i].boundingBox.hasCollided(this.player.boundingBox)) {
             this.player.isHit = true;
             this.player.canCollide = false;
             this.player.lives = 0;  // only one life in single player
             this.player.controller.jump = false;  // to prevent skipping through gameover screen
-
             /********************************
              should display game over here
             ********************************/
