@@ -68,15 +68,15 @@ Scene.prototype.draw = function(ctx)    {
     // clockTick is initially 0. (time is frozen)
     var clockTick = 0;
     //if we're paused
-    // if (!this.isPlaying) {
-    //     //draw the dark rectangle over CTX to darken the background
-    //     ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
-    //     ctx.fillRect(0, 0, 1920, 1080);
+    if (!this.isPlaying) {
+         //draw the dark rectangle over CTX to darken the background
+         ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
+         ctx.fillRect(0, 0, 1920, 1080);
 
-    //     //pause the music
+        //pause the music
     //     this.game.bgmusic.pause();
 
-    // }
+    }
 
     //draw our paused screen here possibly
 
