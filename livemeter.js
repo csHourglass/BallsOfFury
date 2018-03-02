@@ -4,13 +4,13 @@ function LiveMeter(game, player, x, y) {
 	this.NoLiveAnimation = new Animation(ASSET_MANAGER.getAsset("./img/nolive.png"), 0, 0, 300, 300, 10, 1, true, false);
 	this.FullLiveAnimation1 = new Animation(ASSET_MANAGER.getAsset("./img/fulllive1.png"), 0, 0, 300, 300, 1, 1, true, false);
 	this.HalfLiveAnimation1 = new Animation(ASSET_MANAGER.getAsset("./img/halflive1.png"), 0, 0, 300, 300, 1, 1, true, false);
-	this.NoLiveAnimation2 = new Animation(ASSET_MANAGER.getAsset("./img/nolive1.png"), 0, 0, 300, 300, 10, 1, true, false);
+	this.NoLiveAnimation1 = new Animation(ASSET_MANAGER.getAsset("./img/nolive1.png"), 0, 0, 300, 300, 10, 1, true, false);
 	this.FullLiveAnimation2 = new Animation(ASSET_MANAGER.getAsset("./img/fulllive2.png"), 0, 0, 300, 300, 1, 1, true, false);
 	this.HalfLiveAnimation2 = new Animation(ASSET_MANAGER.getAsset("./img/halflive2.png"), 0, 0, 300, 300, 1, 1, true, false);
-	this.NoLiveAnimation3 = new Animation(ASSET_MANAGER.getAsset("./img/nolive2.png"), 0, 0, 300, 300, 10, 1, true, false);
+	this.NoLiveAnimation2 = new Animation(ASSET_MANAGER.getAsset("./img/nolive2.png"), 0, 0, 300, 300, 10, 1, true, false);
 	this.FullLiveAnimation3 = new Animation(ASSET_MANAGER.getAsset("./img/fulllive3.png"), 0, 0, 300, 300, 1, 1, true, false);
 	this.HalfLiveAnimation3 = new Animation(ASSET_MANAGER.getAsset("./img/halflive3.png"), 0, 0, 300, 300, 1, 1, true, false);
-	this.NoLiveAnimation4 = new Animation(ASSET_MANAGER.getAsset("./img/nolive3.png"), 0, 0, 300, 300, 10, 1, true, false);
+	this.NoLiveAnimation3 = new Animation(ASSET_MANAGER.getAsset("./img/nolive3.png"), 0, 0, 300, 300, 10, 1, true, false);
 	
 	this.currentstatus = 1;
 	this.player = player;
