@@ -42,6 +42,7 @@ ASSET_MANAGER.queueDownload("./img/selectors.png");
 ASSET_MANAGER.queueDownload("./img/ps4-controller-layout.png");
 ASSET_MANAGER.queueDownload("./img/keyboard-layout.png");
 ASSET_MANAGER.queueDownload("./img/pause-menu.png");
+ASSET_MANAGER.queueDownload("./img/balls-of-fury.png");
 //ASSET_MANAGER.queueDownload("./bgmusic.mp3");
 //ASSET_MANAGER.queueDownload("./fight.mp3");
 
