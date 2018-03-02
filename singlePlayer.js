@@ -24,19 +24,19 @@ function SinglePlayer(sceneManager, game, controller)    {
     this.entities.push(bg);
 
     this.dummyClock = 0;  // count the time since last dummy spawned
-    this.spawnTime = 15; // the time till next dummy will spawn
+    this.spawnTime = 1; // the time till next dummy will spawn
     this.dummyCount = 1; // the number of dummies that have spawned in the game.
     this.balls = 1;  // number of balls in the level.  will increase as enemies are killed.
     this.killCount = 00;
     this.scoreboard = new Scoreboard(this.game, 100 , height - 50); // to display killCount
     // var that = this;
     // players.forEach(function(element)   {
-    this.player = new Player(game, (1620 * Math.random()) + 150, 795, 1, controller, this);
+    this.player = new Player(game, 200, 795, 1, controller, this);
     this.entities.push(this.player);
     //     that.players++;
     // });
 
-	var dummy = new Dummy(game, (1620 * Math.random()) + 150, 775, 2, this);
+	var dummy = new Dummy(game, 1200 + 150, 775, 2, this);
     this.entities.push(dummy);
     this.enemies.push(dummy);
     var floor = [];
@@ -69,12 +69,13 @@ SinglePlayer.prototype.constructor = SinglePlayer;
 
 SinglePlayer.prototype.update = function() {
 
-
-    this.dummyClock += this.game.clockTick;
+    if (this.isPlaying)
+        this.dummyClock += this.game.clockTick;
     if (this.dummyClock >= this.spawnTime && this.player.lives > 0) {
-        var newDummy = new Dummy(this.game, (1620 * Math.random())+150, 200 + (650 * Math.random()), 2, this);
-        this.entities.push(newDummy);
-        this.enemies.push(newDummy);
+        //var newDummy = new Dummy(this.game, (1620 * Math.random())+150, 795, 2, this);
+        var newEnemy = new FlyingMonster(this.game, (1500 * Math.random()) + 100, 300, 2, this);
+        this.entities.push(newEnemy);
+        this.enemies.push(newEnemy);
         this.dummyCount++;
         this.dummyClock = 0
         this.spawnTime = 1 + (this.spawnTime / 1.5);  // spawn next one a little sooner
