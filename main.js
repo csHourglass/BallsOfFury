@@ -4,7 +4,7 @@
 var ASSET_MANAGER = new AssetManager();
 
 
-//ASSET_MANAGER.queueDownload("./img/bg15.png");
+ASSET_MANAGER.queueDownload("./img/animbg.png");
 ASSET_MANAGER.queueDownload("./img/bg20.png");
 ASSET_MANAGER.queueDownload("./img/bof.png");
 ASSET_MANAGER.queueDownload("./img/load.png");
@@ -44,6 +44,9 @@ ASSET_MANAGER.queueDownload("./img/keyboard-layout.png");
 ASSET_MANAGER.queueDownload("./img/pause-menu.png");
 ASSET_MANAGER.queueDownload("./img/balls-of-fury.png");
 ASSET_MANAGER.queueDownload("./img/pointers.png");
+ASSET_MANAGER.queueDownload("./img/flyingMonster.png");
+
+
 //ASSET_MANAGER.queueDownload("./bgmusic.mp3");
 //ASSET_MANAGER.queueDownload("./fight.mp3");
 

@@ -211,6 +211,14 @@ GameEngine.prototype.startInput = function () {
 				c.right = true;
 				c.left = false;
 			}
+			if (e.y > 0) {
+				c.down = true;
+				c.up = false;
+			}
+			if (e.y < 0) {
+				c.up = true;
+				c.down = false;
+			}
 		}
 
 	});
@@ -231,6 +239,14 @@ GameEngine.prototype.startInput = function () {
 			if (e.x > 0) {
 				c.right = true;
 				c.left = false;
+			}
+			if (e.y > 0) {
+				c.down = true;
+				c.up = false;
+			}
+			if (e.y < 0) {
+				c.up = true;
+				c.down = false;
 			}
 		}
 
@@ -261,6 +277,8 @@ GameEngine.prototype.startInput = function () {
 		if (c !== null)	{
 			c.left = false;
 			c.right = false;
+			c.up = false;
+			c.down = false;
 		}
 
 	});
@@ -471,6 +489,24 @@ GameEngine.prototype.startInput = function () {
 
 	//stick_button_left - Left Analog Stick (XBOX/PS3/PS4)
 	this.gamepad.on('hold', 'stick_button_left', e => {
+		if (c !== null)	{
+			if (e.x < 0) {
+				c.left = true;
+				c.right = false;
+			}
+			if (e.x > 0) {
+				c.right = true;
+				c.left = false;
+			}
+			if (e.y > 0) {
+				c.down = true;
+				c.up = false;
+			}
+			if (e.y < 0) {
+				c.up = true;
+				c.down = false;
+			}
+		}
 		console.log(`player ${e.player} holding ${e.button}!`);
 	});
 
@@ -654,10 +690,15 @@ GameEngine.prototype.startInput = function () {
 		var c = getController(null);
 		if (c !== null)	{
 			if (e.code === "Space") c.jump = true;
+			if (e.code === "Enter") c.jump = true;	//enter
 			if (e.code === "KeyA") c.left = true;
 			if (e.code === "KeyD") c.right = true;
 			if (e.code === "KeyW") c.up = true;
 			if (e.code === "KeyS") c.down = true;
+			if (e.code === "ArrowLeft") c.left = true;
+			if (e.code === "ArrowRight") c.right = true;
+			if (e.code === "ArrowUp") c.up = true;
+			if (e.code === "ArrowDown") c.down = true;
 			if (e.code === "KeyF") c.parry = true;
 			if (e.code === "Escape")	{
 				c.pause = true;  //This is the Esc key.
@@ -671,10 +712,15 @@ GameEngine.prototype.startInput = function () {
 		var c = getController(null);
 		if (c !== null)	{
 			if (e.code === "Space") c.jump = false;
+			if (e.code === "Enter") c.jump = false;	//enter
 			if (e.code === "KeyA") c.left = false;
 			if (e.code === "KeyD") c.right = false;
 			if (e.code === "KeyW") c.up = false;
 			if (e.code === "KeyS") c.down = false;
+			if (e.code === "ArrowLeft") c.left = false;
+			if (e.code === "ArrowRight") c.right = false;
+			if (e.code === "ArrowUp") c.up = false;
+			if (e.code === "ArrowDown") c.down = false;
 			if (e.code === "KeyF") c.parry = false;
 			if (e.code === "Escape")	{
 				c.pause = false;  //This is the Esc key.

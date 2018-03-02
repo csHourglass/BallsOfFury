@@ -12,14 +12,12 @@
      this.game = game;
      this.isPlaying = true;
      this.entities = [];
-     this.bgAnimation = new Animation(ASSET_MANAGER.getAsset("./img/titlebg.png"), 0, 0, width, height, 1, 1, true, false);
+     this.bgAnimation = new Animation(ASSET_MANAGER.getAsset("./img/animbg.png"), 0, 0, width, height, .25, 8, true, false);
 	 this.titleAnimation = new Animation(ASSET_MANAGER.getAsset("./img/balls-of-fury.png"), 0, 0, width, height, 1, 1, true, false);
      this.entities.push(new Background(game, this.bgAnimation));
 	 this.entities.push(new Background(game, this.titleAnimation));
      this.entities.push(new Camera(game, 0, 0, width, height));
      Scene.call(this, game, this.entities);
-
-
  }
 
 TitleScreen.prototype = new Scene();
