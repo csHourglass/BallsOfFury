@@ -36,6 +36,9 @@ function Player(game, x, y, team, controller, scene)   {
     // Boom.  Plays on death.
     this.explosion = new Animation(ASSET_MANAGER.getAsset("./img/explosion.png"), 0, 0, 256, 256, 0.01, 48, false, false);
 
+    // Pointer above the player.
+    this.pointer = ASSET_MANAGER.getAsset("./img/pointers.png");
+    console.log(this.pointer);
     /*  jumpingState is used to determine if the Player is
         jumping or not.
             0 - Player is on the ground.
@@ -533,6 +536,17 @@ Player.prototype.draw = function(ctx, tick)   {
         ctx.lineTo(this.x + (this.controller.aimX * 100) + 64, this.y + (this.controller.aimY * 100) + 40);
         ctx.closePath();
         ctx.stroke();
+    }
+    if (!this.isHit) {
+        if (this.team === 0)    {
+            ctx.drawImage(this.pointer, 0, 0, 128, 128, this.x + 32, this.y - 64, 64, 64);
+        } else if (this.team === 1) {
+            ctx.drawImage(this.pointer, 0, 128, 128, 128, this.x + 32, this.y - 64, 64, 64);
+        } else if (this.team === 2) {
+            ctx.drawImage(this.pointer, 128, 0, 128, 128, this.x + 32, this.y - 64, 64, 64);
+        } else if (this.team === 3) {
+            ctx.drawImage(this.pointer, 128, 128, 128, 128, this.x + 32, this.y - 64, 64, 64);
+        }
     }
 
     Entity.prototype.draw.call(this);
