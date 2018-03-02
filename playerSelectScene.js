@@ -336,11 +336,11 @@ Selector.prototype.update = function()  {
         this.x = portrait.x;
         this.y = portrait.y;
     } else if (this.corner === 1)   {
-        this.x = portrait.x + portrait.width - 40;
-        this.y = portrait.y;
-    } else if (this.corner === 2)   {
         this.x = portrait.x;
         this.y = portrait.y + portrait.height - 40;
+    } else if (this.corner === 2)   {
+        this.x = portrait.x + portrait.width - 40;
+        this.y = portrait.y;
     } else  {
         this.x = portrait.x + portrait.width - 40;
         this.y = portrait.y + portrait.height - 40;
