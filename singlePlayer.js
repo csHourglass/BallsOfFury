@@ -37,7 +37,7 @@ function SinglePlayer(sceneManager, game, controller)    {
     //     that.players++;
     // });
 
-	var dummy = new Dummy(game, (1620 * Math.random()) + 150, 795, 2, this);
+	var dummy = new Dummy(game, (1620 * Math.random()) + 150, 775, 2, this);
     this.entities.push(dummy);
     this.dummies.push(dummy);
     var floor = [];
@@ -72,7 +72,7 @@ SinglePlayer.prototype.update = function() {
 
 
     this.dummyClock += this.game.clockTick;
-    if (this.dummyClock >= this.spawnTime) {
+    if (this.dummyClock >= this.spawnTime && this.player.lives > 0) {
         var newDummy = new Dummy(this.game, (1620 * Math.random())+150, 200 + (650 * Math.random()), 2, this);
         this.entities.push(newDummy);
         this.dummies.push(newDummy);
@@ -97,12 +97,21 @@ SinglePlayer.prototype.update = function() {
             this.player.isHit = true;
             this.player.canCollide = false;
             this.player.lives = 0;  // only one life in single player
-            this.scoreboard.gameOver = true;;
+            this.player.controller.jump = false;  // to prevent skipping through gameover screen
+
             /********************************
              should display game over here
             ********************************/
-
+            this.scoreboard.gameOver = true;
+            this.isPlaying = false;
         }
+    }
+
+    // game over, return to main menu
+    if (this.player.lives <= 0 && (this.player.controller.pause || this.player.controller.jump)) {
+        var nextScene = new MainMenu(this.sceneManager, this.game);
+        this.sceneManager.loadLevel(nextScene);
+        this.close();
     }
     Scene.prototype.update.call(this);
 }
@@ -150,7 +159,10 @@ Scoreboard.prototype.constructor = Scoreboard;
          ctx.fillStyle = this.color;
          ctx.fillText(this.text, this.x - 300, this.y -100);
          ctx.font = "50pt Impact";
-         ctx.fillText(this.score + " kills", this.x - 115, this.y + 100);
+         ctx.fillText(this.score + " kills", this.x - 100, this.y + 100);
+         ctx.fillStyle = "yellow";
+         ctx.font = "30pt Impact";
+         ctx.fillText("Press Start to Return to Menu", this.x - 250, this.y + 200);
      } else {
          // display kill count
          ctx.strokeStyle = "black";
