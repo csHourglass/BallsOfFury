@@ -15,7 +15,7 @@ function Scene(game, entities)    {
     if (this.pausable === undefined)    {
         this.pausable = true;
     }
-
+	this.pause = new Animation(ASSET_MANAGER.getAsset("./img/pause-menu.png"), 0, 0, 1920, 1080, 1, 1, true, false);
     // isPlaying determines if the entities in this scene
     // will update and animate.
     this.isPlaying = true;
@@ -69,12 +69,13 @@ Scene.prototype.draw = function(ctx)    {
     var clockTick = 0;
     //if we're paused
     if (!this.isPlaying) {
-         //draw the dark rectangle over CTX to darken the background
-         ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
-         ctx.fillRect(0, 0, 1920, 1080);
-
-        //pause the music
-    //     this.game.bgmusic.pause();
+        //draw the dark rectangle over CTX to darken the background
+        //ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
+        //ctx.fillRect(0, 0, 1920, 1080);
+		this.pause.drawFrame(this.game.clockTick, ctx, 0, 0);
+        
+		//pause the music
+        //this.game.bgmusic.pause();
 
     }
 

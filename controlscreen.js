@@ -9,6 +9,7 @@
 
  function ControlScreen(sceneManager, game) {
      this.sceneManager = sceneManager;
+	 //this.prevScene = prevScene;
      this.game = game;
      this.isPlaying = true;
      this.entities = [];
@@ -42,7 +43,6 @@ ControlScreen.prototype.update = function() {
             // i = the controller that pressed start
             // pass controller as player1 to next scene
             var nextScene = new MainMenu(this.sceneManager, this.game);
-            //var nextScene = new LevelZero(this.sceneManager, this.game);
             this.game.menuMusic.volume = .25;
             this.game.menuMusic.play();
 

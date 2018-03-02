@@ -5,8 +5,10 @@ function MainMenu(sceneManager, game) {
     //this.buttons = 3;
     this.selectedlocation = 384; ////////////
     this.selectedEntry = 0;
+	
+	this.isPlaying = true; ////////////////
     this.nextScene;
-
+	this.pausable = false; // +++++++++++++
     var singleplayer = new mButton(game, "./img/singleplayer.png");
     singleplayer.y = this.selectedlocation;
     singleplayer.state = 1;
@@ -86,7 +88,7 @@ MainMenu.prototype.update = function()  {
         }
     }
     this.updateButtons();
-    if (this.nextScene !== undefined)    {
+	if (this.nextScene !== undefined)    {
         this.manager.loadLevel(this.nextScene);
         this.close();
     }
