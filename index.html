@@ -23,7 +23,7 @@
         left: 0;
         z-index: 100;
         width: 100vw;
-        height: 100vh;
+        height: 120vh;
         background-color: rgba(192, 192, 192, 0.5);
         background-image: url("http://i.stack.imgur.com/MnyxU.gif");
         background-repeat: no-repeat;
@@ -58,11 +58,11 @@
 	<script type="text/javascript" src="./controlscreen.js"></script>
 	<div id="page">
 		<body>
-			<canvas id="gameWorld" tabindex="1" width="1920" height="1080" style="border: 1px solid brown; background: lightskyblue"></canvas>
+			<canvas id="gameWorld" tabindex="1" width="1920" height="1080" style="border: 1px solid brown; background: white"></canvas>
 		</body>
 	<script>
 		function onReady(callback) {
-			var intervalID = window.setInterval(checkReady, 10);
+			var intervalID = window.setInterval(checkReady, 1000);
 
 		function checkReady() {
 			if (document.getElementsByTagName('body')[0] !== undefined) {
