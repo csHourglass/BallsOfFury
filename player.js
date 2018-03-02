@@ -34,7 +34,7 @@ function Player(game, x, y, team, controller, scene)   {
     this.RThrowAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 1408, 128, 128, 0.04, 3, false, false);
 	this.RChargeThrowAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 256, 1408, 128, 128, 0.001, 1, true, false);
     // Boom.  Plays on death.
-    this.explosion = new Animation(ASSET_MANAGER.getAsset("./img/explosion.png"), 0, 0, 256, 256, 0.05, 48, false, false);
+    this.explosion = new Animation(ASSET_MANAGER.getAsset("./img/explosion.png"), 0, 0, 256, 256, 0.01, 48, false, false);
 
     /*  jumpingState is used to determine if the Player is
         jumping or not.

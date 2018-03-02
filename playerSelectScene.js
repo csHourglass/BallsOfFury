@@ -106,7 +106,7 @@ CharacterSelect.prototype.update = function() {
     }
     if (this.ready) {
         // var nextScene = new CharacterSelect(this.scene.sceneManager, this.game);
-        // this.scene.sceneManager.loadLevel(nextScene);
+        // this.scene.sceneManager.loadLevel(nextScene);		
         var nextScene =  new LevelZero(this.sceneManager, this.game, this.players);
         this.game.characterSelect.volume = 0.5;
         this.game.characterSelect.play();
@@ -336,11 +336,11 @@ Selector.prototype.update = function()  {
         this.x = portrait.x;
         this.y = portrait.y;
     } else if (this.corner === 1)   {
-        this.x = portrait.x + portrait.width - 40;
-        this.y = portrait.y;
-    } else if (this.corner === 2)   {
         this.x = portrait.x;
         this.y = portrait.y + portrait.height - 40;
+    } else if (this.corner === 2)   {
+        this.x = portrait.x + portrait.width - 40;
+        this.y = portrait.y;
     } else  {
         this.x = portrait.x + portrait.width - 40;
         this.y = portrait.y + portrait.height - 40;
