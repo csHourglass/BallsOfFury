@@ -4,7 +4,7 @@
 var ASSET_MANAGER = new AssetManager();
 
 
-//ASSET_MANAGER.queueDownload("./img/bg15.png");
+ASSET_MANAGER.queueDownload("./img/animbg.png");
 ASSET_MANAGER.queueDownload("./img/bg20.png");
 ASSET_MANAGER.queueDownload("./img/bof.png");
 ASSET_MANAGER.queueDownload("./img/load.png");

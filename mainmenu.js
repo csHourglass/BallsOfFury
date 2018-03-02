@@ -76,7 +76,6 @@ MainMenu.prototype.update = function()  {
                 this.nextScene = new CharacterSelect(this.manager, this.game);
                 this.game.menuMusic.volume *= .5;
                 this.game.optionSelect.play();
-                this.game.chooseYourCharacter.play();
                 this.game.menuMusic.volume /= .5;
             if (this.selectedEntry === 2) 
 				this.nextScene = new ControlScreen(this.manager, this.game);
