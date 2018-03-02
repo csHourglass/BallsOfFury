@@ -8,15 +8,58 @@
  var height = 1080;
 
  function TitleScreen(sceneManager, game) {
-     this.sceneManager = sceneManager;
-     this.game = game;
-     this.isPlaying = true;
-     this.entities = [];
-     this.bgAnimation = new Animation(ASSET_MANAGER.getAsset("./img/animbg.png"), 0, 0, width, height, .25, 8, true, false);
-	 this.titleAnimation = new Animation(ASSET_MANAGER.getAsset("./img/balls-of-fury.png"), 0, 0, width, height, 1, 1, true, false);
-     this.entities.push(new Background(game, this.bgAnimation));
-	 this.entities.push(new Background(game, this.titleAnimation));
-     this.entities.push(new Camera(game, 0, 0, width, height));
+    this.sceneManager = sceneManager;
+    this.game = game;
+    this.isPlaying = true;
+    this.entities = [];
+    this.bgAnimation = new Animation(ASSET_MANAGER.getAsset("./img/animbg.png"), 0, 0, width, height, .25, 8, true, false);
+	this.titleAnimation = new Animation(ASSET_MANAGER.getAsset("./img/balls-of-fury.png"), 0, 0, width, height, 1, 1, true, false);
+    this.entities.push(new Background(game, this.bgAnimation));
+	this.entities.push(new Background(game, this.titleAnimation));
+    this.entities.push(new Camera(game, 0, 0, width, height));
+    ASSET_MANAGER.queueDownload("./img/bg20.png");
+    ASSET_MANAGER.queueDownload("./img/bof.png");
+    ASSET_MANAGER.queueDownload("./img/load.png");
+    ASSET_MANAGER.queueDownload("./img/text.png");
+    ASSET_MANAGER.queueDownload("./img/Stage1Background.png");
+    ASSET_MANAGER.queueDownload("./img/titlebg.png");
+    ASSET_MANAGER.queueDownload("./img/playerselect.png");
+    ASSET_MANAGER.queueDownload("./img/TestPlatform.png");
+    ASSET_MANAGER.queueDownload("./img/TestWall.png");
+    ASSET_MANAGER.queueDownload("./img/TestCeiling.png");
+    ASSET_MANAGER.queueDownload("./img/player.png");
+    ASSET_MANAGER.queueDownload("./img/ball.png");
+    ASSET_MANAGER.queueDownload("./img/Training_dummy.png");
+    ASSET_MANAGER.queueDownload("./img/explosion.png");
+    ASSET_MANAGER.queueDownload("./img/fulllive.png");
+    ASSET_MANAGER.queueDownload("./img/halflive.png");
+    ASSET_MANAGER.queueDownload("./img/nolive.png");
+    ASSET_MANAGER.queueDownload("./img/fulllive1.png");
+    ASSET_MANAGER.queueDownload("./img/halflive1.png");
+    ASSET_MANAGER.queueDownload("./img/nolive1.png");
+    ASSET_MANAGER.queueDownload("./img/fulllive3.png");
+    ASSET_MANAGER.queueDownload("./img/halflive3.png");
+    ASSET_MANAGER.queueDownload("./img/nolive3.png");
+    ASSET_MANAGER.queueDownload("./img/fulllive2.png");
+    ASSET_MANAGER.queueDownload("./img/halflive2.png");
+    ASSET_MANAGER.queueDownload("./img/nolive2.png");
+    ASSET_MANAGER.queueDownload("./img/multiplayer.png");
+    ASSET_MANAGER.queueDownload("./img/singleplayer.png");
+    ASSET_MANAGER.queueDownload("./img/options.png");
+    ASSET_MANAGER.queueDownload("./img/controls.png");
+    ASSET_MANAGER.queueDownload("./img/playerportrait.png");
+    ASSET_MANAGER.queueDownload("./img/unavailable.png");
+    ASSET_MANAGER.queueDownload("./img/random.png");
+    ASSET_MANAGER.queueDownload("./img/selectors.png");
+    ASSET_MANAGER.queueDownload("./img/ps4-controller-layout.png");
+    ASSET_MANAGER.queueDownload("./img/keyboard-layout.png");
+    ASSET_MANAGER.queueDownload("./img/pause-menu.png");
+    ASSET_MANAGER.queueDownload("./img/pointers.png");
+    ASSET_MANAGER.queueDownload("./img/flyingMonster.png");
+
+ASSET_MANAGER.downloadAll(function () {
+    console.log("Powering up!");
+});
      Scene.call(this, game, this.entities);
  }
 
