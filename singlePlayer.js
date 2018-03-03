@@ -32,7 +32,7 @@ function SinglePlayer(sceneManager, game, controller)    {
     // var that = this;
     // players.forEach(function(element)   {
     this.player = new Player(game, 200, 795, 4 ,1, controller, this);
-        
+
     this.entities.push(this.player);
     //     that.players++;
     // });
@@ -94,9 +94,10 @@ SinglePlayer.prototype.update = function() {
         this.enemies.push(newEnemy);
         this.dummyCount++;
         this.dummyClock = 0
-        this.spawnTime -= .5;  // spawn next one a little sooner
-        if (this.spawnTime < .5)
-            this.spawnTime = .5;
+        this.spawnTime -= (this.spawnTime/8);
+        console.log(this.spawnTime);
+        if (this.spawnTime < 1)
+            this.spawnTime = 1;
     }
 
     // check for killed dummies
