@@ -107,14 +107,14 @@ CharacterSelect.prototype.update = function() {
     if (this.ready) {
         // var nextScene = new CharacterSelect(this.scene.sceneManager, this.game);
         // this.scene.sceneManager.loadLevel(nextScene);		
-        var nextScene =  new LevelZero(this.sceneManager, this.game, this.players);
+        var nextScene =  new LevelZero(this.sceneManager, this.game, this.players, 4);
         this.game.characterSelect.volume = 0.5;
         this.game.characterSelect.play();
         this.game.menuMusic.pause();
         this.game.bgMusic.volume = 0.5;
         this.game.bgMusic.play();
         this.sceneManager.loadLevel(nextScene);
-        var hud = new GameHUD(nextScene, this.game);
+        var hud = new GameHUD(nextScene, 4, this.game);
         this.sceneManager.loadLevel(hud);
         this.close();
     }
