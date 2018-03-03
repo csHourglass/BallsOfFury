@@ -15,6 +15,7 @@ function LevelZero(sceneManager, game, players, lives)    {
     this.game.characterSelect.play();
     this.sceneManager = sceneManager;
     this.isPlaying = true;
+    this.timer = 0;
     this.entities = [];
     this.bgAnimation = new Animation(ASSET_MANAGER.getAsset("./img/Stage1Background.png"), 0, 0, width, height, 1, 1, true, false);
     this.lives = lives;
@@ -69,6 +70,7 @@ function LevelZero(sceneManager, game, players, lives)    {
     var that = this;
     players.forEach(function(element)   {
         var player = new Player(game, (1620 * Math.random()) + 150, 200, lives, element.team, element.controller, that);
+        element.controller.ready = false;
         that.entities.push(player);
         that.players++;
     });
@@ -96,14 +98,42 @@ LevelZero.prototype.update = function() {
 	/* if (!this.isPlaying) {
 		var nextScene = new ControlScreen(this.sceneManager, this.game, this);
 		this.sceneManager.loadLevel(nextScene);
-	} */
+    } */
+
+
 	if (this.game.bgMusic != null && !this.isPlaying) {
         this.game.bgMusic.pause();
 
     }else if (this.game.bgMusic != null && this.isPlaying) {
         this.game.bgMusic.play();
-	}
+    }
+    
+    if (this.players <= 1)  {
+        this.timer += this.game.clockTick;
+    }
+    if (this.timer > 3) {
+        var nextScene = new MainMenu(this.sceneManager, this.game);
+        //var nextScene = new LevelZero(this.sceneManager, this.game);
+        this.game.bgMusic.pause();
+        this.game.bgMusic.currentTime = 0;
+        this.game.optionSelect.play();
+        this.game.menuMusic.volume = .25;
+        this.game.menuMusic.play();
+        this.sceneManager.loadLevel(nextScene);
+        // remove this scene now
+        this.close();
+    }
     Scene.prototype.update.call(this);
+}
+
+LevelZero.prototype.draw = function(ctx)    {
+
+    Scene.prototype.draw.call(this, ctx);
+    if (this.players <= 1)  {
+        ctx.font = "50pt Impact";
+        ctx.fillStyle = "black";
+        ctx.fillText("Game is over.  Returning to the Main Menu in 3 seconds.", 100, 100);
+    }
 }
 
 LevelZero.prototype.spawn = function()  {

@@ -460,6 +460,7 @@ Player.prototype.update = function ()   {
         if (this.lives < 1) {
             console.log("DEAD.");
             this.removeFromWorld = true;
+            this.scene.players--;
         } else {
         this.deathTimer += this.game.clockTick;
             if (this.deathTimer > 3)  {
