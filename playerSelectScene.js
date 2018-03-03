@@ -17,7 +17,7 @@ function CharacterSelect(sceneManager, game) {
     this.pausable = false;
     this.controllersActive = 0;
     this.bgAnimation = new Animation(ASSET_MANAGER.getAsset("./img/playerselect.png"), 0, 0, width, height, 1, 1, true, false);
-    this.entities.push(new Background(game, this.bgAnimation, 0, 0));
+    this.entities.push(new Background(game, this.bgAnimation));
     this.menu = [];
 
     var defaultPlayer = new Portrait(this.game, "./img/playerportrait.png", this, this.nextX(), this.nextY(), 96, 128);
@@ -40,7 +40,7 @@ function CharacterSelect(sceneManager, game) {
     this.ReadyButton = new Button(4, this, this.game, width/2, height/2, "yellow");  // sends players into game
 
     this.buttons.push(this.ReadyButton);
-    this.game.chooseYourCharacter.play();
+
     for(var i = 0; i < this.buttons.length; i++){
         this.entities.push(this.buttons[i]);
     }
@@ -159,7 +159,7 @@ Button.prototype.ready = function()  {
     } else  {
         console.log("Cannot select that character!");
     }
-
+    
 }
 
 Button.prototype.activate = function(team, controller) {
@@ -180,11 +180,6 @@ Button.prototype.activate = function(team, controller) {
     // this.scene.playersReady++;
     this.activated = true;
     this.selector = new Selector(this.game, "./img/selectors.png", this.scene, this.controller, this.team, 0);
-    var corner = this.team;
-    if (corner > 3) {
-        corner = 0;
-    }
-
     this.scene.addEntity(this.selector);
 }
 
@@ -269,15 +264,10 @@ function Selector(game, img, scene, controller, corner, selection)    {
     this.movelock = true;
     var x = 0;
     var y = 0;
-
-    if (this.corner === 1) {
-        y = 20;
-    }
-    else if (this.corner === 2)    {
+    if (this.corner%2 === 1) {
         x = 20;
     }
-    else if (this.corner === 3)     {
-        x = 20;
+    if (this.corner > 1)    {
         y = 20;
     }
     this.anim = new Animation(ASSET_MANAGER.getAsset(img), x, y, 20, 20, 1, 1, true, false);
@@ -297,11 +287,9 @@ Selector.prototype.update = function()  {
     } else  {
         if (!this.pauselock && (this.controller.pause || this.controller.jump))    {
             this.pauselock = true;
-
-            if (this.scene.menu[this.selection].active) {
+            if (this.scene.menu[this.selection].active)
                 this.locked = true;
-                console.log("LOCKED!");
-            } else    {
+            else    {
                 //play obnoxious noise here
             }
         } else if (!this.movelock)  {
@@ -336,11 +324,11 @@ Selector.prototype.update = function()  {
         this.x = portrait.x;
         this.y = portrait.y;
     } else if (this.corner === 1)   {
-        this.x = portrait.x;
-        this.y = portrait.y + portrait.height - 40;
-    } else if (this.corner === 2)   {
         this.x = portrait.x + portrait.width - 40;
         this.y = portrait.y;
+    } else if (this.corner === 2)   {
+        this.x = portrait.x;
+        this.y = portrait.y + portrait.height - 40;
     } else  {
         this.x = portrait.x + portrait.width - 40;
         this.y = portrait.y + portrait.height - 40;
@@ -350,8 +338,7 @@ Selector.prototype.update = function()  {
 }
 
 Selector.prototype.draw = function(ctx) {
-
-    this.anim.drawFrame(0, ctx, this.x, this.y, 2.5);
+    this.anim.drawFrame(0, ctx, this.x, this.y, 2);
     Entity.prototype.draw.call(this, ctx);
 }
 
@@ -359,8 +346,6 @@ function Portrait(game, img, scene, x, y, width, height) {
     this.game = game;
     this.x = x;
     this.y = y;
-    this.width = width;
-    this.height = height;
     this.anim = new Animation(ASSET_MANAGER.getAsset(img), 0, 0, width, height, 1, 1, true, false);
     this.active = true;
 

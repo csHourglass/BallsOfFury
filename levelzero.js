@@ -19,7 +19,7 @@ function LevelZero(sceneManager, game, players, lives)    {
     this.entities = [];
     this.bgAnimation = new Animation(ASSET_MANAGER.getAsset("./img/Stage1Background.png"), 0, 0, width, height, 1, 1, true, false);
 
-    var bg = new Background(game, this.bgAnimation, 0, 0);
+    var bg = new Background(game, this.bgAnimation);
     this.entities.push(bg);
 
     this.players = 0;
@@ -37,11 +37,10 @@ function LevelZero(sceneManager, game, players, lives)    {
         that.players++;
     });
 
-//	var dummy = new Dummy(game, 1500, 772, 2, this);
-    //this.entities.push(dummy);  // for fun purposes
+	var dummy = new Dummy(game, 1500, 772, 2, this);
+
     var floor = [];
     floor.push(new Animation(ASSET_MANAGER.getAsset("./img/TestPlatform.png"), 0, 0, 1920, 162, 1, 1, true, false));
-    floor.push(new Animation(ASSET_MANAGER.getAsset("./img/TestPlatform.png"), 0, 0, 192, 162, 1, 1, true, false));
     var wall = [];
     wall.push(new Animation(ASSET_MANAGER.getAsset("./img/TestWall.png"), 0, 0, 48, 846, 1, 1, true, false));
     var ceiling = [];
@@ -50,7 +49,7 @@ function LevelZero(sceneManager, game, players, lives)    {
     this.entities.push(new Wall(game, 21, 72, 48, 846, wall));
 	this.entities.push(new Wall(game, 1851, 72, 48, 846, wall));
     this.entities.push(new Wall(game, 0, 0, 1920, 72, ceiling));
-
+    this.entities.push(dummy);
     this.entities.push(new Camera(game, 0, 0, 1920, 1080));
 	this.game.fight.play();
     this.game.bgMusic.play();

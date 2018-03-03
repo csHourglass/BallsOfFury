@@ -10,8 +10,8 @@ function Dummy(game, x, y, team, scene) {
     this.team = team;
     this.counter = 0;
     this.boundingBox = new BoundingBox(this.x, this.y, 122, 146);
-    this.isKilled = false;
-
+    this.showBox = false;
+    this.isHit = false;
     this.scene = scene;
 
     Entity.call(this, game, this.x, this.y, false, 3);
@@ -25,23 +25,22 @@ Dummy.prototype.update = function() {
         var ent = this.scene.entities[i];
 
         if (ent.id === 5 && ent.canCollide && ent.state === 0 && this.boundingBox.hasCollided(ent.boundingBox)) {
-            this.isKilled = true;
+            this.isHit = true;
             //ent.canCollide = false;
         }
     }
 
     if (this.explosion.isDone()) {
         this.explosion.elapsedTime = 0;
-        this.removeFromWorld = true;
+        this.isHit = false;
     }
 
     Entity.prototype.update.call(this);
 };
 
 Dummy.prototype.draw = function(ctx, tick){
-    if (this.showBoxes) this.boundingBox.draw(ctx);
-
-    if (this.isKilled) {
+    if (this.showBox) this.boundingBox.draw(ctx);
+    if (this.isHit) {
         this.explosion.drawFrame(tick, ctx, this.x - (this.width/2), this.y - (this.height/2));
     } else {
         this.animation.drawFrame(tick, ctx, this.x , this.y);
