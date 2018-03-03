@@ -82,8 +82,10 @@ function GameEngine() {
 
 	//audio here
 	this.menuMusic = getRandomMenuMusic();
+	this.menuMusic.loop = true;
 	//this.menuMusic.loop = true;
 	this.bgMusic = new Audio("./audio/bgmusic.mp3");
+	this.bgMusic.loop = true;
 	//this.bgMusic.loop = true;
 	this.throwSound = new Audio("./audio/throw.mp3");
 	this.fight = new Audio("./audio/fight.mp3");
