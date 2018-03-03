@@ -69,7 +69,7 @@ SinglePlayer.prototype.constructor = SinglePlayer;
 
 SinglePlayer.prototype.update = function() {
 
-    if (this.isPlaying) {
+    if (this.isPlaying && this.dummy == undefined) {
         this.dummyClock += this.game.clockTick;
     }
     if (this.dummy !== undefined && this.dummy.isKilled) {
@@ -95,7 +95,6 @@ SinglePlayer.prototype.update = function() {
         this.dummyCount++;
         this.dummyClock = 0
         this.spawnTime -= (this.spawnTime/8);
-        console.log(this.spawnTime);
         if (this.spawnTime < 1)
             this.spawnTime = 1;
     }

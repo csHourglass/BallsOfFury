@@ -31,7 +31,7 @@ function LevelZero(sceneManager, game, players, lives)    {
     // }
     var that = this;
     players.forEach(function(element)   {
-        var player = new Player(game, (1620 * Math.random()) + 150, 795, lives, element.team, element.controller, that);
+        var player = new Player(game, (1620 * Math.random()) + 150, 200, lives, element.team, element.controller, that);
         that.entities.push(player);
         that.players++;
     });
