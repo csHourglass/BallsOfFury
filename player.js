@@ -6,7 +6,7 @@
  * @param {*} y : The starting y coordinate of our entity.
  * @param {*} team : The team number of this Player.
  */
-function Player(game, x, y, team, controller, scene)   {
+function Player(game, x, y, lives, team, controller, scene)   {
     // Loading animations...
     // NOTE: This needs to be moved out of Player like the Button class,
     //  otherwise we can never have a Player that uses different sprites!
@@ -51,7 +51,7 @@ function Player(game, x, y, team, controller, scene)   {
     this.shield = new Animation(ASSET_MANAGER.getAsset("./img/shield.png"), 0, 0, 192, 192, 0.25/20, 20, false, false);
     // Pointer above the player.
     this.pointer = ASSET_MANAGER.getAsset("./img/pointers.png");
-    console.log(this.pointer);
+//    console.log(this.pointer);
     /*  jumpingState is used to determine if the Player is
         jumping or not.
             0 - Player is on the ground.
@@ -96,7 +96,8 @@ function Player(game, x, y, team, controller, scene)   {
     this.boundingBox = new BoundingBox(this.x + 40, this.y + 30, this.width - 80, this.height - 35);
     this.team = team;
     this.isHit = false;
-    this.lives = 2;
+    this.lives = lives;
+    this.lostLives = 0;
     this.isCatching = false;
     this.canCatch = true;
     this.catchTimer = 0;
@@ -185,7 +186,7 @@ Player.prototype.calculateJump = function() {
             this.LFallStartAnimation.elapsedTime + this.game.clockTick >= this.LFallStartAnimation.totalTime ||
             this.RBallFallStartAnimation.elapsedTime + this.game.clockTick >= this.RBallFallStartAnimation.totalTime ||
             this.LBallFallStartAnimation.elapsedTime + this.game.clockTick >= this.LBallFallStartAnimation.totalTime) {   //hard coded value of 0.2 from LJumpStartAnimation's animation time
-            
+
             this.RFallStartAnimation.elapsedTime = 0;
             this.LFallStartAnimation.elapsedTime = 0;
             this.RBallFallStartAnimation.elapsedTime = 0;
@@ -298,7 +299,7 @@ Player.prototype.calculateRun = function() {
 
  	//if we press mouse down, begin charging stopwatch.
  	if (this.ballState === 1 && this.controller.throw) {
-         console.log("ball state is 1");
+//         console.log("ball state is 1");
          this.mouseUp = false;
          this.triggerUp = false;
          this.ballState = 2;
@@ -315,7 +316,7 @@ Player.prototype.calculateRun = function() {
      }
 
  	if (this.ballState === 3) {
-         console.log(this.chargingTime);
+//         console.log(this.chargingTime);
          //increment the total charging time by the game's clock tick.
  		this.chargingTime += this.game.clockTick;
  		if (!this.controller.throw) {

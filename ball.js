@@ -101,7 +101,7 @@ Ball.prototype.update = function() {
 
         if (ent !== this && ent.canCollide && this.boundingBox.hasCollided(ent.boundingBox)) {
             if (ent.id === 1)   {
-                console.log("BOUNCE!!!!");
+                //console.log("BOUNCE!!!!");
                 if (this.prevY < this.y && (this.y + this.height) > ent.y && this.prevY + this.height <= ent.y)  {
                     this.y = ent.y - this.height;
                     this.speed -= 500;
@@ -128,7 +128,7 @@ Ball.prototype.update = function() {
             }
             if (ent.id === 4)   {
                 if (ent.isCatching || ent.team !== this.team)   {
-                    console.log("HIT!!!!");
+                //    console.log("HIT!!!!");
                     if (this.prevY < this.y && (this.y + this.height) > ent.y && this.prevY + this.height <= ent.y)  {
                         this.speed -= 100;
                         this.ySpeed = -(this.ySpeed/1.5); //Reverse ySpeed on bounce and reduce magnitude.

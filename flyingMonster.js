@@ -53,15 +53,19 @@ FlyingMonster.prototype.update = function() {
 
         if (ent != this && (ent instanceof Wall || ent instanceof FlyingMonster) && this.boundingBox.hasCollided(ent.boundingBox)) {
             if (this.boundingBox.collideLeft(ent.boundingBox)) {
+                console.log("LEFT");
                 this.xSpeed = -this.xSpeed;
                 this.x = ent.boundingBox.x + ent.boundingBox.width;
             } else if (this.boundingBox.collideRight(ent.boundingBox)) {
+                console.log("RIGHT");
                 this.xSpeed = -this.xSpeed;
                 this.x = ent.boundingBox.x - this.boundingBox.width - 25;
             } else if (this.boundingBox.collideTop(ent.boundingBox)) {
+                console.log("TOP");
                 this.ySpeed = -this.ySpeed;
                 this.y = ent.boundingBox.y + ent.boundingBox.height;
             } else if (this.boundingBox.collideBottom(ent.boundingBox)) {
+                console.log("BOTTOM");
                 this.ySpeed = -this.ySpeed;
                 this.y = ent.boundingBox.y - this.boundingBox.height - 25;
             }
