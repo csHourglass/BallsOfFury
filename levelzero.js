@@ -117,6 +117,7 @@ LevelZero.prototype.update = function() {
         this.game.bgMusic.pause();
         this.game.bgMusic.currentTime = 0;
         this.game.optionSelect.play();
+        this.game.menuMusic = getRandomMenuMusic();
         this.game.menuMusic.volume = .25;
         this.game.menuMusic.play();
         this.sceneManager.loadLevel(nextScene);
