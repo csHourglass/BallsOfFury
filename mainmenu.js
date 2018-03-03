@@ -21,11 +21,6 @@ function MainMenu(sceneManager, game) {
 	
     this.entities.push(singleplayer, multiplayer, control, options); ////////////
 
-    for (var i = 0; i < this.game.controllers.length; i++) {
-        this.game.controllers[i].pause = false;
-        this.game.controllers[i].jump = false;
-    }
-
     Scene.call(this, this.game, this.entities);
 }
 
@@ -68,7 +63,7 @@ MainMenu.prototype.update = function()  {
         }
         if (c.jump || c.pause)  {
             if (this.selectedEntry === 0)
-                this.nextScene = new SinglePlayer(this.manager, this.game, c);
+                this.nextScene = undefined;
                 this.game.menuMusic.volume *= .5;
                 this.game.optionSelect.play();
                 this.game.menuMusic.volume /= .5;
@@ -76,6 +71,7 @@ MainMenu.prototype.update = function()  {
                 this.nextScene = new CharacterSelect(this.manager, this.game);
                 this.game.menuMusic.volume *= .5;
                 this.game.optionSelect.play();
+                this.game.chooseYourCharacter.play();
                 this.game.menuMusic.volume /= .5;
             if (this.selectedEntry === 2) 
 				this.nextScene = new ControlScreen(this.manager, this.game);

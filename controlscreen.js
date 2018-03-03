@@ -18,7 +18,7 @@
 	 this.controlAnimation = new Animation(ASSET_MANAGER.getAsset("./img/ps4-controller-layout.png"), 0, 0, width, height, 1, 1, true, false);
      
 	 
-	 this.entities.push(new Background(game, this.controlAnimation), 0, 0);
+	 this.entities.push(new Background(game, this.controlAnimation));
 	 
      //this.entities.push(new Camera(game, 0, 0, width, height));
      

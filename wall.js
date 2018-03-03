@@ -21,6 +21,8 @@ function Wall(game, x, y, width, height, animation)   {
     // The bounding box of the wall.  (TODO: Need circles on corners as well)
     this.boundingBox = new BoundingBox(this.x, this.y, this.width, this.height);
 
+    this.showBoxes = true;  // Shows the bounding box.  (this should be moved to game engine.)
+
     Entity.call(this, game, this.x, this.y, true, 1);
 }
 Wall.prototype = new Entity();
