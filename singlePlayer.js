@@ -20,11 +20,11 @@ function SinglePlayer(sceneManager, game, controller)    {
     this.enemies = [];
     this.bgAnimation = new Animation(ASSET_MANAGER.getAsset("./img/Stage1Background.png"), 0, 0, width, height, 1, 1, true, false);
 
-    var bg = new Background(game, this.bgAnimation);
+    var bg = new Background(game, this.bgAnimation, 0, 0);
     this.entities.push(bg);
 
     this.dummyClock = 0;  // count the time since last dummy spawned
-    this.spawnTime = 1; // the time till next dummy will spawn
+    this.spawnTime = 12; // the time till next dummy will spawn
     this.dummyCount = 1; // the number of dummies that have spawned in the game.
     this.balls = 1;  // number of balls in the level.  will increase as enemies are killed.
     this.killCount = 00;
