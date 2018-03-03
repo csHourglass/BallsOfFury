@@ -108,7 +108,7 @@ LevelZero.prototype.update = function() {
 
 LevelZero.prototype.spawn = function()  {
     var coord = new Coords();
-    coord.x = 100 + Math.random()*1700;
-    coord.y = 795;
+    coord.x = 100 + Math.random()*1600;
+    coord.y = 200;
     return coord;
 }
