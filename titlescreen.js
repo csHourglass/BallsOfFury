@@ -78,6 +78,7 @@ ASSET_MANAGER.downloadAll(function () {
 			game.startInput();
 			flag = 1;
 		}
+	}
  }
 
 TitleScreen.prototype = new Scene();
