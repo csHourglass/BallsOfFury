@@ -14,7 +14,7 @@ function Ball(game, player, x, y, chargingTime, id, scene) {
     this.width = 20;
     this.boundingBox = new BoundingBox(this.x, this.y, this.width, this.height);
     this.team = player.team;
-    this.speed = 1500;
+    this.speed = 2500;
     this.state = 0;
     this.scene = scene;
     this.indYTick = 0;
@@ -29,7 +29,7 @@ function Ball(game, player, x, y, chargingTime, id, scene) {
 		chargingTime = 3;
 	}
     this.chargingTime = chargingTime;
-    this.speed += chargingTime*150;
+    this.speed += chargingTime*500;
 
     //targetx is for mouse and aimx is for controller
     // if (this.player.controller.gamepad === null) {  // mouse
@@ -67,13 +67,13 @@ Ball.prototype.update = function() {
 
         if (this.x > width || this.x < 0) {
             this.xSpeed = -this.xSpeed;
-            this.speed -= 100;
+            this.speed -= 500;
         }
         if (this.y > height - 64 || this.y < 0)  {
             this.ySpeed = -this.ySpeed;
             this.speed -= 500;
         }
-        if (this.speed < 1500)   {
+        if (this.speed < 2000)   {
             this.state++;
         }
     }
@@ -104,26 +104,26 @@ Ball.prototype.update = function() {
                 console.log("BOUNCE!!!!");
                 if (this.prevY < this.y && (this.y + this.height) > ent.y && this.prevY + this.height <= ent.y)  {
                     this.y = ent.y - this.height;
-                    this.speed -= 100;
-                    this.ySpeed = -(this.ySpeed/1.5); //Reverse ySpeed on bounce and reduce magnitude.
+                    this.speed -= 500;
+                     this.ySpeed = -(this.ySpeed); //Reverse ySpeed on bounce and reduce magnitude.
                 }
                 else if (this.prevY > this.y && this.boundingBox.y < (ent.boundingBox.y + ent.boundingBox.height) && this.prevY >= (ent.boundingBox.y + ent.boundingBox.height))  {
 
                     this.y = ent.boundingBox.y + ent.boundingBox.height;
                     this.ySpeed = -this.ySpeed;
-                    this.speed -= 100;
+                    this.speed -= 500;
 
 
                 }
                 else if (this.prevX > this.x && (this.x < (ent.x + ent.width)))  {
                     this.x = ent.x + ent.width;
                     this.xSpeed = -this.xSpeed;
-                    this.speed -= 100;
+                    this.speed -= 500;
                 }
                 else if (this.prevX < this.x && (this.boundingBox.x + this.boundingBox.width) > ent.boundingBox.x)  {
                     this.x = ent.x - this.width;
                     this.xSpeed = -this.xSpeed;
-                    this.speed -= 100;
+                    this.speed -= 500;
                 }
             }
             if (ent.id === 4)   {

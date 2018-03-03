@@ -18,7 +18,7 @@
 	 this.controlAnimation = new Animation(ASSET_MANAGER.getAsset("./img/ps4-controller-layout.png"), 0, 0, width, height, 1, 1, true, false);
      
 	 
-	 this.entities.push(new Background(game, this.controlAnimation), 0, 0);
+	 this.entities.push(new Background(game, this.controlAnimation, 0, 0));
 	 
      //this.entities.push(new Camera(game, 0, 0, width, height));
      
@@ -52,11 +52,11 @@ ControlScreen.prototype.update = function() {
         } else if (this.game.controllers[i].right === true) {
 			//this.game.controller[i].right = false;
 			this.entities.pop();
-			this.entities.push(new Background(this.game, this.kbAnimation));
+			this.entities.push(new Background(this.game, this.kbAnimation, 0, 0));
 		} else if (this.game.controllers[i].left === true) {
 			//this.game.controller[i].left = false;
 			this.entities.pop();
-			this.entities.push(new Background(this.game, this.controlAnimation));
+			this.entities.push(new Background(this.game, this.controlAnimation, 0, 0));
 		}
     }
     Scene.prototype.update.call(this);
