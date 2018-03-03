@@ -66,6 +66,7 @@
     ASSET_MANAGER.queueDownload("./img/flyingMonster.png");
     ASSET_MANAGER.queueDownload("./img/charge.png");
     ASSET_MANAGER.queueDownload("./img/shield.png");
+    ASSET_MANAGER.queueDownload("./img/aura.png");
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("Powering up!");

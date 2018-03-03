@@ -27,6 +27,7 @@ function Player(game, x, y, lives, team, controller, scene)   {
     this.LBallFallStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 256, 896, 128, 128, 0.05, 2, false, false);
     this.LThrowAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 1024, 128, 128, 0.04, 3, false, false);
 	this.LChargeThrowAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 256, 1024, 128, 128, 0.001, 1, true, false);
+    this.LFullChargeAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 384, 1024, 128, 128, 1, 1, true, false);
 
     //// Left Animations ////
     this.RIdleAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 1152 + 0, 128, 128, 0.08, 8, true, false);
@@ -45,10 +46,12 @@ function Player(game, x, y, lives, team, controller, scene)   {
     this.RBallFallStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 256, 1152 + 896, 128, 128, 0.05, 2, false, false);
     this.RThrowAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 1152 + 1024, 128, 128, 0.04, 3, false, false);
 	this.RChargeThrowAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 256, 1152 + 1024, 128, 128, 0.001, 1, true, false);
+    this.RFullChargeAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 384, 1152 + 1024, 128, 128, 1, 1, true, false);
     // Boom.  Plays on death.
     this.explosion = new Animation(ASSET_MANAGER.getAsset("./img/explosion.png"), 0, 0, 256, 256, 0.01, 48, false, false);
     this.charge = new Animation(ASSET_MANAGER.getAsset("./img/charge.png"), 0, 0, 256, 256, 0.02, 8, true, false);
     this.shield = new Animation(ASSET_MANAGER.getAsset("./img/shield.png"), 0, 0, 192, 192, 0.25/20, 20, false, false);
+    this.aura = new Animation(ASSET_MANAGER.getAsset("./img/aura.png"), 0, 0, 204, 228, .05, 4, true, false);
     // Pointer above the player.
     this.pointer = ASSET_MANAGER.getAsset("./img/pointers.png");
 //    console.log(this.pointer);
@@ -498,9 +501,14 @@ Player.prototype.draw = function(ctx, tick)   {
         if (this.ballState === 2) {
             this.LThrowAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
-		else if (this.ballState === 3) {  // holding the ball
-            this.LChargeThrowAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-            this.charge.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale/2);
+        else if (this.ballState === 3) {  // holding the ball
+            if (this.chargingTime > 3)  {
+                this.LFullChargeAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                this.aura.drawFrame(tick, ctx, this.getX()-48, this.getY()-84, this.game.drawScale);
+            } else  {
+                this.LChargeThrowAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                this.charge.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale/2);
+            }
         }
         else if (this.ballState === 1)  {
             if (this.jumpingState === 1) {  //Drawing initial jump wind up animation
@@ -556,9 +564,14 @@ Player.prototype.draw = function(ctx, tick)   {
         if (this.ballState === 2) {
             this.RThrowAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
-		else if (this.ballState === 3) {  // holding the ball
-            this.RChargeThrowAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-            this.charge.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale/2);
+        else if (this.ballState === 3) {  // holding the ball
+            if (this.chargingTime > 3)  {
+                this.RFullChargeAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                this.aura.drawFrame(tick, ctx, this.getX()-48, this.getY()-84, this.game.drawScale);
+            } else  {
+                this.RChargeThrowAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                this.charge.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale/2);
+            }
         }
         else if (this.ballState === 1)  {
             if (this.jumpingState === 1) {  //Drawing initial jump wind up animation
