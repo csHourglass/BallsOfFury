@@ -43,14 +43,28 @@ function LevelZero(sceneManager, game, players, lives)    {
     //floor.push(new Animation(ASSET_MANAGER.getAsset("./img/TestPlatform.png"), 0, 0, 192, 162, 1, 1, true, false));
     var wall = [];
     wall.push(new Animation(ASSET_MANAGER.getAsset("./img/TestWall.png"), 0, 0, 48, 846, 1, 1, true, false));
+    var wall2 = [];
+    wall2.push(new Animation(ASSET_MANAGER.getAsset("./img/TestWall.png"), 0, 0, 48, 346, 1, 1, true, false));
     var ceiling = [];
     ceiling.push(new Animation(ASSET_MANAGER.getAsset("./img/TestCeiling.png"), 0, 0, 1920, 72, 1, 1, true, false));
-
+    var middlewall = new Wall(game, 936, 414, 48, 346, wall2);
+    middlewall.cornerBoxLeft.x = -100;
+    middlewall.cornerBoxRight.x = -100;
+    middlewall.cornerBoxLeft.y = -100;
+    middlewall.cornerBoxRight.y = -100;
     this.entities.push(new Wall(game, 0, 918, 1920, 162, floor));
     this.entities.push(new Wall(game, 21, 72, 48, 846, wall));
-	this.entities.push(new Wall(game, 1851, 72, 48, 846, wall));
+    this.entities.push(new Wall(game, 1851, 72, 48, 846, wall));
+    this.entities.push(middlewall);
     this.entities.push(new Wall(game, 0, 0, 1920, 72, ceiling));
-
+    this.entities.push(new Platform(game, 69, 750, 1920, 162, floor, .1));
+    this.entities.push(new Platform(game, (1920/2)-.2*(1920/2), 750, 1920, 162, floor, .2));
+    this.entities.push(new Platform(game, (1920/2)-.2*(1920/2), 390, 1920, 162, floor, .2));
+    this.entities.push(new Platform(game, 1660, 750, 1920, 162, floor, .1));
+    this.entities.push(new Platform(game, 430, 582, 1920, 162, floor, .1));
+    this.entities.push(new Platform(game, 1299, 582, 1920, 162, floor, .1));
+    this.entities.push(new Platform(game, 69, 414, 1920, 162, floor, .1));
+    this.entities.push(new Platform(game, 1660, 414, 1920, 162, floor, .1));
     this.entities.push(new Camera(game, 0, 0, 1920, 1080));
 	this.game.fight.play();
     this.game.bgMusic.play();

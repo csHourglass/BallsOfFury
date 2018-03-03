@@ -355,7 +355,7 @@ Player.prototype.handleCollision = function() {
     for (var i = 0; i < this.scene.entities.length; i++) {
         var ent = this.scene.entities[i];
         
-        if (ent.id === 1)   { // rigid body collision
+        if (ent.id === 1 || ent.id === 2)   { // rigid body collision
             // floor
             if (ent.canCollide && this.boundingBox.hasCollided(ent.boundingBox))  {
                 if (this.prevY < this.y && (this.y + this.height - 5) > ent.y && this.prevY + 30 + this.boundingBox.height <= ent.y)  {
@@ -366,7 +366,7 @@ Player.prototype.handleCollision = function() {
                     }
                 }
                 // ceiling
-                else if (this.prevY > this.y && this.boundingBox.y < (ent.boundingBox.y + ent.boundingBox.height) && this.prevY + 30 >= (ent.boundingBox.y + ent.boundingBox.height))  {
+                else if (ent.id === 1 && this.prevY > this.y && this.boundingBox.y < (ent.boundingBox.y + ent.boundingBox.height) && this.prevY + 30 >= (ent.boundingBox.y + ent.boundingBox.height))  {
 
                         this.y = ent.boundingBox.y + ent.boundingBox.height - 30;
                         this.yv = 0;
@@ -374,7 +374,7 @@ Player.prototype.handleCollision = function() {
 
                 }
                 // left wall
-                else if (this.prevX > this.x && (this.x < (ent.x + ent.width)))  {
+                else if (ent.id === 1 && this.prevX > this.x && (this.x < (ent.x + ent.width)))  {
                     if (this.x + 40 < ent.x + ent.width) {
                         this.x = ent.x + ent.width - 40;
                         this.xv = 0;
@@ -383,7 +383,7 @@ Player.prototype.handleCollision = function() {
                     }
                 }
                 // right wall
-                else if (this.prevX < this.x && (this.boundingBox.x + this.boundingBox.width) > ent.boundingBox.x)  {
+                else if (ent.id === 1 && this.prevX < this.x && (this.boundingBox.x + this.boundingBox.width) > ent.boundingBox.x)  {
                     if ((this.boundingBox.x + this.boundingBox.width) > ent.boundingBox.x) {
                         this.x = ent.boundingBox.x - this.boundingBox.width -40;
                         this.xv = 0;
