@@ -74,6 +74,15 @@ SinglePlayer.prototype.update = function() {
     if (this.dummyClock >= this.spawnTime && this.player.lives > 0) {
         //var newDummy = new Dummy(this.game, (1620 * Math.random())+150, 795, 2, this);
         var newEnemy = new FlyingMonster(this.game, (1500 * Math.random()) + 100, 300, 2, this);
+        for (var i = 0; i < this.entities.length; i++) {
+            var ent = this.entities[i];
+            if (ent instanceof Player || ent instanceof FlyingMonster) {
+                // prevent from spawning on top of eachother
+                while (newEnemy.boundingBox.hasCollided(ent.boundingBox)) {
+                    newEnemy = new FlyingMonster(this.game, (1500 * Math.random()) + 100, 300, 2, this);
+                }
+            }
+        }
         this.entities.push(newEnemy);
         this.enemies.push(newEnemy);
         this.dummyCount++;
@@ -89,7 +98,9 @@ SinglePlayer.prototype.update = function() {
             this.enemies.splice(i, 1);
             //spawn a new for every 10 enemies killed, max of 5 balls
             if (this.killCount % 10 === 0 && this.killCount < 40) {
-                this.entities.push(new Ball (this.game, this.player, (1620 * Math.random()) + 150, 795, 0, 5, this));
+                var ball = new Ball (this.game, this.player, (1620 * Math.random()) + 150, 795, 0, 5, this);
+                ball.state = 2;
+                this.entities.push(ball);
             }
             console.log("KILL COUNT ", this.killCount)
             this.scoreboard.updateScore(this.killCount);

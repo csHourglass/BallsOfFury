@@ -12,9 +12,8 @@ Flying Monster
 function FlyingMonster(game, x, y, team, scene) {
     this.x = x;
     this.y = y;
-    console.log(Math.random());
-    this.xSpeed = 3 * (Math.random() - 0.4);
-    this.ySpeed = 3 * (Math.random() - 0.4);
+    this.xSpeed = 10 * (Math.random() - 0.4);
+    this.ySpeed = 10 * (Math.random() - 0.4);
     this.width = 226;
     this.height = 177;
     this.Ranimation = new Animation(ASSET_MANAGER.getAsset("./img/flyingMonster.png"), 0, 95, this.width, this.height, 0.15, 4, true, false);
@@ -24,9 +23,9 @@ function FlyingMonster(game, x, y, team, scene) {
     this.team = team;
     this.isKilled = false;
 
-    this.boundingBox = new BoundingBox(this.x, this.y, 122, 146);
+    this.boundingBox = new BoundingBox(this.x + 10, this.y + 25, this.width - 25, this.height - 25);
     this.showBoxes = true;
-    this.radius = 400;
+
     this.scene = scene;
     Entity.call(this, game, this.x, this.y, true, 3);
 
@@ -36,20 +35,39 @@ FlyingMonster.prototype = new Entity();
 FlyingMonster.prototype.constructor = FlyingMonster;
 
 FlyingMonster.prototype.update = function() {
+
     // move
     this.x += this.xSpeed;
     this.y += this.ySpeed;
+    this.boundingBox = new BoundingBox(this.x + 25, this.y + 25, this.width - 25, this.height - 25);
+
     // check for collisions
     for (var i = 0; i < this.scene.entities.length; i++) {
         var ent = this.scene.entities[i];
 
         if (ent.id === 5 && ent.canCollide && ent.state === 0 && this.boundingBox.hasCollided(ent.boundingBox)) {
             this.isKilled = true;
-        } else if (ent !== this && ent.canCollide && this.boundingBox.hasCollided(ent.boundingBox)) {
-            this.xv = -1*(this.vx);
-            this.yv = -1 * this.yv;
+        } else if (ent.id === 4 && this.boundingBox.hasCollided(ent.boundingBox)) {
+            ent.isKilled = true;
+        }
+
+        if (ent != this && (ent instanceof Wall || ent instanceof FlyingMonster) && this.boundingBox.hasCollided(ent.boundingBox)) {
+            if (this.boundingBox.collideLeft(ent.boundingBox)) {
+                this.xSpeed = -this.xSpeed;
+                this.x = ent.boundingBox.x + ent.boundingBox.width;
+            } else if (this.boundingBox.collideRight(ent.boundingBox)) {
+                this.xSpeed = -this.xSpeed;
+                this.x = ent.boundingBox.x - this.boundingBox.width - 25;
+            } else if (this.boundingBox.collideTop(ent.boundingBox)) {
+                this.ySpeed = -this.ySpeed;
+                this.y = ent.boundingBox.y + ent.boundingBox.height;
+            } else if (this.boundingBox.collideBottom(ent.boundingBox)) {
+                this.ySpeed = -this.ySpeed;
+                this.y = ent.boundingBox.y - this.boundingBox.height - 25;
+            }
         }
     }
+
 
     if (this.explosion.isDone()) {
         this.explosion.elapsedTime = 0;

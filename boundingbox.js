@@ -27,6 +27,23 @@ BoundingBox.prototype.hasCollided = function (other) {
             this.top < other.bottom && this.bottom > other.top);
 }
 
+
+/**
+ * Collision for left, right, top and bottom.
+ */
+BoundingBox.prototype.collideLeft = function(other) {
+    return this.left < other.right && this.right > other.right;
+}
+BoundingBox.prototype.collideRight = function(other) {
+   return this.right > other.left && this.left < other.left;
+}
+BoundingBox.prototype.collideTop = function(other) {
+    return this.top < other.bottom && this.bottom > other.bottom;
+}
+BoundingBox.prototype.collideBottom = function(other) {
+    return this.bottom > other.top && this.top < other.top;
+}
+
 /**
  * draw() draws a colored rectangle representing the size of
  * the bounding box.
