@@ -6,7 +6,8 @@ var ASSET_MANAGER = new AssetManager();
 
 ASSET_MANAGER.queueDownload("./img/animbg.png");
 ASSET_MANAGER.queueDownload("./img/balls-of-fury.png");
-
+ASSET_MANAGER.queueDownload("./img/load.png");
+ASSET_MANAGER.queueDownload("./img/pressstart.png");
 
 //ASSET_MANAGER.queueDownload("./bgmusic.mp3");
 //ASSET_MANAGER.queueDownload("./fight.mp3");

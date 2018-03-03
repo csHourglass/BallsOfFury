@@ -18,7 +18,7 @@ function LevelZero(sceneManager, game, players)    {
     this.entities = [];
     this.bgAnimation = new Animation(ASSET_MANAGER.getAsset("./img/Stage1Background.png"), 0, 0, width, height, 1, 1, true, false);
 
-    var bg = new Background(game, this.bgAnimation);
+    var bg = new Background(game, this.bgAnimation, 0, 0);
     this.entities.push(bg);
 
     this.players = 0;
