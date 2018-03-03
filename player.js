@@ -504,6 +504,7 @@ Player.prototype.draw = function(ctx, tick)   {
             if (this.chargingTime > 3)  {
                 this.LFullChargeAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
                 this.aura.drawFrame(tick, ctx, this.getX()-48, this.getY()-84, this.game.drawScale);
+                //SUPER SAIYAN
             } else  {
                 this.LChargeThrowAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
                 this.charge.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale/2);
@@ -567,6 +568,7 @@ Player.prototype.draw = function(ctx, tick)   {
             if (this.chargingTime > 3)  {
                 this.RFullChargeAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
                 this.aura.drawFrame(tick, ctx, this.getX()-48, this.getY()-84, this.game.drawScale);
+                //SUPER SAIYAN
             } else  {
                 this.RChargeThrowAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
                 this.charge.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale/2);

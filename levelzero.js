@@ -29,12 +29,12 @@ function LevelZero(sceneManager, game, players, lives)    {
     //         this.players++;
     //     }
     // }
-    var that = this;
-    players.forEach(function(element)   {
-        var player = new Player(game, (1620 * Math.random()) + 150, 200, lives, element.team, element.controller, that);
-        that.entities.push(player);
-        that.players++;
-    });
+    // var that = this;
+    // players.forEach(function(element)   {
+    //     var player = new Player(game, (1620 * Math.random()) + 150, 200, lives, element.team, element.controller, that);
+    //     that.entities.push(player);
+    //     that.players++;
+    // });
 
 //	var dummy = new Dummy(game, 1500, 772, 2, this);
     //this.entities.push(dummy);  // for fun purposes
@@ -66,6 +66,12 @@ function LevelZero(sceneManager, game, players, lives)    {
     this.entities.push(new Platform(game, 69, 414, 1920, 162, floor, .1));
     this.entities.push(new Platform(game, 1660, 414, 1920, 162, floor, .1));
     this.entities.push(new Camera(game, 0, 0, 1920, 1080));
+    var that = this;
+    players.forEach(function(element)   {
+        var player = new Player(game, (1620 * Math.random()) + 150, 200, lives, element.team, element.controller, that);
+        that.entities.push(player);
+        that.players++;
+    });
 	this.game.fight.play();
     this.game.bgMusic.play();
 	//this.game.fight.volume = .1;
