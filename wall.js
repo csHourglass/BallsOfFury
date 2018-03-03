@@ -20,9 +20,8 @@ function Wall(game, x, y, width, height, animation)   {
 
     // The bounding box of the wall.  (TODO: Need circles on corners as well)
     this.boundingBox = new BoundingBox(this.x, this.y, this.width, this.height);
-    this.cornerBoxLeft = new BoundingBox(this.x - 48, this.y - 20, 20, 20);
+    this.cornerBoxLeft = new BoundingBox(this.x - 48 - 20, this.y - 20, 20, 20);
     this.cornerBoxRight = new BoundingBox(this.x + this.width + 48, this.y - 20, 20, 20);
-    this.x + 40, this.y + 30, this.width - 80, this.height - 35
 
     Entity.call(this, game, this.x, this.y, true, 1);
 }
