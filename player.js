@@ -6,7 +6,7 @@
  * @param {*} y : The starting y coordinate of our entity.
  * @param {*} team : The team number of this Player.
  */
-function Player(game, x, y, team, controller, scene)   {
+function Player(game, x, y, lives, team, controller, scene)   {
     // Loading animations...
     // NOTE: This needs to be moved out of Player like the Button class,
     //  otherwise we can never have a Player that uses different sprites!
@@ -80,7 +80,8 @@ function Player(game, x, y, team, controller, scene)   {
     this.showBoxes = false;  // show Bounding boxes for testing
     this.team = team;
     this.isHit = false;
-    this.lives = 2;
+    this.lives = lives;
+	this.lostLives = 0;
     this.isCatching = false;
     this.catchTimer = 0;
     this.deathTimer = 0;

@@ -1,11 +1,12 @@
 /**
  * This is the overlay UI of the game when you're in level zero scene to indicate the live meters for players
  */
-function GameHUD(level, game) {
+function GameHUD(level, maxLives, game) {
 	this.game = game;
 	this.isPlaying = true;
 	this.entities = [];
 	this.level = level;
+	this.maxLives = maxLives;
 	
 	this.players = 0;
 	// for (; this.players < game.controllers.length; this.players++)   {
@@ -46,14 +47,57 @@ GameHUD.prototype.update = function() {
 		console.log("Need more life meters! # of meters = ", this.players, " | # of players = ", this.level.players);
 		this.entities = [];
 		this.players = 0;
-		for (var i = 0; i < this.level.entities.length; i++)	{
+		for (var i = 0; i < this.level.entities.length; i++) {
 			var ent = this.level.entities[i];
 			if (ent.id === 4)	{
-				this.entities.push(new LiveMeter(this.game, ent, (this.players * 200) + 115, 985));
+				for (var drawn = 0, space = 0; drawn < ent.lives; drawn++, space+= 32) {
+					if (this.players < 2) {
+						this.entities.push(new LiveMeter(this.game, ent, (this.players % 2 * 200) + 130 + space, 985));
+					} else {
+						this.entities.push(new LiveMeter(this.game, ent, (this.players % 2 * 200) + 130 + space, 985 + 40));
+					}
+				}
+				console.log("NUMBER OF LIVES =", ent.lives);
 				this.players++;
 			}
 		}
 	}
+	/* for (var i = 0; i < this.level.entities.length; i++) {
+		var ent = this.level.entities[i];
+		if (ent.lives < this.maxLives) {
+			count = this.maxLives - ent.lives;
+			if (ent.id === 4) {
+				for (var j = 0; j < this.entities.length; j++) {
+					if (count === 0) {
+						break;
+					}
+					if (this.entities[j].team === ent.team && count !== 0) {
+						this.entities[j].removeFromWorld = true;
+						count--;
+						//this.entities.slice(j, 1);
+						console.log("NUMBER OF ENTITIES LEFT =", this.entities.length);
+					}
+				}
+			}
+		}
+		
+	} */
+	
+	for (var i = this.entities.length - 1; i >= 0; i--) {
+		var ent = this.entities[i];
+		if (ent.player.lives + ent.player.lostLives !== this.maxLives) {
+			ent.player.lostLives += 1;
+			ent.removeFromWorld = true;
+		}
+		/* if (count > ent.player.lives) {
+			ent.removeFromWorld = true;
+			count--;
+		}
+		if (count === 0) count = this.maxLives; */
+		//if (count === 0 && ent.player.team !== this.entities[i+1].player.team) removed = 0;
+		console.log("NUMBER OF ENTITIES LEFT =", this.entities.length);
+	}
+	
 	for (var i = 0; i < this.entities.length; i++)	{
 		this.entities[i].update();
 	}
