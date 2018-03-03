@@ -60,7 +60,7 @@ function Player(game, x, y, lives, team, controller, scene)   {
             3 - Player is beginning to fall. (Top of the jump arc)
             4 - Player is falling.
     */
-    this.jumpingState = 0;
+    this.jumpingState = 4;
     /*  runningState is used to determine if the Player is
         running or not.
             0 - Player is standing still.
@@ -354,7 +354,7 @@ Player.prototype.calculateRun = function() {
 Player.prototype.handleCollision = function() {
     for (var i = 0; i < this.scene.entities.length; i++) {
         var ent = this.scene.entities[i];
-        
+
         if (ent.id === 1 || ent.id === 2)   { // rigid body collision
             // floor
             if (ent.canCollide && this.boundingBox.hasCollided(ent.boundingBox))  {
