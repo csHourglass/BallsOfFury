@@ -77,12 +77,9 @@ LevelZero.prototype.update = function() {
 		this.sceneManager.loadLevel(nextScene);
 	} */
 	if (this.game.bgMusic != null && !this.isPlaying) {
-        console.log(this.game.pauseGame);
         this.game.bgMusic.pause();
 
     }else if (this.game.bgMusic != null && this.isPlaying) {
-        console.log(this.game.pauseGame);
-        console.log("weaaaas");
         this.game.bgMusic.play();
 	}
     Scene.prototype.update.call(this);
