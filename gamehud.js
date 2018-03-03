@@ -95,7 +95,7 @@ GameHUD.prototype.update = function() {
 		}
 		if (count === 0) count = this.maxLives; */
 		//if (count === 0 && ent.player.team !== this.entities[i+1].player.team) removed = 0;
-		console.log("NUMBER OF ENTITIES LEFT =", this.entities.length);
+		//console.log("NUMBER OF ENTITIES LEFT =", this.entities.length);
 	}
 	
 	for (var i = 0; i < this.entities.length; i++)	{
