@@ -73,9 +73,10 @@ Scene.prototype.draw = function(ctx)    {
         //ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
         //ctx.fillRect(0, 0, 1920, 1080);
 		this.pause.drawFrame(this.game.clockTick, ctx, 0, 0);
-        
+        console.log(this.game.bgMusic.pause);
 		//pause the music
-        //this.game.bgmusic.pause();
+        if (this.game.bgMusic != null && !this.game.pauseGame)
+        this.game.bgMusic.pause();
 
     }
 
@@ -83,6 +84,10 @@ Scene.prototype.draw = function(ctx)    {
 
     // If the scene is playing,
     if (this.isPlaying) {
+        console.log(this.game.bgMusic.paused);
+        if (this.game.bgMusic != null && this.game.pauseGame) {
+            this.game.bgMusic.play();
+        }
         //if the bgmusic is paused, then resume it.
         // if (this.game.bgMusic.paused)
         //     this.game.bgMusic.paused = false;
