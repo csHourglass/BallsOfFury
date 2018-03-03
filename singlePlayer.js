@@ -24,7 +24,7 @@ function SinglePlayer(sceneManager, game, controller)    {
     this.entities.push(bg);
 
     this.dummyClock = 0;  // count the time since last dummy spawned
-    this.spawnTime = 12; // the time till next dummy will spawn
+    this.spawnTime = 8; // the time till next dummy will spawn. will be set when dummy is killed
     this.dummyCount = 1; // the number of dummies that have spawned in the game.
     this.balls = 1;  // number of balls in the level.  will increase as enemies are killed.
     this.killCount = 00;
@@ -36,9 +36,8 @@ function SinglePlayer(sceneManager, game, controller)    {
     //     that.players++;
     // });
 
-	var dummy = new Dummy(game, 1200 + 150, 775, 2, this);
-    this.entities.push(dummy);
-    this.enemies.push(dummy);
+	this.dummy = new Dummy(game, 1200 + 150, 775, 2, this);
+    this.entities.push(this.dummy);
     var floor = [];
     floor.push(new Animation(ASSET_MANAGER.getAsset("./img/TestPlatform.png"), 0, 0, 1920, 162, 1, 1, true, false));
     floor.push(new Animation(ASSET_MANAGER.getAsset("./img/TestPlatform.png"), 0, 0, 192, 162, 1, 1, true, false));
@@ -69,9 +68,16 @@ SinglePlayer.prototype.constructor = SinglePlayer;
 
 SinglePlayer.prototype.update = function() {
 
-    if (this.isPlaying)
+    if (this.isPlaying) {
         this.dummyClock += this.game.clockTick;
+    }
+    if (this.dummy !== undefined && this.dummy.isKilled) {
+        this.dummy = undefined;
+        this.dummyClock = 7;
+    }
+
     if (this.dummyClock >= this.spawnTime && this.player.lives > 0) {
+        console.log(this.spawnTime);
         //var newDummy = new Dummy(this.game, (1620 * Math.random())+150, 795, 2, this);
         var newEnemy = new FlyingMonster(this.game, (1500 * Math.random()) + 100, 300, 2, this);
         for (var i = 0; i < this.entities.length; i++) {
@@ -87,7 +93,9 @@ SinglePlayer.prototype.update = function() {
         this.enemies.push(newEnemy);
         this.dummyCount++;
         this.dummyClock = 0
-        this.spawnTime = 1 + (this.spawnTime / 1.5);  // spawn next one a little sooner
+        this.spawnTime -= .5;  // spawn next one a little sooner
+        if (this.spawnTime < .5)
+            this.spawnTime = .5;
     }
 
     // check for killed dummies
@@ -101,7 +109,6 @@ SinglePlayer.prototype.update = function() {
                 ball.state = 2;
                 this.entities.push(ball);
             }
-            console.log("KILL COUNT ", this.killCount)
             this.scoreboard.updateScore(this.killCount);
         } else if (this.enemies[i].boundingBox.hasCollided(this.player.boundingBox)) {
             this.player.isHit = true;
