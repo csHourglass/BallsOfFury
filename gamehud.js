@@ -52,6 +52,7 @@ GameHUD.prototype.update = function() {
 			ent.player.lostLives += 1;
 			ent.removeFromWorld = true;
 		}
+	}
 	
 	for (var i = 0; i < this.entities.length; i++)	{
 		this.entities[i].update();

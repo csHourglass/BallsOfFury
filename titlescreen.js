@@ -19,6 +19,7 @@
      this.entities.push(new Camera(game, 0, 0, width, height));
      Scene.call(this, game, this.entities);
 
+
     var load = new Background(game, this.loadAnimation, width/2-256/2, height/2 + 200);
     this.entities.push(new Background(game, this.bgAnimation, 0, 0));
 	this.entities.push(new Background(game, this.titleAnimation, 0, 0));
@@ -76,6 +77,7 @@ ASSET_MANAGER.downloadAll(function () {
     load.removeFromWorld = true;
     this.entities.push(new Background(game, this.startAnimation, width/2 - 828/2, height/4));
     game.startInput();
+
  }
 
 TitleScreen.prototype = new Scene();
