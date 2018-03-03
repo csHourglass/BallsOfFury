@@ -413,8 +413,11 @@ Player.prototype.handleCollision = function() {
                     ent.removeFromWorld = true;
                     this.ballState = 1;  // pickup ball
                     // this.isCatching = false;
+                    //catching noise
+                    this.game.catchSound.play();
                     this.catchTimer = 0;
                 } else if (this.isCatching || this.armorlock) {
+                    this.game.hitSound.play();
                     ent.speed += 1000;
                     ent.team = this.team;
                 } else if (ent.team !== this.team && this.isHit === false) {
