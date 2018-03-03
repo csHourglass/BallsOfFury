@@ -101,9 +101,9 @@ GameEngine.prototype.init = function (ctx, sceneManager) {
 	this.surfaceHeight = this.ctx.canvas.height;
 
 	this.controllers.push(new Controller(null));  //Adding keyboard controller
-    this.startInput();
     this.timer = new Timer();
 	this.sceneManager = sceneManager;
+	// this.startInput();
     console.log('game initialized');
 }
 

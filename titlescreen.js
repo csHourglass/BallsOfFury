@@ -14,8 +14,13 @@
     this.entities = [];
     this.bgAnimation = new Animation(ASSET_MANAGER.getAsset("./img/animbg.png"), 0, 0, width, height, .25, 8, true, false);
 	this.titleAnimation = new Animation(ASSET_MANAGER.getAsset("./img/balls-of-fury.png"), 0, 0, width, height, 1, 1, true, false);
-    this.entities.push(new Background(game, this.bgAnimation));
-	this.entities.push(new Background(game, this.titleAnimation));
+    this.loadAnimation = new Animation(ASSET_MANAGER.getAsset("./img/load.png"), 0, 0, 256, 256, .15, 8, true, false);
+    this.startAnimation = new Animation(ASSET_MANAGER.getAsset("./img/pressstart.png"), 0, 0, 828, 822, .75, 4, true, false);
+
+    var load = new Background(game, this.loadAnimation, width/2-256/2, height/2 + 200);
+    this.entities.push(new Background(game, this.bgAnimation, 0, 0));
+	this.entities.push(new Background(game, this.titleAnimation, 0, 0));
+    this.entities.push(load);
     this.entities.push(new Camera(game, 0, 0, width, height));
     ASSET_MANAGER.queueDownload("./img/bg20.png");
     ASSET_MANAGER.queueDownload("./img/bof.png");
@@ -56,6 +61,9 @@
     ASSET_MANAGER.queueDownload("./img/pause-menu.png");
     ASSET_MANAGER.queueDownload("./img/pointers.png");
     ASSET_MANAGER.queueDownload("./img/flyingMonster.png");
+    game.startInput();
+    load.removeFromWorld = true;
+    this.entities.push(new Background(game, this.startAnimation, width/2 - 828/2, height/4));
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("Powering up!");
