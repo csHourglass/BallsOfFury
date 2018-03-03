@@ -74,6 +74,7 @@ ASSET_MANAGER.downloadAll(function () {
     this.entities.push(new Background(game, this.startAnimation, width/2 - 828/2, height/4));
 	var flag = 0;
     while (flag == 0) {
+		console.log(ASSET_MANAGER.cache.length);
 		if (ASSET_MANAGER.cache.length > 10) {
 			game.startInput();
 			flag = 1;
