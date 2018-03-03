@@ -73,19 +73,12 @@ Scene.prototype.draw = function(ctx)    {
         //ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
         //ctx.fillRect(0, 0, 1920, 1080);
 		this.pause.drawFrame(this.game.clockTick, ctx, 0, 0);
-        
-		//pause the music
-        //this.game.bgmusic.pause();
-
     }
 
     //draw our paused screen here possibly
 
     // If the scene is playing,
     if (this.isPlaying) {
-        //if the bgmusic is paused, then resume it.
-        // if (this.game.bgMusic.paused)
-        //     this.game.bgMusic.paused = false;
         //change clockTick  to the clock tick on the game engine.
         clockTick = this.game.clockTick;
     }

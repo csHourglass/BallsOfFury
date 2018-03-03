@@ -64,14 +64,16 @@
     ASSET_MANAGER.queueDownload("./img/pointers.png");
     ASSET_MANAGER.queueDownload("./img/itemindicator.png");
     ASSET_MANAGER.queueDownload("./img/flyingMonster.png");
-    game.startInput();
-    load.removeFromWorld = true;
-    this.entities.push(new Background(game, this.startAnimation, width/2 - 828/2, height/4));
+    ASSET_MANAGER.queueDownload("./img/charge.png");
+    ASSET_MANAGER.queueDownload("./img/shield.png");
 
 ASSET_MANAGER.downloadAll(function () {
     console.log("Powering up!");
 });
-     Scene.call(this, game, this.entities);
+    Scene.call(this, game, this.entities);
+    load.removeFromWorld = true;
+    this.entities.push(new Background(game, this.startAnimation, width/2 - 828/2, height/4));
+    game.startInput();
  }
 
 TitleScreen.prototype = new Scene();

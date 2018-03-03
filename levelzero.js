@@ -52,6 +52,7 @@ function LevelZero(sceneManager, game, players)    {
 
     this.entities.push(new Camera(game, 0, 0, 1920, 1080));
 	this.game.fight.play();
+    this.game.bgMusic.play();
 	//this.game.fight.volume = .1;
     //var fakeplayer = new Player(game, 100, 795, 99, new Controller(), this);
     // fakeplayer.armorlock = true;
@@ -75,7 +76,12 @@ LevelZero.prototype.update = function() {
 		var nextScene = new ControlScreen(this.sceneManager, this.game, this);
 		this.sceneManager.loadLevel(nextScene);
 	} */
-		
+	if (this.game.bgMusic != null && !this.isPlaying) {
+        this.game.bgMusic.pause();
+
+    }else if (this.game.bgMusic != null && this.isPlaying) {
+        this.game.bgMusic.play();
+	}
     Scene.prototype.update.call(this);
 }
 
