@@ -489,7 +489,6 @@ GameEngine.prototype.startInput = function () {
 
 	//stick_button_left - Left Analog Stick (XBOX/PS3/PS4)
 	this.gamepad.on('hold', 'stick_button_left', e => {
-
 		console.log(`player ${e.player} holding ${e.button}!`);
 	});
 
