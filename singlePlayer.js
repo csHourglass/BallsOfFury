@@ -28,7 +28,7 @@ function SinglePlayer(sceneManager, game, controller)    {
     this.dummyCount = 1; // the number of dummies that have spawned in the game.
     this.balls = 1;  // number of balls in the level.  will increase as enemies are killed.
     this.killCount = 00;
-    this.scoreboard = new Scoreboard(this.game, 100 , height - 50); // to display killCount
+    this.scoreboard = new Scoreboard(this.game, 100 , height - 50, 0); // to display killCount
     // var that = this;
     // players.forEach(function(element)   {
     this.player = new Player(game, 200, 795, 1, controller, this);
@@ -88,7 +88,6 @@ SinglePlayer.prototype.update = function() {
         this.dummyCount++;
         this.dummyClock = 0
         this.spawnTime = 1 + (this.spawnTime / 1.5);  // spawn next one a little sooner
-
     }
 
     // check for killed dummies
@@ -98,7 +97,7 @@ SinglePlayer.prototype.update = function() {
             this.enemies.splice(i, 1);
             //spawn a new for every 10 enemies killed, max of 5 balls
             if (this.killCount % 10 === 0 && this.killCount < 40) {
-                var ball = new Ball (this.game, this.player, (1620 * Math.random()) + 150, 795, 0, 5, this);
+                var ball = new Ball (this.game, this.player, (1620 * Math.random()) + 150, 898, 0, 5, this);
                 ball.state = 2;
                 this.entities.push(ball);
             }
@@ -112,7 +111,12 @@ SinglePlayer.prototype.update = function() {
             /********************************
              should display game over here
             ********************************/
+
             this.scoreboard.gameOver = true;
+            this.entities.pop(this.scoreboard);
+            this.scoreboard = new Scoreboard(this.game, 0, 0, this.killCount);
+            this.scoreboard.gameOver = true;
+            this.entities.push(this.scoreboard);
             this.isPlaying = false;
         }
     }
@@ -138,10 +142,10 @@ SinglePlayer.prototype.spawn = function()  {
 /*************************************************
  Scoreboard to display kill count
  ***********************************************/
-function Scoreboard(game, x, y) {
+function Scoreboard(game, x, y, score) {
      this.x = x;
      this.y = y;
-     this.score = 0;
+     this.score = score;
      this.text = "Kills: " + this.score;
      this.color = "red";
      this.gameOver = false;
@@ -173,6 +177,7 @@ Scoreboard.prototype.constructor = Scoreboard;
          ctx.fillStyle = "yellow";
          ctx.font = "30pt Impact";
          ctx.fillText("Press Start to Return to Menu", this.x - 250, this.y + 200);
+         ctx.fillStyle = "black";  // idk why
      } else {
          // display kill count
          ctx.strokeStyle = "black";

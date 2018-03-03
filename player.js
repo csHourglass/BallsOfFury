@@ -50,7 +50,7 @@ function Player(game, x, y, team, controller, scene)   {
 
     // Pointer above the player.
     this.pointer = ASSET_MANAGER.getAsset("./img/pointers.png");
-    console.log(this.pointer);
+//    console.log(this.pointer);
     /*  jumpingState is used to determine if the Player is
         jumping or not.
             0 - Player is on the ground.
@@ -182,7 +182,7 @@ Player.prototype.calculateJump = function() {
             this.LFallStartAnimation.elapsedTime + this.game.clockTick >= this.LFallStartAnimation.totalTime ||
             this.RBallFallStartAnimation.elapsedTime + this.game.clockTick >= this.RBallFallStartAnimation.totalTime ||
             this.LBallFallStartAnimation.elapsedTime + this.game.clockTick >= this.LBallFallStartAnimation.totalTime) {   //hard coded value of 0.2 from LJumpStartAnimation's animation time
-            
+
             this.RFallStartAnimation.elapsedTime = 0;
             this.LFallStartAnimation.elapsedTime = 0;
             this.RBallFallStartAnimation.elapsedTime = 0;
@@ -285,7 +285,7 @@ Player.prototype.calculateRun = function() {
 
  	//if we press mouse down, begin charging stopwatch.
  	if (this.ballState === 1 && this.controller.throw) {
-         console.log("ball state is 1");
+//         console.log("ball state is 1");
          this.mouseUp = false;
          this.triggerUp = false;
          this.ballState = 2;
@@ -302,7 +302,7 @@ Player.prototype.calculateRun = function() {
      }
 
  	if (this.ballState === 3) {
-         console.log(this.chargingTime);
+//         console.log(this.chargingTime);
          //increment the total charging time by the game's clock tick.
  		this.chargingTime += this.game.clockTick;
  		if (!this.controller.throw) {
