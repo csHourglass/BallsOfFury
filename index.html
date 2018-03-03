@@ -16,19 +16,7 @@
     ::-webkit-scrollbar-thumb {
         background: #FF0000;
     }
-	#loading {
-        display: block;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 100;
-        width: 100vw;
-        height: 100vh;
-        background-color: rgba(192, 192, 192, 0.5);
-        background-image: url("http://i.stack.imgur.com/MnyxU.gif");
-        background-repeat: no-repeat;
-        background-position: center;
-    }
+
 	</style>
 
     <title>Balls of Fury</title>
@@ -56,31 +44,10 @@
 	<script type="text/javascript" src="./livemeter.js"></script>
 	<script type="text/javascript" src="./gamehud.js"></script>
 	<script type="text/javascript" src="./controlscreen.js"></script>
-	<div id="page">
+	<div>
 		<body>
-			<canvas id="gameWorld" tabindex="1" width="1920" height="1080" style="border: 1px solid brown; background: lightskyblue"></canvas>
+			<canvas id="gameWorld" tabindex="1" width="1920" height="1080" style="border: 1px solid brown; background: white"></canvas>
 		</body>
-	<script>
-		function onReady(callback) {
-			var intervalID = window.setInterval(checkReady, 10);
-
-		function checkReady() {
-			if (document.getElementsByTagName('body')[0] !== undefined) {
-				window.clearInterval(intervalID);
-				callback.call(this);
-			}
-		}
-		}
-
-		function show(id, value) {
-			document.getElementById(id).style.display = value ? 'block' : 'none';
-		}
-
-		onReady(function () {
-			show('page', true);
-			show('loading', false);
-		});
-	</script>
 	</div>
 	<div id="loading"></div>
 </html>

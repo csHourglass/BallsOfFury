@@ -17,7 +17,7 @@ function CharacterSelect(sceneManager, game) {
     this.pausable = false;
     this.controllersActive = 0;
     this.bgAnimation = new Animation(ASSET_MANAGER.getAsset("./img/playerselect.png"), 0, 0, width, height, 1, 1, true, false);
-    this.entities.push(new Background(game, this.bgAnimation));
+    this.entities.push(new Background(game, this.bgAnimation, 0, 0));
     this.menu = [];
 
     var defaultPlayer = new Portrait(this.game, "./img/playerportrait.png", this, this.nextX(), this.nextY(), 96, 128);

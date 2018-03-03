@@ -3,7 +3,7 @@ function Ball(game, player, x, y, chargingTime, id, scene) {
 
     this.idleAnimation = new Animation(ASSET_MANAGER.getAsset("./img/ball.png"), 0, 0, 20, 20, .5, 1, true, false);  // this might be dumb cause it isnt moving
     this.flyingAnimation = new Animation(ASSET_MANAGER.getAsset("./img/ball.png"), 0, 0, 20, 20, .3, 4, true, false);
-
+    this.indicator = ASSET_MANAGER.getAsset("./img/itemindicator.png");
     this.ctx = game.ctx;
     this.player = player;
     this.x = x;
@@ -17,6 +17,7 @@ function Ball(game, player, x, y, chargingTime, id, scene) {
     this.speed = 1500;
     this.state = 0;
     this.scene = scene;
+    this.indYTick = 0;
 
 
 	//minimum charge time required for a boost to xspeed and yspeed is 1.
@@ -52,6 +53,11 @@ function Ball(game, player, x, y, chargingTime, id, scene) {
 
 Ball.prototype = new Entity();
 Ball.prototype.constructor = Ball;
+
+Ball.prototype.getIndCoord = function() {
+    this.indYTick += this.game.clockTick *5;
+    return this.y - 40 - (10 * Math.cos(this.indYTick));
+}
 
 Ball.prototype.update = function() {
 //console.log(this.team);
@@ -159,9 +165,11 @@ Ball.prototype.draw = function(ctx, tick) {
     if (this.showBoxes) {
         this.boundingBox.draw(ctx);
     }
-    if (this.state === 0)   {
+    if (this.state >= 0)   {
         ctx.beginPath();
-        if (this.team === 0)
+        if (this.state > 0)
+            ctx.fillStyle = "black";
+        else if (this.team === 0)
             ctx.fillStyle = "red";
         else if (this.team === 1)
             ctx.fillStyle = "blue";
@@ -170,17 +178,20 @@ Ball.prototype.draw = function(ctx, tick) {
         else if (this.team === 3)
             ctx.fillStyle = "yellow";
         else
-            ctx.fillStyle = "white";
+            ctx.fillStyle = "black";
 
         ctx.arc(this.x+10, this.y+10, 15, 0, Math.PI * 2, false);
         ctx.fill();
         ctx.closePath();
     }
-    if (this.state === 2)   {
+    if (this.state !== 0)   {
         this.idleAnimation.drawFrame(tick, this.ctx, this.x, this.y);
+        if (this.state === 2)
+            ctx.drawImage(this.indicator, 0, 0, 128, 65, this.x - 10, this.getIndCoord(), 40, 20);
     }
     else {
         this.flyingAnimation.drawFrame(tick, this.ctx, this.x, this.y);
+
     }
     Entity.prototype.draw.call(this);
 }
