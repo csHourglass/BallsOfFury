@@ -47,7 +47,8 @@ function Player(game, x, y, team, controller, scene)   {
 	this.RChargeThrowAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 256, 1152 + 1024, 128, 128, 0.001, 1, true, false);
     // Boom.  Plays on death.
     this.explosion = new Animation(ASSET_MANAGER.getAsset("./img/explosion.png"), 0, 0, 256, 256, 0.01, 48, false, false);
-
+    this.charge = new Animation(ASSET_MANAGER.getAsset("./img/charge.png"), 0, 0, 256, 256, 0.02, 8, true, false);
+    this.shield = new Animation(ASSET_MANAGER.getAsset("./img/shield.png"), 0, 0, 192, 192, 0.25/20, 20, false, false);
     // Pointer above the player.
     this.pointer = ASSET_MANAGER.getAsset("./img/pointers.png");
     console.log(this.pointer);
@@ -82,7 +83,8 @@ function Player(game, x, y, team, controller, scene)   {
     this.canJump = true; // Used to restrict jumping
     this.radius = 100; //wtf is this?
     this.ground = 400; //Obsolete with the inclusion of collision.
-	this.chargingTime = 0; //The amount of time the Player has charged the ball.
+    this.chargingTime = 0; //The amount of time the Player has charged the ball.
+    this.cooldown = 0;
 
     this.x = x;
     this.y = y;
@@ -96,6 +98,7 @@ function Player(game, x, y, team, controller, scene)   {
     this.isHit = false;
     this.lives = 2;
     this.isCatching = false;
+    this.canCatch = true;
     this.catchTimer = 0;
     this.deathTimer = 0;
 
@@ -275,13 +278,23 @@ Player.prototype.calculateRun = function() {
          console.log("CATCHING ", this.catchTimer);
 
      }
-     if (this.catchTimer > .5)   {
+     if (this.catchTimer > this.shield.totalTime)   {
+         this.shield.elapsedTime = this.catchTimer;
          this.isCatching = false;
          this.catchTimer = 0;
      }
-     if (!this.isCatching && !this.controller.parry) {
-         this.canCatch = true;
-     }
+    //  if (!this.isCatching && !this.controller.parry && this.cooldown === 0) {
+    //      this.canCatch = true;
+    //  }
+     if (this.shield.isDone())   {
+        this.cooldown += this.game.clockTick;
+        console.log("cooldown: ", this.cooldown);
+        if (this.cooldown > 1 && !this.controller.parry)  {
+            this.cooldown = 0;
+            this.canCatch = true;
+            this.shield.elapsedTime = 0;
+        }
+    }
 
  	//if we press mouse down, begin charging stopwatch.
  	if (this.ballState === 1 && this.controller.throw) {
@@ -385,13 +398,13 @@ Player.prototype.handleCollision = function() {
                     if (this.ballState === 0)   {
                         ent.removeFromWorld = true;
                         this.ballState = 1;  // pickup ball
-                        this.isCatching = false;
+                        // this.isCatching = false;
                         this.catchTimer = 0;
                     }
                 } else if (this.isCatching && this.ballState === 0) {
                     ent.removeFromWorld = true;
                     this.ballState = 1;  // pickup ball
-                    this.isCatching = false;
+                    // this.isCatching = false;
                     this.catchTimer = 0;
                 } else if (this.isCatching || this.armorlock) {
                     ent.speed += 1000;
@@ -447,6 +460,7 @@ Player.prototype.update = function ()   {
             }
         }
     }
+
     this.prevX = this.x;
     this.prevY = this.y;
     this.boundingBox = new BoundingBox(this.x + 40, this.y + 30, this.width - 80, this.height - 35);
@@ -458,6 +472,9 @@ Player.prototype.draw = function(ctx, tick)   {
     ////////// bounding box ////////////
     if (this.showBoxes) {
         this.boundingBox.draw(ctx);
+    }
+    if (this.isCatching)    {
+        this.shield.drawFrame(tick, ctx, this.getX() -34, this.getY(), this.game.drawScale);
     }
     /////////////// explosion animation /////////////
     if (this.isHit) {
@@ -471,6 +488,7 @@ Player.prototype.draw = function(ctx, tick)   {
         }
 		else if (this.ballState === 3) {  // holding the ball
             this.LChargeThrowAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            this.charge.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale/2);
         }
         else if (this.ballState === 1)  {
             if (this.jumpingState === 1) {  //Drawing initial jump wind up animation
@@ -528,6 +546,7 @@ Player.prototype.draw = function(ctx, tick)   {
         }
 		else if (this.ballState === 3) {  // holding the ball
             this.RChargeThrowAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            this.charge.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale/2);
         }
         else if (this.ballState === 1)  {
             if (this.jumpingState === 1) {  //Drawing initial jump wind up animation
