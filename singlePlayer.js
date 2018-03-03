@@ -31,7 +31,8 @@ function SinglePlayer(sceneManager, game, controller)    {
     this.scoreboard = new Scoreboard(this.game, 100 , height - 50, 0); // to display killCount
     // var that = this;
     // players.forEach(function(element)   {
-    this.player = new Player(game, 200, 795, 1, controller, this);
+    this.player = new Player(game, 200, 795, 4 ,1, controller, this);
+        
     this.entities.push(this.player);
     //     that.players++;
     // });

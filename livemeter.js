@@ -1,6 +1,9 @@
 function LiveMeter(game, player, x, y) {
 	this.FullLiveAnimation = new Animation(ASSET_MANAGER.getAsset("./img/fulllive.png"), 0, 0, 300, 300, 1, 1, true, false);
-	this.HalfLiveAnimation = new Animation(ASSET_MANAGER.getAsset("./img/halflive.png"), 0, 0, 300, 300, 1, 1, true, false);
+	this.FullLiveAnimation1 = new Animation(ASSET_MANAGER.getAsset("./img/fulllive1.png"), 0, 0, 300, 300, 1, 1, true, false);
+	this.FullLiveAnimation2 = new Animation(ASSET_MANAGER.getAsset("./img/fulllive2.png"), 0, 0, 300, 300, 1, 1, true, false);
+	this.FullLiveAnimation3 = new Animation(ASSET_MANAGER.getAsset("./img/fulllive3.png"), 0, 0, 300, 300, 1, 1, true, false); 
+	/* this.HalfLiveAnimation = new Animation(ASSET_MANAGER.getAsset("./img/halflive.png"), 0, 0, 300, 300, 1, 1, true, false);
 	this.NoLiveAnimation = new Animation(ASSET_MANAGER.getAsset("./img/nolive.png"), 0, 0, 300, 300, 10, 1, true, false);
 	this.FullLiveAnimation1 = new Animation(ASSET_MANAGER.getAsset("./img/fulllive1.png"), 0, 0, 300, 300, 1, 1, true, false);
 	this.HalfLiveAnimation1 = new Animation(ASSET_MANAGER.getAsset("./img/halflive1.png"), 0, 0, 300, 300, 1, 1, true, false);
@@ -10,8 +13,8 @@ function LiveMeter(game, player, x, y) {
 	this.NoLiveAnimation2 = new Animation(ASSET_MANAGER.getAsset("./img/nolive2.png"), 0, 0, 300, 300, 10, 1, true, false);
 	this.FullLiveAnimation3 = new Animation(ASSET_MANAGER.getAsset("./img/fulllive3.png"), 0, 0, 300, 300, 1, 1, true, false);
 	this.HalfLiveAnimation3 = new Animation(ASSET_MANAGER.getAsset("./img/halflive3.png"), 0, 0, 300, 300, 1, 1, true, false);
-	this.NoLiveAnimation3 = new Animation(ASSET_MANAGER.getAsset("./img/nolive3.png"), 0, 0, 300, 300, 10, 1, true, false);
-	
+	this.NoLiveAnimation3 = new Animation(ASSET_MANAGER.getAsset("./img/nolive3.png"), 0, 0, 300, 300, 10, 1, true, false); */
+	 
 	this.currentstatus = 1;
 	this.player = player;
 	this.x = x;
@@ -41,37 +44,47 @@ LiveMeter.prototype.update = function() {
 }
 
 LiveMeter.prototype.draw = function(ctx, tick) {
-	if (this.currentstatus === 2) {
+	/* if (this.currentstatus === 2) {
 		if (this.team === 1) {
-			this.FullLiveAnimation1.drawFrame(tick, ctx, this.x, this.y, 0.25);
+			this.FullLiveAnimation1.drawFrame(tick, ctx, this.x, this.y, 0.1);
 		} else if (this.team === 2) {
-			this.FullLiveAnimation2.drawFrame(tick, ctx, this.x, this.y, 0.25);
+			this.FullLiveAnimation2.drawFrame(tick, ctx, this.x, this.y, 0.1);
 		} else if (this.team === 3) {
-			this.FullLiveAnimation3.drawFrame(tick, ctx, this.x, this.y, 0.25);
+			this.FullLiveAnimation3.drawFrame(tick, ctx, this.x, this.y, 0.1);
 		} else {
-			this.FullLiveAnimation.drawFrame(tick, ctx, this.x, this.y, 0.25);
+			this.FullLiveAnimation.drawFrame(tick, ctx, this.x, this.y, 0.1);
 		}
 	} else if (this.currentstatus === 1) {
 		if (this.team === 1) {
-			this.HalfLiveAnimation1.drawFrame(tick, ctx, this.x, this.y, 0.25);
+			this.HalfLiveAnimation1.drawFrame(tick, ctx, this.x, this.y, 0.1);
 		} else if (this.team === 2) {
-			this.HalfLiveAnimation2.drawFrame(tick, ctx, this.x, this.y, 0.25);
+			this.HalfLiveAnimation2.drawFrame(tick, ctx, this.x, this.y, 0.1);
 		} else if (this.team === 3) {
-			this.HalfLiveAnimation3.drawFrame(tick, ctx, this.x, this.y, 0.25);
+			this.HalfLiveAnimation3.drawFrame(tick, ctx, this.x, this.y, 0.1);
 		} else {
-			this.HalfLiveAnimation.drawFrame(tick, ctx, this.x, this.y, 0.25);
+			this.HalfLiveAnimation.drawFrame(tick, ctx, this.x, this.y, 0.1);
 		}
 	} else if (this.currentstatus === 0) {
 		if (this.team === 1) {
-			this.NoLiveAnimation1.drawFrame(tick, ctx, this.x, this.y, 0.25);
+			this.NoLiveAnimation1.drawFrame(tick, ctx, this.x, this.y, 0.1);
 		} else if (this.team === 2) {
-			this.NoLiveAnimation2.drawFrame(tick, ctx, this.x, this.y, 0.25);
+			this.NoLiveAnimation2.drawFrame(tick, ctx, this.x, this.y, 0.1);
 		} else if (this.team === 3) {
-			this.NoLiveAnimation3.drawFrame(tick, ctx, this.x, this.y, 0.25);
+			this.NoLiveAnimation3.drawFrame(tick, ctx, this.x, this.y, 0.1);
 		} else {
-			this.NoLiveAnimation.drawFrame(tick, ctx, this.x, this.y, 0.25);
+			this.NoLiveAnimation.drawFrame(tick, ctx, this.x, this.y, 0.1);
 		}
+	} */
+	
+	if (this.team === 1) {
+		this.FullLiveAnimation1.drawFrame(tick, ctx, this.x, this.y, 0.1);
+	} else if (this.team === 2) {
+		this.FullLiveAnimation2.drawFrame(tick, ctx, this.x, this.y, 0.1);
+	} else if (this.team === 3) {
+		this.FullLiveAnimation3.drawFrame(tick, ctx, this.x, this.y, 0.1);
+	} else {
+		this.FullLiveAnimation.drawFrame(tick, ctx, this.x, this.y, 0.1);
 	}
-
+	
 	Entity.prototype.draw.call(this);
 }

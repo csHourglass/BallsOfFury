@@ -6,7 +6,7 @@
  * @param {*} y : The starting y coordinate of our entity.
  * @param {*} team : The team number of this Player.
  */
-function Player(game, x, y, team, controller, scene)   {
+function Player(game, x, y, lives, team, controller, scene)   {
     // Loading animations...
     // NOTE: This needs to be moved out of Player like the Button class,
     //  otherwise we can never have a Player that uses different sprites!
@@ -96,7 +96,8 @@ function Player(game, x, y, team, controller, scene)   {
     this.boundingBox = new BoundingBox(this.x + 40, this.y + 30, this.width - 80, this.height - 35);
     this.team = team;
     this.isHit = false;
-    this.lives = 2;
+    this.lives = lives;
+    this.lostLives = 0;
     this.isCatching = false;
     this.canCatch = true;
     this.catchTimer = 0;
@@ -353,11 +354,10 @@ Player.prototype.calculateRun = function() {
 Player.prototype.handleCollision = function() {
     for (var i = 0; i < this.scene.entities.length; i++) {
         var ent = this.scene.entities[i];
-
-        if (ent !== this && ent.canCollide && this.boundingBox.hasCollided(ent.boundingBox)) {
-            //console.log("derp, collision with ", ent.id);
-            if (ent.id === 1)   { // rigid body collision
-                // floor
+        
+        if (ent.id === 1)   { // rigid body collision
+            // floor
+            if (ent.canCollide && this.boundingBox.hasCollided(ent.boundingBox))  {
                 if (this.prevY < this.y && (this.y + this.height - 5) > ent.y && this.prevY + 30 + this.boundingBox.height <= ent.y)  {
                     if (this.y > ent.y - this.height + 5)   {
                         this.y = ent.y - this.height + 5;
@@ -392,6 +392,14 @@ Player.prototype.handleCollision = function() {
                     }
                 }
             }
+            else if (this.jumpingState === 0 && (this.boundingBox.hasCollided(ent.cornerBoxLeft) || this.boundingBox.hasCollided(ent.cornerBoxRight)))  {
+                this.jumpingState = 4;
+            }
+        }
+
+        else if (ent !== this && ent.canCollide && this.boundingBox.hasCollided(ent.boundingBox)) {
+            //console.log("derp, collision with ", ent.id);
+
             // ball
             if (ent.id === 5)   {
                 if (ent.state !== 0)    {
@@ -405,8 +413,11 @@ Player.prototype.handleCollision = function() {
                     ent.removeFromWorld = true;
                     this.ballState = 1;  // pickup ball
                     // this.isCatching = false;
+                    //catching noise
+                    this.game.catchSound.play();
                     this.catchTimer = 0;
                 } else if (this.isCatching || this.armorlock) {
+                    this.game.hitSound.play();
                     ent.speed += 1000;
                     ent.team = this.team;
                 } else if (ent.team !== this.team && this.isHit === false) {
