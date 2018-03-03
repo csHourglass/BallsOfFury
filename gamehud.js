@@ -35,9 +35,9 @@ GameHUD.prototype.update = function() {
 			if (ent.id === 4)	{
 				for (var drawn = 0, space = 0; drawn < ent.lives; drawn++, space+= 32) {
 					if (this.players < 2) {
-						this.entities.push(new LiveMeter(this.game, ent, (this.players % 2 * 200) + 130 + space, 985));
+						this.entities.push(new LiveMeter(this.game, ent, (this.players % 2 * 400) + 200 + space, 985));
 					} else {
-						this.entities.push(new LiveMeter(this.game, ent, (this.players % 2 * 200) + 130 + space, 985 + 40));
+						this.entities.push(new LiveMeter(this.game, ent, (this.players % 2 * 400) + 1180 + space, 985));
 					}
 				}
 				console.log("NUMBER OF LIVES =", ent.lives);

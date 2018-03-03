@@ -354,11 +354,10 @@ Player.prototype.calculateRun = function() {
 Player.prototype.handleCollision = function() {
     for (var i = 0; i < this.scene.entities.length; i++) {
         var ent = this.scene.entities[i];
-
-        if (ent !== this && ent.canCollide && this.boundingBox.hasCollided(ent.boundingBox)) {
-            //console.log("derp, collision with ", ent.id);
-            if (ent.id === 1)   { // rigid body collision
-                // floor
+        
+        if (ent.id === 1)   { // rigid body collision
+            // floor
+            if (ent.canCollide && this.boundingBox.hasCollided(ent.boundingBox))  {
                 if (this.prevY < this.y && (this.y + this.height - 5) > ent.y && this.prevY + 30 + this.boundingBox.height <= ent.y)  {
                     if (this.y > ent.y - this.height + 5)   {
                         this.y = ent.y - this.height + 5;
@@ -393,6 +392,14 @@ Player.prototype.handleCollision = function() {
                     }
                 }
             }
+            else if (this.jumpingState === 0 && (this.boundingBox.hasCollided(ent.cornerBoxLeft) || this.boundingBox.hasCollided(ent.cornerBoxRight)))  {
+                this.jumpingState = 4;
+            }
+        }
+
+        else if (ent !== this && ent.canCollide && this.boundingBox.hasCollided(ent.boundingBox)) {
+            //console.log("derp, collision with ", ent.id);
+
             // ball
             if (ent.id === 5)   {
                 if (ent.state !== 0)    {
