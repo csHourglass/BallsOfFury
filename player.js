@@ -333,7 +333,7 @@ Player.prototype.calculateRun = function() {
      //reset the ball's current state
      this.ballState = 0; // change to 0 to remove ball from player
      //play the sound of the throw animation
-     this.game.throwSound.volume = .25;
+     this.game.throwSound.volume = 1;
      this.game.throwSound.play();
 
      //reset throw animation's elapsed time because we've finished the throw animation.
