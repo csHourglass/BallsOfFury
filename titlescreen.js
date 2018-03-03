@@ -72,7 +72,12 @@ ASSET_MANAGER.downloadAll(function () {
     Scene.call(this, game, this.entities);
     load.removeFromWorld = true;
     this.entities.push(new Background(game, this.startAnimation, width/2 - 828/2, height/4));
-    game.startInput();
+	var flag = 0;
+    while (flag == 0) {
+		if (ASSET_MANAGER.cache.length > 10) {
+			game.startInput();
+			flag = 1;
+		}
  }
 
 TitleScreen.prototype = new Scene();
