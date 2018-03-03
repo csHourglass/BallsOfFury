@@ -464,6 +464,7 @@ Player.prototype.update = function ()   {
                 this.deathTimer = 0;
                 this.explosion.elapsedTime = 0;
                 var spawnCoords = this.scene.spawn();
+                this.jumpingState = 4;
                 this.x = spawnCoords.x;
                 this.y = spawnCoords.y;
                 this.ballState = 1;
