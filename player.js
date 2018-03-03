@@ -105,6 +105,7 @@ function Player(game, x, y, lives, team, controller, scene)   {
     this.canCatch = true;
     this.catchTimer = 0;
     this.deathTimer = 0;
+    this.jumpheight = 150;
 
     //// Controls ////
     this.controller = controller;
@@ -181,7 +182,7 @@ Player.prototype.calculateJump = function() {
             this.RBallJumpAnimation.elapsedTime = 0;
             this.jumpingState++;
         }
-        this.yv -= 100;
+        this.yv -= 5000*this.game.clockTick;
 
     } else if (this.jumpingState === 3) {
         // jumpingState 3 is the transition from rising to falling.
@@ -196,11 +197,11 @@ Player.prototype.calculateJump = function() {
             this.LBallFallStartAnimation.elapsedTime = 0;
             this.jumpingState++;  //increment to next state for next update().
         }
-        this.yv -= 100;
+        this.yv -= 5000*this.game.clockTick;
 
     } else if (this.jumpingState === 4) {
         // jumpingState 4 is when the player is falling.
-        this.yv -= 100;
+        this.yv -= 5000*this.game.clockTick;
         // if (this.y > 400) {
         //     this.y = 400;
         //     this.LFallAnimation.elapsedTime = 0;
