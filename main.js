@@ -44,6 +44,7 @@ ASSET_MANAGER.queueDownload("./img/keyboard-layout.png");
 ASSET_MANAGER.queueDownload("./img/pause-menu.png");
 ASSET_MANAGER.queueDownload("./img/balls-of-fury.png");
 ASSET_MANAGER.queueDownload("./img/pointers.png");
+ASSET_MANAGER.queueDownload("./img/itemindicator.png");
 ASSET_MANAGER.queueDownload("./img/flyingMonster.png");
 
 

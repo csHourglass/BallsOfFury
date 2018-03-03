@@ -19,20 +19,32 @@ function Player(game, x, y, team, controller, scene)   {
     this.LFallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 512, 384, 128, 128, 1, 1, true, false);
     this.LFallStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 256, 384, 128, 128, 0.05, 2, false, false);
     this.LBallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"),0, 512, 128, 128, 0.08, 8, true, false);  // player has ball
-    this.LThrowAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 640, 128, 128, 0.04, 3, false, false);
-	this.LChargeThrowAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 256, 640, 128, 128, 0.001, 1, true, false);
+    this.LBallRunAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 384, 640, 128, 128, 0.10, 6, true, false);
+    this.LBallRunStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 640, 128, 128, 0.05, 3, false, false);
+    this.LBallJumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 640, 768, 128, 128, 1, 1, true, false);
+    this.LBallJumpStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 384, 768, 128, 128, 0.075, 1, false, false);
+    this.LBallFallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 512, 896, 128, 128, 1, 1, true, false);
+    this.LBallFallStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 256, 896, 128, 128, 0.05, 2, false, false);
+    this.LThrowAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 1024, 128, 128, 0.04, 3, false, false);
+	this.LChargeThrowAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 256, 1024, 128, 128, 0.001, 1, true, false);
 
     //// Left Animations ////
-    this.RIdleAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 768, 128, 128, 0.08, 8, true, false);
-    this.RRunAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 384, 896, 128, 128, 0.10, 6, true, false);
-    this.RRunStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 896, 128, 128, 0.05, 3, false, false);
-    this.RJumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 640, 1024, 128, 128, 1, 1, true, false);
-    this.RJumpStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 384, 1024, 128, 128, 0.075, 1, false, false);
-    this.RFallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 512, 1152, 128, 128, 1, 1, true, false);
-    this.RFallStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 256, 1152, 128, 128, 0.05, 2, false, false);
-    this.RBallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"),0, 1280, 128, 128, 0.08, 8, true, false);  // player has ball
-    this.RThrowAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 1408, 128, 128, 0.04, 3, false, false);
-	this.RChargeThrowAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 256, 1408, 128, 128, 0.001, 1, true, false);
+    this.RIdleAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 1152 + 0, 128, 128, 0.08, 8, true, false);
+    this.RRunAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 384, 1152 + 128, 128, 128, 0.10, 6, true, false);
+    this.RRunStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 1152 + 128, 128, 128, 0.05, 3, false, false);
+    this.RJumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 640, 1152 + 256, 128, 128, 1, 1, true, false);
+    this.RJumpStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 384, 1152 + 256, 128, 128, 0.075, 1, false, false);
+    this.RFallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 512, 1152 + 384, 128, 128, 1, 1, true, false);
+    this.RFallStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 256, 1152 + 384, 128, 128, 0.05, 2, false, false);
+    this.RBallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"),0, 1152 + 512, 128, 128, 0.08, 8, true, false);  // player has ball
+    this.RBallRunAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 384, 1152 + 640, 128, 128, 0.10, 6, true, false);
+    this.RBallRunStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 1152 + 640, 128, 128, 0.05, 3, false, false);
+    this.RBallJumpAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 640, 1152 + 768, 128, 128, 1, 1, true, false);
+    this.RBallJumpStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 384, 1152 + 768, 128, 128, 0.075, 1, false, false);
+    this.RBallFallAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 512, 1152 + 896, 128, 128, 1, 1, true, false);
+    this.RBallFallStartAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 256, 1152 + 896, 128, 128, 0.05, 2, false, false);
+    this.RThrowAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 0, 1152 + 1024, 128, 128, 0.04, 3, false, false);
+	this.RChargeThrowAnimation = new Animation(ASSET_MANAGER.getAsset("./img/player.png"), 256, 1152 + 1024, 128, 128, 0.001, 1, true, false);
     // Boom.  Plays on death.
     this.explosion = new Animation(ASSET_MANAGER.getAsset("./img/explosion.png"), 0, 0, 256, 256, 0.01, 48, false, false);
 
@@ -134,7 +146,7 @@ Player.prototype.resetBallState = function()    {
  * This function handles all Jumping functionality.
  */
 Player.prototype.calculateJump = function() {
-    if (this.controller.jump && this.canJump)    {
+    if (this.controller.jump && this.canJump && this.ballState < 2)    {
         this.jumpingState = 1;
         this.canJump = false;
     }
@@ -142,14 +154,14 @@ Player.prototype.calculateJump = function() {
     if (this.jumpingState === 0 && !this.controller.jump) this.canJump = true;
     if (this.jumpingState === 1) {
         // jumpingState 1 is for the initial jumping wind up animation.  The character is about to kick off the ground.
-        if (this.LJumpStartAnimation.elapsedTime + this.game.clockTick >= this.LJumpStartAnimation.totalTime) {   //hard coded value of 0.2 from LJumpStartAnimation's animation time
+        if (this.LJumpStartAnimation.elapsedTime + this.game.clockTick >= this.LJumpStartAnimation.totalTime ||
+            this.RJumpStartAnimation.elapsedTime + this.game.clockTick >= this.RJumpStartAnimation.totalTime ||
+            this.LBallJumpStartAnimation.elapsedTime + this.game.clockTick >= this.LBallJumpStartAnimation.totalTime ||
+            this.RBallJumpStartAnimation.elapsedTime + this.game.clockTick >= this.RBallJumpStartAnimation.totalTime) {   //hard coded value of 0.2 from LJumpStartAnimation's animation time
             this.LJumpStartAnimation.elapsedTime = 0;
             this.RJumpStartAnimation.elapsedTime = 0;
-            this.jumpingState++;  //increment to next state for next update().
-            this.yv = 1500;
-        } else if (this.RJumpStartAnimation.elapsedTime + this.game.clockTick >= this.LJumpStartAnimation.totalTime) {
-            this.RJumpStartAnimation.elapsedTime = 0;
-            this.LJumpStartAnimation.elapsedTime = 0;
+            this.RBallJumpStartAnimation.elapsedTime = 0;
+            this.LBallJumpStartAnimation.elapsedTime = 0;
             this.jumpingState++;  //increment to next state for next update().
             this.yv = 1500;
         }
@@ -158,20 +170,26 @@ Player.prototype.calculateJump = function() {
         if (this.yv < 100)  {
             this.LJumpAnimation.elapsedTime = 0;
             this.RJumpAnimation.elapsedTime = 0;
+            this.LBallJumpAnimation.elapsedTime = 0;
+            this.RBallJumpAnimation.elapsedTime = 0;
             this.jumpingState++;
         }
         this.yv -= 100;
 
     } else if (this.jumpingState === 3) {
         // jumpingState 3 is the transition from rising to falling.
-        if (this.RFallStartAnimation.elapsedTime + this.game.clockTick >= this.RFallStartAnimation.totalTime) {   //hard coded value of 0.2 from LJumpStartAnimation's animation time
+        if (this.RFallStartAnimation.elapsedTime + this.game.clockTick >= this.RFallStartAnimation.totalTime ||
+            this.LFallStartAnimation.elapsedTime + this.game.clockTick >= this.LFallStartAnimation.totalTime ||
+            this.RBallFallStartAnimation.elapsedTime + this.game.clockTick >= this.RBallFallStartAnimation.totalTime ||
+            this.LBallFallStartAnimation.elapsedTime + this.game.clockTick >= this.LBallFallStartAnimation.totalTime) {   //hard coded value of 0.2 from LJumpStartAnimation's animation time
+            
             this.RFallStartAnimation.elapsedTime = 0;
-            this.jumpingState++;  //increment to next state for next update().
-        } else if (this.LFallStartAnimation.elapsedTime + this.game.clockTick >= this.LFallStartAnimation.totalTime) {   //hard coded value of 0.2 from LJumpStartAnimation's animation time
             this.LFallStartAnimation.elapsedTime = 0;
-            this.jumpingState++;  //increment to next state for next update().)
-            this.yv -= 100;
+            this.RBallFallStartAnimation.elapsedTime = 0;
+            this.LBallFallStartAnimation.elapsedTime = 0;
+            this.jumpingState++;  //increment to next state for next update().
         }
+        this.yv -= 100;
 
     } else if (this.jumpingState === 4) {
         // jumpingState 4 is when the player is falling.
@@ -190,22 +208,22 @@ Player.prototype.calculateJump = function() {
  * This function handles all running functionality.
  */
 Player.prototype.calculateRun = function() {
-    if (this.controller.left) {
+    if (this.controller.left && this.ballState < 2) {
         this.facingLeft = true;
         this.moving = true;  //All this does is help with the runningState logic.
         this.xv = -10;
-    } else if (!this.controller.left && !this.controller.right) {
+    } else if ((!this.controller.left && !this.controller.right) || this.ballState > 1) {
         if (this.xv < 0) {
             this.xv += 1;
             this.moving = false;
         }
     }
 
-    if (this.controller.right) {
+    if (this.controller.right && this.ballState < 2) {
         this.facingLeft = false;
         this.xv = 10;
         this.moving = true;
-    } else if (!this.controller.right && !this.controller.left) {
+    } else if ((!this.controller.right && !this.controller.left) || this.ballState > 1) {
         if (this.xv > 0) {
             this.xv -= 1;
             this.moving = false;
@@ -216,15 +234,21 @@ Player.prototype.calculateRun = function() {
     if (this.moving && this.runningState === 0) {
         this.runningState = 1;
     } else if (this.moving && this.runningState === 1 &&
-        (this.LRunStartAnimation.elapsedTime + this.game.clockTick > this.LRunStartAnimation.totalTime ||
-            this.RRunStartAnimation.elapsedTime + this.game.clockTick > this.RRunStartAnimation.totalTime))    {
+        (this.LRunStartAnimation.elapsedTime + this.game.clockTick >= this.LRunStartAnimation.totalTime ||
+            this.RRunStartAnimation.elapsedTime + this.game.clockTick >= this.RRunStartAnimation.totalTime ||
+            this.LBallRunStartAnimation.elapsedTime + this.game.clockTick >= this.LBallRunStartAnimation.totalTime ||
+            this.RBallRunStartAnimation.elapsedTime + this.game.clockTick >= this.RBallRunStartAnimation.totalTime))    {
                 this.runningState = 2;
                 this.RRunStartAnimation.elapsedTime = 0;
                 this.LRunStartAnimation.elapsedTime = 0;
+                this.RBallRunStartAnimation.elapsedTime = 0;
+                this.LBallRunStartAnimation.elapsedTime = 0;
     }
     if (!this.moving)   {
         this.RRunAnimation.elapsedTime = 0;
         this.LRunAnimation.elapsedTime = 0;
+        this.RBallRunAnimation.elapsedTime = 0;
+        this.LBallRunAnimation.elapsedTime = 0;
         this.runningState = 0;
     }
 }
@@ -448,70 +472,110 @@ Player.prototype.draw = function(ctx, tick)   {
 		else if (this.ballState === 3) {  // holding the ball
             this.LChargeThrowAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
-        else if (this.jumpingState === 1) {  //Drawing initial jump wind up animation
-            this.LJumpStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+        else if (this.ballState === 1)  {
+            if (this.jumpingState === 1) {  //Drawing initial jump wind up animation
+                this.LBallJumpStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            }
+            else if (this.jumpingState === 2)   { //Drawing rising animation
+                this.LBallJumpAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            }
+            else if (this.jumpingState === 3)   { //Drawing transition from rising to falling
+                this.LBallFallStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            }
+            else if (this.jumpingState === 4)   { //Drawing falling animation
+                this.LBallFallAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            }
+            else if (this.runningState === 2) {
+                this.direction = this.x;
+                this.LBallRunAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            }
+            else if (this.runningState === 1)   {
+                this.LBallRunStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            }
+            else    {
+                this.LBallAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            }
         }
-        else if (this.jumpingState === 2)   { //Drawing rising animation
-            this.LJumpAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-        }
-        else if (this.jumpingState === 3)   { //Drawing transition from rising to falling
-            this.LFallStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-        }
-        else if (this.jumpingState === 4)   { //Drawing falling animation
-            this.LFallAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-        }
-        else if (this.runningState === 2) {
-            this.direction = this.x;
-            this.LRunAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-        }
-        else if (this.runningState === 1)   {
-            this.LRunStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-        }
-        else if (this.ballState === 0) {
-            this.LIdleAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-        }
-        else if (this.ballState === 1) {
-            this.LBallAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-        }
-        else {
-            this.LIdleAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+        else    {
+            if (this.jumpingState === 1) {  //Drawing initial jump wind up animation
+                this.LJumpStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            }
+            else if (this.jumpingState === 2)   { //Drawing rising animation
+                this.LJumpAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            }
+            else if (this.jumpingState === 3)   { //Drawing transition from rising to falling
+                this.LFallStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            }
+            else if (this.jumpingState === 4)   { //Drawing falling animation
+                this.LFallAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            }
+            else if (this.runningState === 2) {
+                this.direction = this.x;
+                this.LRunAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            }
+            else if (this.runningState === 1)   {
+                this.LRunStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            }
+            else    {
+                this.LIdleAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            }
         }
 /////////////// Left facing sprites ///////////////////
     } else {  // left facing sprites
-		//else if we're ready to throw, play throwing animation
-        if (this.ballState === 2) {  // winding up
+		//if we're ready to throw, play throwing animation
+        if (this.ballState === 2) {
             this.RThrowAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
 		else if (this.ballState === 3) {  // holding the ball
             this.RChargeThrowAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
         }
-        else if (this.jumpingState === 1) {  //Drawing initial jump wind up animation
-            this.RJumpStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+        else if (this.ballState === 1)  {
+            if (this.jumpingState === 1) {  //Drawing initial jump wind up animation
+                this.RBallJumpStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            }
+            else if (this.jumpingState === 2)   { //Drawing rising animation
+                this.RBallJumpAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            }
+            else if (this.jumpingState === 3)   { //Drawing transition from rising to falling
+                this.RBallFallStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            }
+            else if (this.jumpingState === 4)   { //Drawing falling animation
+                this.RBallFallAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            }
+            else if (this.runningState === 2) {
+                this.direction = this.x;
+                this.RBallRunAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            }
+            else if (this.runningState === 1)   {
+                this.RBallRunStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            }
+            else    {
+                this.RBallAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            }
         }
-        else if (this.jumpingState === 2)   { //Drawing rising animation
-            this.RJumpAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-        }
-        else if (this.jumpingState === 3)   { //Drawing transition from rising to falling
-            this.RFallStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-		}
-        else if (this.jumpingState === 4)   { //Drawing falling animation
-            this.RFallAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-        }
-        else if (this.runningState === 2) {
-            this.direction = this.x;
-            this.RRunAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-        }
-        else if (this.runningState === 1)   {
-            this.RRunStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-        }
-        else if (this.ballState === 0) {  // no ball
-            this.RIdleAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-        }
-        else if (this.ballState === 1) {  // holding ball
-            this.RBallAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-        }
-        else {
-            this.RIdleAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+        else    {
+            if (this.jumpingState === 1) {  //Drawing initial jump wind up animation
+                this.RJumpStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            }
+            else if (this.jumpingState === 2)   { //Drawing rising animation
+                this.RJumpAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            }
+            else if (this.jumpingState === 3)   { //Drawing transition from rising to falling
+                this.RFallStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            }
+            else if (this.jumpingState === 4)   { //Drawing falling animation
+                this.RFallAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            }
+            else if (this.runningState === 2) {
+                this.direction = this.x;
+                this.RRunAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            }
+            else if (this.runningState === 1)   {
+                this.RRunStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            }
+            else    {
+                this.RIdleAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            }
         }
     }
     if (this.controller.isAiming || this.ballState >= 3)    {
