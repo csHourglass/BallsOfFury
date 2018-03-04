@@ -11,6 +11,7 @@ AssetManager.prototype.queueDownload = function (path) {
 }
 
 AssetManager.prototype.isDone = function () {
+	//- 4 to account for the 4 that we initially load
     return this.downloadQueue.length === this.successCount + this.errorCount;
 }
 

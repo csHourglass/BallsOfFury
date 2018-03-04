@@ -69,11 +69,24 @@
 ASSET_MANAGER.downloadAll(function () {
     console.log("Powering up!");
 });
+	var that = this;
+	checkReady(that, load, game);
     Scene.call(this, game, this.entities);
-    load.removeFromWorld = true;
-    this.entities.push(new Background(game, this.startAnimation, width/2 - 828/2, height/4));
-	var flag = 0;
+	
  }
+
+function checkReady(that, load, game) {
+  setTimeout(function() {
+		if (ASSET_MANAGER.downloadQueue.length === ASSET_MANAGER.successCount + ASSET_MANAGER.errorCount - 4) {
+			load.removeFromWorld = true;
+			that.entities.push(new Background(game, that.startAnimation, width/2 - 828/2, height/4));
+			game.startInput();
+		} else {
+			console.log(ASSET_MANAGER.isDone());
+			checkReady(that);
+		}
+	}, 1000);
+}
 
 TitleScreen.prototype = new Scene();
 TitleScreen.prototype.constructor = TitleScreen;
