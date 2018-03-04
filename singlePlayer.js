@@ -101,6 +101,11 @@ SinglePlayer.prototype.update = function() {
 
     // check for killed dummies
     for (var i = 0; i < this.enemies.length; i++) {
+        // if (this.enemies[i].x <= 0) this.enemies[i].x = 50; // set it back in frame
+        // else if (this.enemies[i].x >= width) this.enemies[i].x = width - 50;
+        // else if (this.enemies[i].y <= 0) this.enemies[i].y = 50;
+        // else if (this.enemies[i].y > 795) this.enemies[i].y = 795;  //795 is the current location of the floor
+
         if (this.enemies[i].isKilled) {
             this.killCount++;
             this.enemies.splice(i, 1);

@@ -20,7 +20,7 @@
 /**
  * hasCollided() returns true if this bounding box overlaps with the
  * other bounding box.
- * @param {*} other : A different bounding box class
+ * @param {*} other : A different bounding box instance
  */
 BoundingBox.prototype.hasCollided = function (other) {
     return (this.right > other.left && this.left < other.right &&

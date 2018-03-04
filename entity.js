@@ -17,7 +17,7 @@ function Entity(game, x, y, canCollide, id) {
 	this.canCollide = canCollide;
 	this.id = id;
     this.removeFromWorld = false;
-    this.showBoxes = false; // toggle display of bounding boxes
+    this.showBoxes = true; // toggle display of bounding boxes
 }
 
 Entity.prototype.update = function () {
