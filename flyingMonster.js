@@ -26,10 +26,10 @@ function FlyingMonster(game, x, y, team, scene) {
 
     this.team = team;
     this.isKilled = false;
-
     this.boundingBox = new BoundingBox(this.position.x + 10, this.position.y + 25, this.width - 25, this.height - 25);
     // vision is for the flyingMonster to detect a player and move toward it.
-    this.vision = new BoundingCircle(this.position.x + (this.width/2), this.position.y + (this.height/2), 600);
+    this.vision = new BoundingCircle(game, this.position.x + (this.width/2), this.position.y + (this.height/2), 500);
+    this.showVision = true; // draw scope of monsters vision
     this.seePlayer = false;
     this.playerSeen; // hold a reference to the player thats been seen
     this.scene = scene;
@@ -41,7 +41,9 @@ FlyingMonster.prototype = new Entity();
 FlyingMonster.prototype.constructor = FlyingMonster;
 
 FlyingMonster.prototype.update = function() {
-
+    if (this.showVision) {
+        this.vision.draw();
+    }
     // move
     // this.x += this.xSpeed;
     // this.y += this.ySpeed;
@@ -49,7 +51,7 @@ FlyingMonster.prototype.update = function() {
     this.position.add(this.velocity);
 //    console.log(this.position);
     this.boundingBox = new BoundingBox(this.position.x + 25, this.position.y + 25, this.width - 25, this.height - 25);
-
+    this.vision.setXY(this.position.x, this.position.y);
     // check for collisions
     for (var i = 0; i < this.scene.entities.length; i++) {
         var ent = this.scene.entities[i];
@@ -91,7 +93,7 @@ FlyingMonster.prototype.update = function() {
     // move toward a player if seen
     if (this.seePlayer) {
         var that = this;
-        console.log("I SEE YOU");
+        //console.log("I SEE YOU");
         var loc = new PVector(this.position.x, this.position.y);
         var playerLocation = new PVector(that.playerSeen.x, that.playerSeen.y);
         var direction = PVector.sub(playerLocation, loc);
@@ -128,7 +130,8 @@ FlyingMonster.prototype.draw = function(ctx, tick) {
  * Bounding Circle
  * used specifically for flying monster to detect player and move toward it.
  */
-function BoundingCircle(x, y, rad) {
+function BoundingCircle(game, x, y, rad) {
+    this.game = game;
     this.x = x;
     this.y = y;
     this.radius = rad;
@@ -141,4 +144,17 @@ BoundingCircle.prototype.canSee = function(playerBB) {
       || (this.x - this.radius < playerBB.left && playerBB.left < this.x + this.radius))
       && ((this.y + this.radius > playerBB.top && playerBB.top > this.y - this.radius)
       || (this.y - this.radius < playerBB.bottom && playerBB.bottom < this.y + this.radius)));
+}
+
+BoundingCircle.prototype.setXY = function(x, y) {
+    this.x = x;
+    this.y = y;
+}
+
+BoundingCircle.prototype.draw = function() {
+    this.game.ctx.beginPath();
+    this.game.ctx.strokeStyle = "red";
+    this.game.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    this.game.ctx.stroke();
+    this.game.ctx.closePath();
 }

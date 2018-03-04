@@ -27,13 +27,11 @@ function SinglePlayer(sceneManager, game, controller)    {
     this.spawnTime = 8; // the time till next dummy will spawn. will be set when dummy is killed
     this.dummyCount = 1; // the number of dummies that have spawned in the game.
     this.balls = 1;  // number of balls in the level.  will increase as enemies are killed.
-    this.killCount = 00;
-    this.scoreboard = new Scoreboard(this.game, 100 , height - 50, 0); // to display killCount
+    this.killCount = 0;
+
     // var that = this;
     // players.forEach(function(element)   {
-    this.player = new Player(game, 200, 795, 4 ,1, controller, this);
 
-    this.entities.push(this.player);
     //     that.players++;
     // });
 
@@ -50,7 +48,16 @@ function SinglePlayer(sceneManager, game, controller)    {
     this.entities.push(new Wall(game, 21, 72, 48, 846, wall));
 	this.entities.push(new Wall(game, 1851, 72, 48, 846, wall));
     this.entities.push(new Wall(game, 0, 0, 1920, 72, ceiling));
+    this.entities.push(new Platform(game, 69, 750, 1920, 162, floor, .1));
+//    this.entities.push(new Platform(game, (1920/2)-.1*(1920/2), 750, 1920, 162, floor, .1));
 
+    this.entities.push(new Platform(game, (1920/2)-.1*(1920/2), 390, 1920, 162, floor, .1));
+    this.entities.push(new Platform(game, 1660, 750, 1920, 162, floor, .1));
+    this.entities.push(new Platform(game, 430, 582, 1920, 162, floor, .1));
+    this.entities.push(new Platform(game, 1299, 582, 1920, 162, floor, .1));
+    this.entities.push(new Platform(game, 69, 414, 1920, 162, floor, .1));
+    this.entities.push(new Platform(game, 1660, 414, 1920, 162, floor, .1));
+    //this.entities.push(new Platform(game, ))
     this.entities.push(new Camera(game, 0, 0, 1920, 1080));
 	// var fight = new Audio("./fight.mp3");
 	// fight.play();
@@ -60,6 +67,10 @@ function SinglePlayer(sceneManager, game, controller)    {
     // this.entities.push(fakeplayer);
     // this.entities.push(new Ball(fakeplayer.game, fakeplayer, fakeplayer.boundingBox.x - 20,
     //     fakeplayer.boundingBox.y, fakeplayer.chargingTime, 5, this));
+    this.player = new Player(game, 200, 795, 4 ,1, controller, this);
+
+    this.entities.push(this.player);
+    this.scoreboard = new Scoreboard(this.game, 100 , height - 50, 0); // to display killCount
     this.entities.push(this.scoreboard);
     Scene.call(this, game, this.entities);
 }
