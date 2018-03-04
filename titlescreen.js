@@ -83,7 +83,7 @@ function checkReady(that, load, game) {
 			game.startInput();
 		} else {
 			console.log(ASSET_MANAGER.isDone());
-			checkReady(that);
+			checkReady(that, load, game);
 		}
 	}, 1000);
 }
