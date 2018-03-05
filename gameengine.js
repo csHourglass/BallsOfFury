@@ -290,7 +290,7 @@ GameEngine.prototype.startInput = function () {
 	this.gamepad.on('release', 'stick_axis_right', e => {
 //		console.log(`player ${e.player} released ${e.value}!`);
         var c = getController(e.player);
-        console.log(e.Player);
+        //console.log(e.Player);
         c.isAiming = false;
 	});
 
@@ -493,7 +493,7 @@ GameEngine.prototype.startInput = function () {
 
 	//stick_button_left - Left Analog Stick (XBOX/PS3/PS4)
 	this.gamepad.on('hold', 'stick_button_left', e => {
-		console.log(`player ${e.player} holding ${e.button}!`);
+		//console.log(`player ${e.player} holding ${e.button}!`);
 	});
 
 	//stick_button_right - Right Analog Stick (XBOX/PS3/PS4)
@@ -665,7 +665,7 @@ GameEngine.prototype.startInput = function () {
 
 	//vendor - XBOX Button (XBOX) / Playstation Button (PS3/PS4)
 	this.gamepad.on('release', 'vendor', e => {
-		console.log(`player ${e.player} released ${e.button}!`);
+		//console.log(`player ${e.player} released ${e.button}!`);
 	});
 
 	// RELEASE END
@@ -720,7 +720,7 @@ GameEngine.prototype.startInput = function () {
 }
 
 GameEngine.prototype.addEntity = function (entity) {
-		console.log('added entity');
+		//console.log('added entity');
 		return this.entities.push(entity);
 }
 
