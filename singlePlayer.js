@@ -67,7 +67,7 @@ function SinglePlayer(sceneManager, game, controller)    {
     // this.entities.push(fakeplayer);
     // this.entities.push(new Ball(fakeplayer.game, fakeplayer, fakeplayer.boundingBox.x - 20,
     //     fakeplayer.boundingBox.y, fakeplayer.chargingTime, 5, this));
-    this.player = new Player(game, 200, 795, 4 ,1, controller, this);
+    this.player = new Player(game, 200, 795, 4 ,0, controller, this);
 
     this.entities.push(this.player);
     this.scoreboard = new Scoreboard(this.game, 100 , height - 50, 0); // to display killCount
