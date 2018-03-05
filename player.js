@@ -280,7 +280,7 @@ Player.prototype.calculateRun = function() {
      }
      if (this.isCatching)    {
          this.catchTimer += this.game.clockTick;
-         console.log("CATCHING ", this.catchTimer);
+         //console.log("CATCHING ", this.catchTimer);
 
      }
      if (this.catchTimer > this.shield.totalTime)   {
@@ -293,7 +293,7 @@ Player.prototype.calculateRun = function() {
     //  }
      if (this.shield.isDone())   {
         this.cooldown += this.game.clockTick;
-        console.log("cooldown: ", this.cooldown);
+        //console.log("cooldown: ", this.cooldown);
         if (this.cooldown > .25 && !this.controller.parry)  {
             this.cooldown = 0;
             this.canCatch = true;
@@ -459,7 +459,7 @@ Player.prototype.update = function ()   {
     // deathRoutine
     if (this.explosion.isDone()) {
         if (this.lives < 1) {
-            console.log("DEAD.");
+            //console.log("DEAD.");
             this.removeFromWorld = true;
             this.scene.players--;
         } else {
