@@ -12,11 +12,11 @@ Flying Monster
 function FlyingMonster(game, x, y, team, scene) {
     // this.x = x;
     // this.y = y;
-    this.position = new PVector(x, y);
+    this.position = new Vector(x, y);
     // this.xSpeed = 10 * (Math.random() - 0.4);
     // this.ySpeed = 10 * (Math.random() - 0.4);
-    this.velocity = new PVector(10 * (Math.random() - 0.4), 10 * (Math.random() - 0.4));
-    this.acceleration = new PVector(0, 0);  // to accelerate toward a player
+    this.velocity = new Vector(10 * (Math.random() - 0.4), 10 * (Math.random() - 0.4));
+    this.acceleration = new Vector(0, 0);  // to accelerate toward a player
     this.maxSpeed = 15;
     this.width = 226;
     this.height = 177;
@@ -29,7 +29,6 @@ function FlyingMonster(game, x, y, team, scene) {
     this.boundingBox = new BoundingBox(this.position.x + 25, this.position.y + 25, this.width - 25, this.height - 35);
     // vision is for the flyingMonster to detect a player and move toward it.
     this.vision = new BoundingCircle(game, this.position.x + (this.width/2), this.position.y + (this.height/2), 500);
-    this.showVision = false; // draw scope of monsters vision
     this.seePlayer = false;
     this.playerSeen; // hold a reference to the player thats been seen
     this.scene = scene;
@@ -41,9 +40,7 @@ FlyingMonster.prototype = new Entity();
 FlyingMonster.prototype.constructor = FlyingMonster;
 
 FlyingMonster.prototype.update = function() {
-    if (this.showVision) {
-        this.vision.draw();
-    }
+
     // move
     // this.x += this.xSpeed;
     // this.y += this.ySpeed;
@@ -96,25 +93,21 @@ FlyingMonster.prototype.update = function() {
     }
     // move toward a player if seen
     if (this.seePlayer) {
-        var that = this;
-    //    console.log("I SEE YOU");
-        var loc = new PVector(this.position.x, this.position.y);
-        var playerLocation = new PVector(that.playerSeen.x, that.playerSeen.y);
-        var direction = PVector.sub(playerLocation, loc);
-
+        // console.log("I SEE YOU");
+        var loc = new Vector(this.position.x, this.position.y);
+        var direction = new Vector(this.playerSeen.x, this.playerSeen.y);
+        direction.sub(loc);
         direction.normalize();
+
         direction.mult(0.3); // slow down
-
-
-        that.acceleration = direction;
-        that.velocity.add(that.acceleration);
-
+        this.acceleration = direction;
+        this.velocity.add(this.acceleration);
     }
+    
     if (this.explosion.isDone()) {
         this.explosion.elapsedTime = 0;
         this.removeFromWorld = true;
     }
-
     Entity.prototype.update.call(this);
 }
 
@@ -155,10 +148,40 @@ BoundingCircle.prototype.setXY = function(x, y) {
     this.y = y;
 }
 
-BoundingCircle.prototype.draw = function() {
-    this.game.ctx.beginPath();
-    this.game.ctx.strokeStyle = "red";
-    this.game.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-    this.game.ctx.stroke();
-    this.game.ctx.closePath();
+
+function Vector(x, y){
+    this.x = x;
+    this.y = y;
+}
+Vector.prototype.add = function(other){
+    this.x += other.x;
+    this.y += other.y;
+}
+Vector.prototype.sub = function(other) {
+    this.x -= other.x;
+    this.y -= other.y;
+}
+Vector.prototype.mag = function() {
+    return Math.sqrt(this.x * this.x + this.y * this.y);
+}
+Vector.prototype.mult = function(num) {
+    this.x *= num;
+    this.y *= num;
+}
+Vector.prototype.div = function(num) {
+    this.x /= num;
+    this.y /= num;
+}
+Vector.prototype.normalize = function() {
+    var m = this.mag();
+
+    if (m > 0) {
+        this.div(m);
+    }
+}
+Vector.prototype.limit = function(num) {
+    if (this.mag() > num) {
+        this.normalize();
+        this.mult(num);
+    }
 }
