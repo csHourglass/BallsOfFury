@@ -89,7 +89,7 @@ Scene.prototype.draw = function(ctx)    {
 }
 
 Scene.prototype.addEntity = function (entity) {
-    console.log('added entity');
+    //console.log('added entity');
     return this.entities.push(entity);
 }
 

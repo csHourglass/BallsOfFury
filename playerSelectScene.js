@@ -98,7 +98,7 @@ CharacterSelect.prototype.update = function() {
         this.game.controllers.forEach(function(element) {
             if (element.jump && !element.ready) {
                 element.ready = true;
-                console.log(that.controllersActive);
+                //console.log(that.controllersActive);
                 that.buttons[that.controllersActive].activate(that.controllersActive, element);
                 that.controllersActive++;
             }
@@ -199,7 +199,7 @@ Button.prototype.deActivate = function() {
 
 Button.prototype.update = function() {
     if (this.done && !this.locked && this.controller.pause) {
-        console.log("Starting...");
+        //console.log("Starting...");
         this.locked = true;
         this.scene.ready = true;
     }
@@ -300,7 +300,7 @@ Selector.prototype.update = function()  {
 
             if (this.scene.menu[this.selection].active) {
                 this.locked = true;
-                console.log("LOCKED!");
+                //console.log("LOCKED!");
             } else    {
                 //play obnoxious noise here
             }

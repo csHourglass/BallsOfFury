@@ -27,13 +27,11 @@ function SinglePlayer(sceneManager, game, controller)    {
     this.spawnTime = 8; // the time till next dummy will spawn. will be set when dummy is killed
     this.dummyCount = 1; // the number of dummies that have spawned in the game.
     this.balls = 1;  // number of balls in the level.  will increase as enemies are killed.
-    this.killCount = 00;
-    this.scoreboard = new Scoreboard(this.game, 100 , height - 50, 0); // to display killCount
+    this.killCount = 0;
+
     // var that = this;
     // players.forEach(function(element)   {
-    this.player = new Player(game, 200, 795, 4 ,1, controller, this);
 
-    this.entities.push(this.player);
     //     that.players++;
     // });
 
@@ -50,7 +48,16 @@ function SinglePlayer(sceneManager, game, controller)    {
     this.entities.push(new Wall(game, 21, 72, 48, 846, wall));
 	this.entities.push(new Wall(game, 1851, 72, 48, 846, wall));
     this.entities.push(new Wall(game, 0, 0, 1920, 72, ceiling));
+    this.entities.push(new Platform(game, 69, 750, 1920, 162, floor, .1));
+//    this.entities.push(new Platform(game, (1920/2)-.1*(1920/2), 750, 1920, 162, floor, .1));
 
+    this.entities.push(new Platform(game, (1920/2)-.1*(1920/2), 390, 1920, 162, floor, .1));
+    this.entities.push(new Platform(game, 1660, 750, 1920, 162, floor, .1));
+    this.entities.push(new Platform(game, 430, 582, 1920, 162, floor, .1));
+    this.entities.push(new Platform(game, 1299, 582, 1920, 162, floor, .1));
+    this.entities.push(new Platform(game, 69, 414, 1920, 162, floor, .1));
+    this.entities.push(new Platform(game, 1660, 414, 1920, 162, floor, .1));
+    //this.entities.push(new Platform(game, ))
     this.entities.push(new Camera(game, 0, 0, 1920, 1080));
 	// var fight = new Audio("./fight.mp3");
 	// fight.play();
@@ -60,6 +67,10 @@ function SinglePlayer(sceneManager, game, controller)    {
     // this.entities.push(fakeplayer);
     // this.entities.push(new Ball(fakeplayer.game, fakeplayer, fakeplayer.boundingBox.x - 20,
     //     fakeplayer.boundingBox.y, fakeplayer.chargingTime, 5, this));
+    this.player = new Player(game, 200, 795, 4 ,0, controller, this);
+
+    this.entities.push(this.player);
+    this.scoreboard = new Scoreboard(this.game, 100 , height - 50, 0); // to display killCount
     this.entities.push(this.scoreboard);
     Scene.call(this, game, this.entities);
 }
@@ -78,15 +89,16 @@ SinglePlayer.prototype.update = function() {
     }
 
     if (this.dummyClock >= this.spawnTime && this.player.lives > 0) {
-        console.log(this.spawnTime);
+        //console.log(this.spawnTime);
         //var newDummy = new Dummy(this.game, (1620 * Math.random())+150, 795, 2, this);
-        var newEnemy = new FlyingMonster(this.game, (1500 * Math.random()) + 100, 300, 2, this);
+        var newEnemy = new FlyingMonster(this.game, (1500 * Math.random()) + 100, (500 * Math.random()) + 200, 2, this);
         for (var i = 0; i < this.entities.length; i++) {
             var ent = this.entities[i];
             if (ent instanceof Player || ent instanceof FlyingMonster) {
                 // prevent from spawning on top of eachother
-                while (newEnemy.boundingBox.hasCollided(ent.boundingBox)) {
-                    newEnemy = new FlyingMonster(this.game, (1500 * Math.random()) + 100, 300, 2, this);
+                while (newEnemy.boundingBox.hasCollided(ent.boundingBox) || (ent instanceof Player && newEnemy.vision.canSee(ent.boundingBox))) {
+                    //console.log("TOO CLOSE")
+                    newEnemy = new FlyingMonster(this.game, (1500 * Math.random()) + 100, (500 * Math.random()) + 200, 2, this);
                 }
             }
         }
@@ -101,6 +113,11 @@ SinglePlayer.prototype.update = function() {
 
     // check for killed dummies
     for (var i = 0; i < this.enemies.length; i++) {
+        // if (this.enemies[i].x <= 0) this.enemies[i].x = 50; // set it back in frame
+        // else if (this.enemies[i].x >= width) this.enemies[i].x = width - 50;
+        // else if (this.enemies[i].y <= 0) this.enemies[i].y = 50;
+        // else if (this.enemies[i].y > 795) this.enemies[i].y = 795;  //795 is the current location of the floor
+
         if (this.enemies[i].isKilled) {
             this.killCount++;
             this.enemies.splice(i, 1);

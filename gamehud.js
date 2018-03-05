@@ -27,7 +27,7 @@ GameHUD.prototype.constructor = GameHUD;
 
 GameHUD.prototype.update = function() {
 	if (this.level.players > this.players)	{
-		console.log("Need more life meters! # of meters = ", this.players, " | # of players = ", this.level.players);
+		//console.log("Need more life meters! # of meters = ", this.players, " | # of players = ", this.level.players);
 		this.entities = [];
 		this.players = 0;
 		for (var i = 0; i < this.level.entities.length; i++) {
@@ -40,7 +40,7 @@ GameHUD.prototype.update = function() {
 						this.entities.push(new LiveMeter(this.game, ent, (this.players % 2 * 400) + 1180 + space, 985));
 					}
 				}
-				console.log("NUMBER OF LIVES =", ent.lives);
+				//console.log("NUMBER OF LIVES =", ent.lives);
 				this.players++;
 			}
 		}

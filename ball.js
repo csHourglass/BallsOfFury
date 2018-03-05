@@ -29,7 +29,7 @@ function Ball(game, player, x, y, chargingTime, id, scene) {
 		chargingTime = 3;
 	}
     this.chargingTime = chargingTime;
-    this.speed += chargingTime*500;
+    this.speed += this.chargingTime*500;
 
     //targetx is for mouse and aimx is for controller
     // if (this.player.controller.gamepad === null) {  // mouse
@@ -75,6 +75,9 @@ Ball.prototype.update = function() {
         }
         if (this.speed < 2000)   {
             this.state++;
+        }
+        if (this.speed > 5000)  {
+            this.speed = 5000;
         }
     }
     else if (this.state === 1)   {  //If in falling state...

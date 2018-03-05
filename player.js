@@ -280,7 +280,7 @@ Player.prototype.calculateRun = function() {
      }
      if (this.isCatching)    {
          this.catchTimer += this.game.clockTick;
-         console.log("CATCHING ", this.catchTimer);
+         //console.log("CATCHING ", this.catchTimer);
 
      }
      if (this.catchTimer > this.shield.totalTime)   {
@@ -293,8 +293,8 @@ Player.prototype.calculateRun = function() {
     //  }
      if (this.shield.isDone())   {
         this.cooldown += this.game.clockTick;
-        console.log("cooldown: ", this.cooldown);
-        if (this.cooldown > 1 && !this.controller.parry)  {
+        //console.log("cooldown: ", this.cooldown);
+        if (this.cooldown > .25 && !this.controller.parry)  {
             this.cooldown = 0;
             this.canCatch = true;
             this.shield.elapsedTime = 0;
@@ -422,7 +422,7 @@ Player.prototype.handleCollision = function() {
                     this.catchTimer = 0;
                 } else if (this.isCatching || this.armorlock) {
                     this.game.hitSound.play();
-                    ent.speed += 1000;
+                    ent.speed += 750;
                     ent.team = this.team;
                 } else if (ent.team !== this.team && this.isHit === false) {
                     this.isHit = true;
@@ -459,7 +459,7 @@ Player.prototype.update = function ()   {
     // deathRoutine
     if (this.explosion.isDone()) {
         if (this.lives < 1) {
-            console.log("DEAD.");
+            //console.log("DEAD.");
             this.removeFromWorld = true;
             this.scene.players--;
         } else {
@@ -490,139 +490,141 @@ Player.prototype.draw = function(ctx, tick)   {
     if (this.showBoxes) {
         this.boundingBox.draw(ctx);
     }
-    if (this.isCatching)    {
-        this.shield.drawFrame(tick, ctx, this.getX() -34, this.getY(), this.game.drawScale);
-    }
     /////////////// explosion animation /////////////
     if (this.isHit) {
         this.explosion.drawFrame(tick, ctx, this.x - (this.width/2), this.y - (this.height/2), this.game.drawScale);
     }
 /////////////////////// Right facing sprites ///////////////////////////
-    else if (this.facingLeft) {
-		//if we're ready to throw, play throwing animation
-        if (this.ballState === 2) {
-            this.LThrowAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+    else    {
+        if (this.isCatching)    {
+            this.shield.drawFrame(tick, ctx, this.getX() -34, this.getY(), this.game.drawScale);
         }
-        else if (this.ballState === 3) {  // holding the ball
-            if (this.chargingTime > 3)  {
-                this.LFullChargeAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-                this.aura.drawFrame(tick, ctx, this.getX()-48, this.getY()-84, this.game.drawScale);
-                //SUPER SAIYAN
-            } else  {
-                this.LChargeThrowAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-                this.charge.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale/2);
+        if (this.facingLeft) {
+            //if we're ready to throw, play throwing animation
+            if (this.ballState === 2) {
+                this.LThrowAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
             }
-        }
-        else if (this.ballState === 1)  {
-            if (this.jumpingState === 1) {  //Drawing initial jump wind up animation
-                this.LBallJumpStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            else if (this.ballState === 3) {  // holding the ball
+                if (this.chargingTime > 3)  {
+                    this.LFullChargeAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                    this.aura.drawFrame(tick, ctx, this.getX()-48, this.getY()-84, this.game.drawScale);
+                    //SUPER SAIYAN
+                } else  {
+                    this.LChargeThrowAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                    this.charge.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale/2);
+                }
             }
-            else if (this.jumpingState === 2)   { //Drawing rising animation
-                this.LBallJumpAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-            }
-            else if (this.jumpingState === 3)   { //Drawing transition from rising to falling
-                this.LBallFallStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-            }
-            else if (this.jumpingState === 4)   { //Drawing falling animation
-                this.LBallFallAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-            }
-            else if (this.runningState === 2) {
-                this.direction = this.x;
-                this.LBallRunAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-            }
-            else if (this.runningState === 1)   {
-                this.LBallRunStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            else if (this.ballState === 1)  {
+                if (this.jumpingState === 1) {  //Drawing initial jump wind up animation
+                    this.LBallJumpStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                }
+                else if (this.jumpingState === 2)   { //Drawing rising animation
+                    this.LBallJumpAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                }
+                else if (this.jumpingState === 3)   { //Drawing transition from rising to falling
+                    this.LBallFallStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                }
+                else if (this.jumpingState === 4)   { //Drawing falling animation
+                    this.LBallFallAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                }
+                else if (this.runningState === 2) {
+                    this.direction = this.x;
+                    this.LBallRunAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                }
+                else if (this.runningState === 1)   {
+                    this.LBallRunStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                }
+                else    {
+                    this.LBallAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                }
             }
             else    {
-                this.LBallAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                if (this.jumpingState === 1) {  //Drawing initial jump wind up animation
+                    this.LJumpStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                }
+                else if (this.jumpingState === 2)   { //Drawing rising animation
+                    this.LJumpAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                }
+                else if (this.jumpingState === 3)   { //Drawing transition from rising to falling
+                    this.LFallStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                }
+                else if (this.jumpingState === 4)   { //Drawing falling animation
+                    this.LFallAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                }
+                else if (this.runningState === 2) {
+                    this.direction = this.x;
+                    this.LRunAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                }
+                else if (this.runningState === 1)   {
+                    this.LRunStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                }
+                else    {
+                    this.LIdleAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                }
             }
-        }
-        else    {
-            if (this.jumpingState === 1) {  //Drawing initial jump wind up animation
-                this.LJumpStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+    /////////////// Left facing sprites ///////////////////
+        } else {  // left facing sprites
+            //if we're ready to throw, play throwing animation
+            if (this.ballState === 2) {
+                this.RThrowAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
             }
-            else if (this.jumpingState === 2)   { //Drawing rising animation
-                this.LJumpAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            else if (this.ballState === 3) {  // holding the ball
+                if (this.chargingTime > 3)  {
+                    this.RFullChargeAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                    this.aura.drawFrame(tick, ctx, this.getX()-48, this.getY()-84, this.game.drawScale);
+                    //SUPER SAIYAN
+                } else  {
+                    this.RChargeThrowAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                    this.charge.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale/2);
+                }
             }
-            else if (this.jumpingState === 3)   { //Drawing transition from rising to falling
-                this.LFallStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-            }
-            else if (this.jumpingState === 4)   { //Drawing falling animation
-                this.LFallAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-            }
-            else if (this.runningState === 2) {
-                this.direction = this.x;
-                this.LRunAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-            }
-            else if (this.runningState === 1)   {
-                this.LRunStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-            }
-            else    {
-                this.LIdleAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-            }
-        }
-/////////////// Left facing sprites ///////////////////
-    } else {  // left facing sprites
-		//if we're ready to throw, play throwing animation
-        if (this.ballState === 2) {
-            this.RThrowAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-        }
-        else if (this.ballState === 3) {  // holding the ball
-            if (this.chargingTime > 3)  {
-                this.RFullChargeAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-                this.aura.drawFrame(tick, ctx, this.getX()-48, this.getY()-84, this.game.drawScale);
-                //SUPER SAIYAN
-            } else  {
-                this.RChargeThrowAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-                this.charge.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale/2);
-            }
-        }
-        else if (this.ballState === 1)  {
-            if (this.jumpingState === 1) {  //Drawing initial jump wind up animation
-                this.RBallJumpStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-            }
-            else if (this.jumpingState === 2)   { //Drawing rising animation
-                this.RBallJumpAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-            }
-            else if (this.jumpingState === 3)   { //Drawing transition from rising to falling
-                this.RBallFallStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-            }
-            else if (this.jumpingState === 4)   { //Drawing falling animation
-                this.RBallFallAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-            }
-            else if (this.runningState === 2) {
-                this.direction = this.x;
-                this.RBallRunAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-            }
-            else if (this.runningState === 1)   {
-                this.RBallRunStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-            }
-            else    {
-                this.RBallAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-            }
-        }
-        else    {
-            if (this.jumpingState === 1) {  //Drawing initial jump wind up animation
-                this.RJumpStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-            }
-            else if (this.jumpingState === 2)   { //Drawing rising animation
-                this.RJumpAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-            }
-            else if (this.jumpingState === 3)   { //Drawing transition from rising to falling
-                this.RFallStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-            }
-            else if (this.jumpingState === 4)   { //Drawing falling animation
-                this.RFallAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-            }
-            else if (this.runningState === 2) {
-                this.direction = this.x;
-                this.RRunAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
-            }
-            else if (this.runningState === 1)   {
-                this.RRunStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+            else if (this.ballState === 1)  {
+                if (this.jumpingState === 1) {  //Drawing initial jump wind up animation
+                    this.RBallJumpStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                }
+                else if (this.jumpingState === 2)   { //Drawing rising animation
+                    this.RBallJumpAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                }
+                else if (this.jumpingState === 3)   { //Drawing transition from rising to falling
+                    this.RBallFallStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                }
+                else if (this.jumpingState === 4)   { //Drawing falling animation
+                    this.RBallFallAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                }
+                else if (this.runningState === 2) {
+                    this.direction = this.x;
+                    this.RBallRunAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                }
+                else if (this.runningState === 1)   {
+                    this.RBallRunStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                }
+                else    {
+                    this.RBallAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                }
             }
             else    {
-                this.RIdleAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                if (this.jumpingState === 1) {  //Drawing initial jump wind up animation
+                    this.RJumpStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                }
+                else if (this.jumpingState === 2)   { //Drawing rising animation
+                    this.RJumpAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                }
+                else if (this.jumpingState === 3)   { //Drawing transition from rising to falling
+                    this.RFallStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                }
+                else if (this.jumpingState === 4)   { //Drawing falling animation
+                    this.RFallAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                }
+                else if (this.runningState === 2) {
+                    this.direction = this.x;
+                    this.RRunAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                }
+                else if (this.runningState === 1)   {
+                    this.RRunStartAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                }
+                else    {
+                    this.RIdleAnimation.drawFrame(tick, ctx, this.getX(), this.getY(), this.game.drawScale);
+                }
             }
         }
     }

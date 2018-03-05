@@ -82,7 +82,7 @@ function checkReady(that, load, game) {
 			that.entities.push(new Background(game, that.startAnimation, width/2 - 828/2, height/4));
 			game.startInput();
 		} else {
-			console.log(ASSET_MANAGER.isDone());
+			//console.log(ASSET_MANAGER.isDone());
 			checkReady(that, load, game);
 		}
 	}, 1000);
