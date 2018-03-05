@@ -72,6 +72,7 @@ function SinglePlayer(sceneManager, game, controller)    {
     this.entities.push(this.player);
     this.scoreboard = new Scoreboard(this.game, 100 , height - 50, 0); // to display killCount
     this.entities.push(this.scoreboard);
+//    this.game.bgMusic.play();
     Scene.call(this, game, this.entities);
 }
 
@@ -149,9 +150,23 @@ SinglePlayer.prototype.update = function() {
     // game over, return to main menu
     if (this.player.lives <= 0 && (this.player.controller.pause || this.player.controller.jump)) {
         var nextScene = new MainMenu(this.sceneManager, this.game);
+        // this.game.bgMusic.pause();
+        // this.game.bgMusic.currentTime = 0;
+        // this.game.optionSelect.play();
+        // this.game.menuMusic = getRandomMenuMusic();
+        // this.game.menuMusic.loop = true;
+        // this.game.menuMusic.volume = .25;
+        // this.game.menuMusic.play();
         this.sceneManager.loadLevel(nextScene);
         this.close();
     }
+
+    // if (this.game.bgMusic != null && !this.isPlaying) {
+    //     this.game.bgMusic.pause();
+    //
+    // }else if (this.game.bgMusic != null && this.isPlaying) {
+    //     this.game.bgMusic.play();
+    // }
     Scene.prototype.update.call(this);
 }
 
