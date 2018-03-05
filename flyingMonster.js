@@ -26,10 +26,10 @@ function FlyingMonster(game, x, y, team, scene) {
 
     this.team = team;
     this.isKilled = false;
-    this.boundingBox = new BoundingBox(this.position.x + 10, this.position.y + 25, this.width - 25, this.height - 25);
+    this.boundingBox = new BoundingBox(this.position.x + 25, this.position.y + 25, this.width - 25, this.height - 35);
     // vision is for the flyingMonster to detect a player and move toward it.
     this.vision = new BoundingCircle(game, this.position.x + (this.width/2), this.position.y + (this.height/2), 500);
-    this.showVision = true; // draw scope of monsters vision
+    this.showVision = false; // draw scope of monsters vision
     this.seePlayer = false;
     this.playerSeen; // hold a reference to the player thats been seen
     this.scene = scene;
@@ -50,7 +50,11 @@ FlyingMonster.prototype.update = function() {
     this.velocity.limit(15);
     this.position.add(this.velocity);
 //    console.log(this.position);
-    this.boundingBox = new BoundingBox(this.position.x + 25, this.position.y + 25, this.width - 25, this.height - 25);
+    if (this.velocity.x > 0)
+        this.boundingBox = new BoundingBox(this.position.x + 25, this.position.y + 25, this.width - 35, this.height - 25);
+    else
+        this.boundingBox = new BoundingBox(this.position.x + 10, this.position.y + 25, this.width - 25, this.height - 25);
+
     this.vision.setXY(this.position.x, this.position.y);
     // check for collisions
     for (var i = 0; i < this.scene.entities.length; i++) {
@@ -72,19 +76,19 @@ FlyingMonster.prototype.update = function() {
 
         if (ent != this && (ent instanceof Wall || ent instanceof FlyingMonster) && this.boundingBox.hasCollided(ent.boundingBox)) {
             if (this.boundingBox.collideLeft(ent.boundingBox)) {
-                console.log("LEFT");
+            //    console.log("LEFT");
                 this.velocity.x = -this.velocity.x;
                 this.position.x = ent.boundingBox.x + ent.boundingBox.width;
             } else if (this.boundingBox.collideRight(ent.boundingBox)) {
-                console.log("RIGHT");
+            //    console.log("RIGHT");
                 this.velocity.x = -this.velocity.x;
                 this.position.x = ent.boundingBox.x - this.boundingBox.width - 25;
             } else if (this.boundingBox.collideTop(ent.boundingBox)) {
-                console.log("TOP");
+            //    console.log("TOP");
                 this.velocity.y = -this.velocity.y;
                 this.position.y = ent.boundingBox.y + ent.boundingBox.height;
             } else if (this.boundingBox.collideBottom(ent.boundingBox)) {
-                console.log("BOTTOM");
+            //    console.log("BOTTOM");
                 this.velocity.y = -this.velocity.y;
                 this.position.y = ent.boundingBox.y - this.boundingBox.height - 25;
             }
@@ -93,7 +97,7 @@ FlyingMonster.prototype.update = function() {
     // move toward a player if seen
     if (this.seePlayer) {
         var that = this;
-        //console.log("I SEE YOU");
+    //    console.log("I SEE YOU");
         var loc = new PVector(this.position.x, this.position.y);
         var playerLocation = new PVector(that.playerSeen.x, that.playerSeen.y);
         var direction = PVector.sub(playerLocation, loc);

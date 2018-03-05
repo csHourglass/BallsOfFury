@@ -91,13 +91,14 @@ SinglePlayer.prototype.update = function() {
     if (this.dummyClock >= this.spawnTime && this.player.lives > 0) {
         console.log(this.spawnTime);
         //var newDummy = new Dummy(this.game, (1620 * Math.random())+150, 795, 2, this);
-        var newEnemy = new FlyingMonster(this.game, (1500 * Math.random()) + 100, 300, 2, this);
+        var newEnemy = new FlyingMonster(this.game, (1500 * Math.random()) + 100, (500 * Math.random()) + 200, 2, this);
         for (var i = 0; i < this.entities.length; i++) {
             var ent = this.entities[i];
             if (ent instanceof Player || ent instanceof FlyingMonster) {
                 // prevent from spawning on top of eachother
-                while (newEnemy.boundingBox.hasCollided(ent.boundingBox)) {
-                    newEnemy = new FlyingMonster(this.game, (1500 * Math.random()) + 100, 300, 2, this);
+                while (newEnemy.boundingBox.hasCollided(ent.boundingBox) || (ent instanceof Player && newEnemy.vision.canSee(ent.boundingBox))) {
+                    console.log("TOO CLOSE")
+                    newEnemy = new FlyingMonster(this.game, (1500 * Math.random()) + 100, (500 * Math.random()) + 200, 2, this);
                 }
             }
         }
