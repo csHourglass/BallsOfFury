@@ -120,7 +120,10 @@ SinglePlayer.prototype.update = function() {
         // else if (this.enemies[i].y > 795) this.enemies[i].y = 795;  //795 is the current location of the floor
 
         if (this.enemies[i].isKilled) {
-            this.killCount++;
+            if (this.enemies[i] instanceof Boss_Enigma)
+                this.killCount += 5;
+            else
+                this.killCount++;
             this.enemies.splice(i, 1);
             //spawn a new for every 10 enemies killed, max of 5 balls
             if (this.killCount % 10 === 0 && this.killCount < 40) {
@@ -128,8 +131,15 @@ SinglePlayer.prototype.update = function() {
                 ball.state = 2;
                 this.entities.push(ball);
             }
+            if (this.killCount % 50 === 0)  {
+                var bossHitpoints = 5;
+                var bossController = new Controller(null);
+                this.boss = new Boss_Enigma(this.game, 1920/2, 200, bossHitpoints, 99, bossController, this);
+                this.entities.push(this.boss);
+                this.enemies.push(this.boss);
+            }
             this.scoreboard.updateScore(this.killCount);
-        } else if (this.enemies[i].boundingBox.hasCollided(this.player.boundingBox)) {
+        } else if ((this.enemies[i].boundingBox.hasCollided(this.player.boundingBox) && !(this.enemies[i] instanceof Boss_Enigma)) ||this.player.isHit) {
             this.player.isHit = true;
             this.player.canCollide = false;
             this.player.lives = 0;  // only one life in single player
