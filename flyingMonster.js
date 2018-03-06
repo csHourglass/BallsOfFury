@@ -31,6 +31,7 @@ function FlyingMonster(game, x, y, team, scene) {
     this.vision = new BoundingCircle(game, this.position.x + (this.width/2), this.position.y + (this.height/2), 500);
     this.seePlayer = false;
     this.playerSeen; // hold a reference to the player thats been seen
+    this.spawnWindow = new BoundingCircle(game, this.position.x + (this.width/2), this.position.y + (this.height/2), 600);
     this.scene = scene;
     Entity.call(this, game, this.position.x, this.position.y, true, 3);
 
@@ -53,6 +54,7 @@ FlyingMonster.prototype.update = function() {
         this.boundingBox = new BoundingBox(this.position.x + 10, this.position.y + 25, this.width - 25, this.height - 25);
 
     this.vision.setXY(this.position.x, this.position.y);
+    this.spawnWindow.setXY(this.position.x, this.position.y);
     // check for collisions
     for (var i = 0; i < this.scene.entities.length; i++) {
         var ent = this.scene.entities[i];
@@ -103,7 +105,7 @@ FlyingMonster.prototype.update = function() {
         this.acceleration = direction;
         this.velocity.add(this.acceleration);
     }
-    
+
     if (this.explosion.isDone()) {
         this.explosion.elapsedTime = 0;
         this.removeFromWorld = true;
@@ -127,8 +129,7 @@ FlyingMonster.prototype.draw = function(ctx, tick) {
  * Bounding Circle
  * used specifically for flying monster to detect player and move toward it.
  */
-function BoundingCircle(game, x, y, rad) {
-    this.game = game;
+function BoundingCircle(x, y, rad) {
     this.x = x;
     this.y = y;
     this.radius = rad;

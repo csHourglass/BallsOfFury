@@ -19,14 +19,15 @@ function SinglePlayer(sceneManager, game, controller)    {
     this.entities = [];
     this.enemies = [];
     this.bgAnimation = new Animation(ASSET_MANAGER.getAsset("./img/Stage1Background.png"), 0, 0, width, height, 1, 1, true, false);
-
+//	this.pause = new Animation(ASSET_MANAGER.getAsset("./img/pause-menu.png"), 0, 0, 1920, 1080, 1, 1, true, false);
+    this.isPaused = false;
     var bg = new Background(game, this.bgAnimation, 0, 0);
     this.entities.push(bg);
 
     this.dummyClock = 0;  // count the time since last dummy spawned
     this.spawnTime = 8; // the time till next dummy will spawn. will be set when dummy is killed
-    this.dummyCount = 1; // the number of dummies that have spawned in the game.
-    this.balls = 1;  // number of balls in the level.  will increase as enemies are killed.
+//    this.dummyCount = 1; // the number of dummies that have spawned in the game.
+//    this.balls = 1;  // number of balls in the level.  will increase as enemies are killed.
     this.killCount = 0;
 
     // var that = this;
@@ -68,7 +69,7 @@ function SinglePlayer(sceneManager, game, controller)    {
     // this.entities.push(new Ball(fakeplayer.game, fakeplayer, fakeplayer.boundingBox.x - 20,
     //     fakeplayer.boundingBox.y, fakeplayer.chargingTime, 5, this));
     this.player = new Player(game, 200, 795, 4 ,0, controller, this);
-
+    this.player.controller.pause = false;
     this.entities.push(this.player);
     this.scoreboard = new Scoreboard(this.game, 100 , height - 50, 0); // to display killCount
     this.entities.push(this.scoreboard);
@@ -95,14 +96,19 @@ SinglePlayer.prototype.update = function() {
         var newEnemy = new FlyingMonster(this.game, (1500 * Math.random()) + 100, (500 * Math.random()) + 200, 2, this);
         for (var i = 0; i < this.entities.length; i++) {
             var ent = this.entities[i];
-            if (ent instanceof Player || ent instanceof FlyingMonster) {
-                // prevent from spawning on top of eachother
-                while (newEnemy.boundingBox.hasCollided(ent.boundingBox) || (ent instanceof Player && newEnemy.vision.canSee(ent.boundingBox))) {
-                    //console.log("TOO CLOSE")
-                    newEnemy = new FlyingMonster(this.game, (1500 * Math.random()) + 100, (500 * Math.random()) + 200, 2, this);
+            for (var j = 0; j < this.entities.length; j++) {
+                if (ent != this && (ent instanceof Player || ent instanceof FlyingMonster)) {
+                    // prevent from spawning on top of eachother
+                    while (newEnemy.boundingBox.hasCollided(ent.boundingBox) || (ent instanceof Player && newEnemy.vision.canSee(ent.boundingBox))) {
+                        //console.log("TOO CLOSE")
+                        newEnemy = new FlyingMonster(this.game, (1500 * Math.random()) + 100, (500 * Math.random()) + 200, 2, this);
+
+                    }
                 }
             }
+
         }
+        console.log(newEnemy.vision.canSee(this.player));
         this.entities.push(newEnemy);
         this.enemies.push(newEnemy);
         this.dummyCount++;
@@ -167,9 +173,23 @@ SinglePlayer.prototype.update = function() {
     // }else if (this.game.bgMusic != null && this.isPlaying) {
     //     this.game.bgMusic.play();
     // }
+
+
+
+    // if (this.player.controller.pause) {
+    //     this.isPaused = !this.isPaused;
+    //     this.isPlaying = !this.isPlaying;
+    // }
+
     Scene.prototype.update.call(this);
 }
 
+// SinglePlayer.prototype.draw = function(ctx) {
+//     // if (this.isPaused) {
+//     //     this.pause.drawFrame(this.game.clockTick, ctx, 0, 0);
+//     // }
+//     Scene.prototype.draw.call(ctx);
+// }
 
 SinglePlayer.prototype.spawn = function()  {
     var coord = new Coords();
@@ -203,9 +223,11 @@ Scoreboard.prototype.constructor = Scoreboard;
 
 
  Scoreboard.prototype.draw = function(ctx) {
+
      if (this.gameOver) {
          this.x = width/2;
          this.y = height/2;
+         ctx.beginPath();
          this.text = "GAME OVER";
          ctx.strokeStyle = "black";
          ctx.fillRect(this.x - 600, this.y - 300, 1200, 600);
@@ -218,14 +240,18 @@ Scoreboard.prototype.constructor = Scoreboard;
          ctx.font = "30pt Impact";
          ctx.fillText("Press Start to Return to Menu", this.x - 250, this.y + 200);
          ctx.fillStyle = "black";  // idk why
+         ctx.closePath();
+
      } else {
          // display kill count
+         ctx.beginPath();
          ctx.strokeStyle = "black";
          ctx.fillRect(this.x - 10, this.y - 80, 400, 100);
 
          ctx.font = "75pt blippo";
          ctx.fillStyle = this.color;
          ctx.fillText(this.text, this.x, this.y);
+         ctx.closePath();
          Entity.prototype.draw.call(this);
      }
 
