@@ -180,6 +180,8 @@ Ball.prototype.draw = function(ctx, tick) {
             ctx.fillStyle = "green";
         else if (this.team === 3)
             ctx.fillStyle = "yellow";
+        else if (this.team === 99)
+            ctx.fillStyle = "white";
         else
             ctx.fillStyle = "black";
 
