@@ -1,6 +1,7 @@
 
 # BALLS OF FURY
 View our current progress - https://cshourglass.github.io/BallsOfFury
+[![Youtube trailer](https://img.youtube.com/vi/OLbmxvDB_dE/0.jpg)](https://www.youtube.com/watch?v=OLbmxvDB_dE)
 
 ## Team - RED FOUR
 [David Glines](https://github.com/dglines), [Alvin Nguyen](https://github.com/alveeno), [Duc Nguyen](https://github.com/davidnguyen2302), [Alexander Reid](https://github.com/cshourglass)
